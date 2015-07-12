@@ -1,7 +1,8 @@
 # Code Quality & Readability
 
-Information on achieving super readable and maintainable code.<br>
-**BEWARE FOR INSIGNIFICANCE AND NOTHINGNESS CAN BE MOST POWERFULL FORCES.**
+Information on achieving super readable and maintainable code.
+
+> BEWARE FOR INSIGNIFICANCE AND NOTHINGNESS CAN BE MOST POWERFULL FORCES.
 
 
 
@@ -28,3 +29,8 @@ But it is not all about numbers. It is about creating a professional working env
 **The goal of this site is to improve your programming skills by improving the code you produce**. We will touch upon many facets that constitute the process of programming. And by reflecting over the material presented you will be able to put yourself in the shoes of a future maintenance developer (maybe yourself) and through such analysis make thought through decisions. Let us term such a feeling *empathy*.
 
 Empathy in itself, however, doesn't get us very far. You need to grow passion for your work, for the code you produce and the code others produce (because you have to read it). Your conduct must reek "professionalism". Simply put, "you need to care". This may in periods of time entail extra work on your behalf. You need to experiment and continuously evaluate how code impacts readability.
+
+<br>
+<br>
+<br>
+**Corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away.**
