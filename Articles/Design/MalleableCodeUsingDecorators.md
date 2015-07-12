@@ -1,4 +1,4 @@
-﻿# Malleable code through using decorators
+﻿# Malleable code by using decorators
 
 [![Stats](https://img.shields.io/badge/Tag-Design-99CC00.svg)]()
 [![Stats](https://img.shields.io/badge/Tag-SOLID-99CC00.svg)]()
