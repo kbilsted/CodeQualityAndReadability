@@ -13,7 +13,7 @@ This [book](http://www.amazon.co.uk/gp/product/0735683204/ref=as_li_tl?ie=UTF8&c
 <img src="star.jpg" width="40px">
 <img src="star.jpg" width="40px">
 
-Despite the title being fairly narrow (agile and SOLID), there are gold nuggets to be picked here. The target audience of the book are more junior people, but the way most parts of the book take on relentles abstractions and code reuse via wrappers, delegators, adaptors and lambdas, is a great read for anyone. I have 10+ years experience in the IT world, so naturally not all parts of the book was of relevance.
+Despite the title being fairly narrow (agile and SOLID), there are gold nuggets to be picked here. The target audience of the book are more junior people, but the way most parts of the book take on relentless abstractions and code reuse via wrappers, delegators, adaptors and lambdas, is a great read for anyone. I have 10+ years experience in the IT world, so naturally not all parts of the book was of relevance.
 
 The book contains two major parts, SCRUM and SOLID. And here I may be over simplifying things, since, as stated in the title, we are dealing with "agile coding" not necessarily agile software development.
 
