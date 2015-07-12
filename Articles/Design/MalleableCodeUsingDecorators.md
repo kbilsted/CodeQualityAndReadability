@@ -8,7 +8,10 @@
 [![Stats](https://img.shields.io/badge/Tag-Wrapper-99CC00.svg)]()
 [![Stats](https://img.shields.io/badge/Tag-Cache-99CC00.svg)]()
 
-
+ 
+ <img src="img/httpspixabay.comdavand-anlæg-grøn-bøde-lag-abstrakt-821293.jpg">
+ 
+ 
 Table of Content
  * [1. Introduction](#1-introduction)
  * [2. The all-in-one-class implementation](#2-the-all-in-one-class-implementation)
@@ -20,7 +23,7 @@ Table of Content
  * [5. Performance](#5-performance)
  * [6. Comments and corrections](#6-comments-and-corrections)
 
- 
+
 # 1. Introduction
 
 Recently with the v2.2.x versions of Stateprinter, we replaced the use of reflection (The `GetValue()` of `FieldInfo` and `MemberInfo`) with run-time code generation. It was a delirious moment, to see the overall run-time reduced by as much as 50%-75%. However, the joy was short, as new performance tests revealed crippling speeds for certain use scenarios. When instantiating a Stateprinter each time an object needed printing, insurmountable time was spent on run-time code-generation. Since there are very few types in a running program compared to the number of objects that may be printer, a cache holding the generated code, was an obvious choice.
