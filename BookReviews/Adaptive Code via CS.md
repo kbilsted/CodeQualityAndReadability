@@ -1,4 +1,4 @@
-# Book review: Adaptive Code via C#
+# Book review: Adaptive Code via C# #
 
 [![Stats](https://img.shields.io/badge/Tag-Book_Review-99CC00.svg)]()
 [![Stats](https://img.shields.io/badge/Tag-SOLID-99CC00.svg)]()
