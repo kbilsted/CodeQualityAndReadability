@@ -1,11 +1,10 @@
 ﻿# Code Quality & Readability
 *A site by Kasper B. Graversen*
-<br>
-[[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+<br>[[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
 
 ## Pages tagged with **Wrapper**
 
-* [Malleable code by using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
+* [Malleable code by using decorators](../Articles/Design/MalleableCodeUsingDecorators.md)
 
 
 
