@@ -2,13 +2,13 @@
 *Author: Kasper B. Graversen*
 <br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md)[[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
 <br>
-[![Stats](https://img.shields.io/badge/Tag-Design-99CC00.svg)]()
-[![Stats](https://img.shields.io/badge/Tag-SOLID-99CC00.svg)]()
-[![Stats](https://img.shields.io/badge/Tag-Single_Responsibility_Principle-99CC00.svg)]()
-[![Stats](https://img.shields.io/badge/Tag-Design_Pattern-99CC00.svg)]()
-[![Stats](https://img.shields.io/badge/Tag-Decorator-99CC00.svg)]()
-[![Stats](https://img.shields.io/badge/Tag-Wrapper-99CC00.svg)]()
-[![Stats](https://img.shields.io/badge/Tag-Cache-99CC00.svg)]()
+[![Stats](https://img.shields.io/badge/Tag-Design-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Design.md)
+[![Stats](https://img.shields.io/badge/Tag-SOLID-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/SOLID.md)
+[![Stats](https://img.shields.io/badge/Tag-Single_Responsibility_Principle-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Single_Responsibility_Principle.md)
+[![Stats](https://img.shields.io/badge/Tag-Design_Pattern-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Design_Pattern.md)
+[![Stats](https://img.shields.io/badge/Tag-Decorator-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Decorator.md)
+[![Stats](https://img.shields.io/badge/Tag-Wrapper-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Wrapper.md)
+[![Stats](https://img.shields.io/badge/Tag-Cache-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Cache.md)
 
  
  <img src="img/httpspixabay.comdavand-anlæg-grøn-bøde-lag-abstrakt-821293.jpg" alt="from https://pixabay.com/da/vand-anl%C3%A6g-gr%C3%B8n-b%C3%B8de-lag-abstrakt-821293/" >
