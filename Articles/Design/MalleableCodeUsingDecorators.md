@@ -198,6 +198,7 @@ The important thing here is that the users of the class will use references of t
 
 # 4. Improving the design with decorators
 
+<img srg="img/decorator_uml.png" align="right">
 The *decorator* design pattern is similar to the wrapper object approach, but with the twist that both the wrapper and the wrappee share a common type, typically in the form of an interface. This enables multiple decorators to decorate the same object without changing any of the caller code. This allows us to apply multiple decorators without changing the caller code. As the code is split into smaller and independent units, we may find it easier to reuse the code. In other words, the code is more malleable.
 
 Usually malleability is an attribute of code that come for free when we strive to write code according to the *Single responsibility principle* (S in SOLID), Check out chapter 7 of 
