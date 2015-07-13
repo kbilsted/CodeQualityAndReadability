@@ -3,7 +3,7 @@
 
 ## Pages tagged with **Design_Pattern**
 
-* [Malleable code through using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
+* [Malleable code by using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
 
 
 

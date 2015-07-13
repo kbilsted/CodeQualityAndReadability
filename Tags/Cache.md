@@ -3,7 +3,7 @@
 
 ## Pages tagged with **Cache**
 
-* [Malleable code through using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
+* [Malleable code by using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
 
 
 

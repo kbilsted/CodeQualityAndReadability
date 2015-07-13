@@ -3,7 +3,7 @@
 
 ## Pages tagged with **Single_Responsibility_Principle**
 
-* [Malleable code through using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
+* [Malleable code by using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
 
 
 

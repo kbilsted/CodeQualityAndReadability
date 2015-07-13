@@ -4,7 +4,7 @@
 ## All articles on the site
 
 **Articles/Design**
-* [Malleable code through using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
+* [Malleable code by using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
 
 
 **BookReviews**

@@ -3,7 +3,7 @@
 
 ## Pages tagged with **SOLID**
 
-* [Malleable code through using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
+* [Malleable code by using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
 * [Book review: Adaptive Code via C# #](BookReviews/Adaptive Code via CS.md)
 
 
