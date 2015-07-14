@@ -5,6 +5,7 @@
 ## Pages tagged with **Book_Review**
 
 * [Book review: Adaptive Code via C# #](../BookReviews/Adaptive Code via CS.md)
+* [Book review: Object Thinking](../BookReviews/ObjectThinking.md)
 
 
 
