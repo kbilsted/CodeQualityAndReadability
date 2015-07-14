@@ -1,11 +1,11 @@
 ﻿# Code Quality & Readability
 *A site by Kasper B. Graversen*
-<br>[[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+<br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
 
 ## All tags on the site
 
 B
-* [Book_Review](Tags/Book_Review.md)
+* [Book Review](Tags/Book_Review.md)
 
 C
 * [Cache](Tags/Cache.md)
@@ -13,10 +13,10 @@ C
 D
 * [Decorator](Tags/Decorator.md)
 * [Design](Tags/Design.md)
-* [Design_Pattern](Tags/Design_Pattern.md)
+* [Design Pattern](Tags/Design_Pattern.md)
 
 S
-* [Single_Responsibility_Principle](Tags/Single_Responsibility_Principle.md)
+* [Single Responsibility Principle](Tags/Single_Responsibility_Principle.md)
 * [SOLID](Tags/SOLID.md)
 
 W
