@@ -19,7 +19,7 @@ David West's book "Object Thinking", is a strange create in the real of computer
 
 According to West, OOP can reap in order-of-magnitude improvements over traditional structured design methods. However, just jotting your code into classes doesn't make it "real OOP". It takes a very special mindset - "object thinking" - to utilize OOP effectively. We are given guidance as to how to do object thinking. These come in the form of metaphors. One of them being the "object as a person", which amongst other things state:
 
-    "Technology exists that would allow me to make hardware connections to your brain. I could then build a control box that would allow me to raise your hand whenever I pressed a button. Eventually this same technology might allow me to make you perform a complicated dance. Again, as a person, you might not like this, and neither would an object if it were a person."
+> "Technology exists that would allow me to make hardware connections to your brain. I could then build a control box that would allow me to raise your hand whenever I pressed a button. Eventually this same technology might allow me to make you perform a complicated dance. Again, as a person, you might not like this, and neither would an object if it were a person."
 
 And this is somewhat the most concrete the book ever gets. This is very hard to apply in practice. And it is all a bit weird to me. See actually, I'm a bit of an object thinker myself to begin with. And the book cites and gives thorough backgrounds on a number of very esteemed people in the world of computer science. But I think its the indistinctive style of writing that gets to me. 
 
@@ -31,7 +31,7 @@ To be fair, the later chapters become more concrete, addressing the "words to th
 
 I was left feeling I needed more guidance on how to be a better object thinker. More examples from the real world. Focus the writing and cut the size in half! Are you interested in philosophy as it applies to software development, then this book may be for you. If you are ruthlessly pragmatic, maybe think about steering clear of this book. Irregardless of your background, expect to read the book a couple of times before things have properly sunk in.
 
-If you are interested in code quality and readability I advice you to visit https://github.com/kbilsted/CodeQualityAndReadability here the language is easily gulped down, with plenty of real-world examples.
+
 
 To help future readers, here is an extract of advice to be found in the book
 
@@ -51,4 +51,4 @@ To help future readers, here is an extract of advice to be found in the book
 * Create proxies for objects outside your domain that are sources of information required by objects within the domain.
 
 
-Go to http://www.amazon.co.uk/gp/product/0735683204/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0735683204&linkCode=as2&tag=linkedin_kbg-21&linkId=YAXKJGZZ6UKZQHPM
+Go to http://www.amazon.co.uk/gp/product/0735619654/ref=as_li_tl?ie=UTF8&camp=1634&creative=19450&creativeASIN=0735619654&linkCode=as2&tag=linkedin_kbg-21&linkId=OZVOEWC4UBJCU6OU
