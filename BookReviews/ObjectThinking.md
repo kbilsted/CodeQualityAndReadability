@@ -1,5 +1,7 @@
 ﻿# Book review: Object Thinking
-
+*Author: Kasper B. Graversen*
+<br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+<br>
 [![Stats](https://img.shields.io/badge/Tag-Book_Review-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Book_Review.md)
 
 
