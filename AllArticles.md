@@ -5,6 +5,7 @@
 ## All articles on the site
 
 **Articles/Design**
+* [Domain types creates readability ...and emergent behaviour](Articles/Design/DomainTypeAndEmergentBehaviour.md)
 * [Malleable code by using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
 
 

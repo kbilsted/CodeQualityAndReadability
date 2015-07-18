@@ -9,11 +9,16 @@ B
 
 C
 * [Cache](Tags/Cache.md)
+* [Code Readability](Tags/Code_Readability.md)
 
 D
 * [Decorator](Tags/Decorator.md)
 * [Design](Tags/Design.md)
 * [Design Pattern](Tags/Design_Pattern.md)
+* [Domain Types](Tags/Domain_Types.md)
+
+E
+* [Emergent Behaviour](Tags/Emergent_Behaviour.md)
 
 S
 * [Single Responsibility Principle](Tags/Single_Responsibility_Principle.md)
