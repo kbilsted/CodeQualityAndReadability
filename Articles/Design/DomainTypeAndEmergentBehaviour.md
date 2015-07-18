@@ -1,4 +1,4 @@
-# Domain types creates readability ...and emergent behaviour
+﻿# Domain types creates readability ...and emergent behaviour
 *Author: Kasper B. Graversen*
 <br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
 <br>
@@ -20,7 +20,7 @@ Table of Content
    * [4. Emergent behaviour](#4-emergent-behaviour)
      * [4.1 Bug fixing the link name creation](#41-bug-fixing-the-link-name-creation)
    * [5. Conclusions](#5-conclusions)
- * [6. Comments and corrections](#6-comments-and-corrections)
+   * [6. Comments and corrections](#6-comments-and-corrections)
    
    
    
@@ -427,7 +427,7 @@ That being said, in the general case, there is a dichotomy between the "single r
 
 
 
-# 6. Comments and corrections
+## 6. Comments and corrections
 
 **Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away.**
 
