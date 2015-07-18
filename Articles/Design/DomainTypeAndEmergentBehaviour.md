@@ -24,6 +24,7 @@ Table of Content
    
    
    
+<img src="img/httpspixabay.comdasommerfugl-insekt-%C3%B8jne-sensor-376876.jpg" align="right">    
 The focus of this article is how readability and maintainability is improved by replacing simple types with domain types. A consequence of introducing domain types is not only a closer relationship between model and implementation, the domain types also establishes a conceptual foundation making it easier to extend and adapt the application for future changes.  
 
 Our investigations take outset in implementing an application with and without domain types. This gives us the opportunity to reflect and compare. 
@@ -282,7 +283,7 @@ public class PageGenerator
 }
 ```
     
-<img src="img/httpspixabay.comdasommerfugl-insekt-%C3%B8jne-sensor-376876.jpg" align="right>    
+<img src="img/httpspixabay.comdasommerfugl-insekt-%C3%B8jne-sensor-376876.jpg" align="right">    
 Looking at code how readable the code is now almost brings a tear to my eyes. It sure was worth those extra lines of boiler plate code! Comparing with the previous version of the page generator, code has been morphed from a scary looking caterpillar into a beautiful colourful butterfly.    
     
 
