@@ -4,14 +4,14 @@
 
 ## All articles on the site
 
+**Articles/BookReviews**
+* [Book review: Adaptive Code via C#](Articles/BookReviews/Adaptive Code via CS.md)
+* [Book review: Object Thinking](Articles/BookReviews/ObjectThinking.md)
+
+
 **Articles/Design**
 * [Domain types creates readability ...and emergent behaviour](Articles/Design/DomainTypeAndEmergentBehaviour.md)
 * [Malleable code by using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
-
-
-**BookReviews**
-* [Book review: Adaptive Code via C#](BookReviews/Adaptive Code via CS.md)
-* [Book review: Object Thinking](BookReviews/ObjectThinking.md)
 
 
 

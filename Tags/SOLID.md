@@ -4,8 +4,8 @@
 
 ## Pages tagged with **SOLID**
 
+* [Book review: Adaptive Code via C#](../Articles/BookReviews/Adaptive Code via CS.md)
 * [Malleable code by using decorators](../Articles/Design/MalleableCodeUsingDecorators.md)
-* [Book review: Adaptive Code via C#](../BookReviews/Adaptive Code via CS.md)
 
 
 

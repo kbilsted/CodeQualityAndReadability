@@ -2,7 +2,7 @@
 *A site by Kasper B. Graversen*
 <br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
 
-## All tags on the site
+## All categories on the site
 
 B
 * [Book Review](Tags/Book_Review.md)
