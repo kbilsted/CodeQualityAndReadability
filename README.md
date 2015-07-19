@@ -19,7 +19,7 @@ Newest additions
 *You can tell a lot about the clientele of an establishment by the garbage it leaves behind. Look at this! Putrid sprawling code promiscuously sharing state. Singletons and statics generously sprinkled on the code base. Classes spanning thousands and thousands of lines of code. Ever changing formatting of the code. Time pressure and tight budgets choking every attempt at setting up a build server or automating deployment. This is an intergalactic cesspool. A natural habitat for developers who thrive on stress, overtime and ever delayed deliveries. For the misfortunate, the depraved and degenerated. Those so technically inept, they have no where else to go. Developers in a state between living and dead -- Zombies!*
 
 <img src="/img/v1.std3.ru_50_d1_1436465041-50d172534a9c22422ceeb9bbfdf21041.jpeg" width="60%" alt="Logo from https://v1.std3.ru/50/d1/1436465041-50d172534a9c22422ceeb9bbfdf21041.jpeg" align="right">
-*Oh look at the monstrosity they has created. It sweats, snorts and groan as it moves forward at a glacial pace. Contorted in shape, like tumours budding from every angle. Oh, I want to feel every part of you. Torment my soul by intimately learning your every detail.*
+*Oh look at the monstrosity they have created. It sweats, snorts and groan as it moves forward at a glacial pace. Contorted in shape, like tumours budding from every angle. Oh, I want to feel every part of you. Torment my soul by intimately learning your every detail.*
 
 *AAAhh! An abruptly awakening from another nightmare. Awake, but only enough to realize, that it is time to rise and go to work. To let the hellish nightmare continue in broad daylight.*
 
