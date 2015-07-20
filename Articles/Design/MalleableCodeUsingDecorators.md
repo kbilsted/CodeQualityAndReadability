@@ -13,6 +13,7 @@
  
  <img src="img/httpspixabay.comdavand-anlæg-grøn-bøde-lag-abstrakt-821293.jpg" alt="from https://pixabay.com/da/vand-anl%C3%A6g-gr%C3%B8n-b%C3%B8de-lag-abstrakt-821293/" >
  
+*Using the decorator design pattern, we get an exquisite separation of concern, while at the same time make the code more maleable.*
  
 Table of Content
  * [1. Introduction](#1-introduction)
