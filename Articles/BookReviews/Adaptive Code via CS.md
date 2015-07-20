@@ -9,11 +9,10 @@
 
 This [book](http://www.amazon.co.uk/gp/product/0735683204/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0735683204&linkCode=as2&tag=linkedin_kbg-21&linkId=YAXKJGZZ6UKZQHPM) has a lot to offer. I'd recommend it to junior and senior people any time.
 
-<img src="star.jpg" width="40px">
-<img src="star.jpg" width="40px">
-<img src="star.jpg" width="40px">
-<img src="star.jpg" width="40px">
-<img src="star.jpg" width="40px">
+*Novice:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px">  
+*Skilled:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px">  
+*Wizard:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px">  
+
 
 Despite the title being fairly narrow (agile and SOLID), there are gold nuggets to be picked here. The target audience of the book are more junior people, but the way most parts of the book take on relentless abstractions and code reuse via wrappers, delegators, adaptors and lambdas, is a great read for anyone. I have 10+ years experience in the IT world, so naturally not all parts of the book was of relevance.
 
