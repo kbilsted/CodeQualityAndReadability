@@ -13,7 +13,7 @@
  
  <img src="img/httpspixabay.comdavand-anlæg-grøn-bøde-lag-abstrakt-821293.jpg" alt="from https://pixabay.com/da/vand-anl%C3%A6g-gr%C3%B8n-b%C3%B8de-lag-abstrakt-821293/" >
  
-*Using the decorator design pattern, we get an exquisite separation of concern, while at the same time make the code more maleable.*
+*Using the decorator design pattern, we get an exquisite separation of concern, while at the same time make the code more malleable.*
  
 Table of Content
  * [1. Introduction](#1-introduction)
@@ -33,6 +33,7 @@ Recently with the v2.2.x versions of Stateprinter, we replaced the use of reflec
 
 To readers new to the Stateprinter paradigm, suffice to say, that Stateprinter is a simple framework for turning an object graph into a string representation. Such functionality can be used to generate `ToString()`-methods, for automating aspects of unit testing and updating existing unit tests, and finally work is currently in progress to greatly enhance the debugging experience. In other words, Stateprinter is envisaged to be a productivity booster. See more at https://github.com/kbilsted/StatePrinter
 
+> " [The decorator pattern help separate concerns and make code more... <img src="https://raw.githubusercontent.com/kbilsted/CodeQualityAndReadability/master/img/twitter-logo.png" alt="Tweet this" width="40">  ](http://spredd.it/F24SW2r6)
 
 # 2. The all-in-one-class implementation
 
