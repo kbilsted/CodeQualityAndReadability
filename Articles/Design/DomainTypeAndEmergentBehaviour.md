@@ -6,6 +6,8 @@
 [![Stats](https://img.shields.io/badge/Tag-Emergent_Behaviour-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Emergent_Behaviour.md)
 [![Stats](https://img.shields.io/badge/Tag-Code_Readability-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
 
+*The focus of this article is how readability and maintainability is improved by replacing simple types with domain types. Consequences of introducing domain types is both a closer relationship between model and implementation, and that the domain types establishes a conceptual foundation making it easier to extend and adapt the application for future changes.*
+
 
 Table of Content
    * [1. Describing the problem domain](#1-describing-the-problem-domain)
@@ -26,11 +28,11 @@ Table of Content
    
 <img src="img/httpspixabay.comdasommerfugl-insekt-oejne-sensor-376876.jpg">
 
-The focus of this article is how readability and maintainability is improved by replacing simple types with domain types. A consequence of introducing domain types is not only a closer relationship between model and implementation, the domain types also establishes a conceptual foundation making it easier to extend and adapt the application for future changes.  
 
-Our investigations take outset in implementing an application with and without domain types. This gives us the opportunity to reflect and compare. 
 
-A domain type is a type that cover the information or intent of a phenomenon in the *problem domain* (i.e. the real life "thing" we are creating software for). The domain type is expressed in the *solution domain* (i.e. our code). Some times, a domain type is a mere wrapper for say a `string` or an `int`.  This thought may be alien to you, maybe it even feels like a complete waste of time to do all that wrappin'. Allot me to show you differently. 
+Our investigations take outset in implementing an application with and without domain types. The implementations are easily coparably, and thus provides ample  opportunity to reflect and compare. 
+
+What is a domain type anyways?? A domain type is a type that cover the information or intent of a phenomenon in the *problem domain* (i.e. the real life "thing" we are creating software for). The domain type is expressed in the *solution domain* (i.e. our code). Some times, a domain type is a mere wrapper for say a `string` or an `int`.  This thought may be alien to you, maybe it even feels like a complete waste of time to do all that wrappin'. Allot me to show you differently. 
 
 
 
