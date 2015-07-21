@@ -1,11 +1,12 @@
 ﻿# Stepwise refinement of code
 *Author: Kasper B. Graversen*  
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](http://spredd.it/3ahazNUZ)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md)  
 [[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md) 
 <br>
 [![Stats](https://img.shields.io/badge/Tag-Refactoring-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Refactoring.md)
 [![Stats](https://img.shields.io/badge/Tag-Code_Readability-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
+<br>
+[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](http://spredd.it/3ahazNUZ)
+[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md)  
 
 *We all know that code left alone rot over time. Yet it is hard to get the time to solely change code for the purpose of changing it. And when you do get the time, it is hard to find the inclination and energy to really dig in.*    
 
