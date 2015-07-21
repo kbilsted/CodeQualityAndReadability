@@ -1,6 +1,8 @@
 ﻿# Stepwise refinement of code
-*Author: Kasper B. Graversen*
-<br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+*Author: Kasper B. Graversen*  
+[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](http://spredd.it/3ahazNUZ)
+[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md)  
+[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md) 
 <br>
 [![Stats](https://img.shields.io/badge/Tag-Refactoring-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Refactoring.md)
 [![Stats](https://img.shields.io/badge/Tag-Code_Readability-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
