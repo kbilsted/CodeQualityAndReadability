@@ -9,6 +9,9 @@
 *The focus of this article is how readability and maintainability is improved by replacing simple types with domain types. Consequences of introducing domain types is both a closer relationship between model and implementation, and that the domain types establishes a conceptual foundation making it easier to extend and adapt the application for future changes.*
 
 
+<img src="img/httpspixabay.comdasommerfugl-insekt-oejne-sensor-376876.jpg">
+
+
 Table of Content
    * [1. Describing the problem domain](#1-describing-the-problem-domain)
    * [2. Solution 1: Using simple types](#2-solution-1-using-simple-types)
@@ -26,8 +29,6 @@ Table of Content
    
    
    
-<img src="img/httpspixabay.comdasommerfugl-insekt-oejne-sensor-376876.jpg">
-
 
 
 Our investigations take outset in implementing an application with and without domain types. The implementations are easily coparably, and thus provides ample  opportunity to reflect and compare. 
