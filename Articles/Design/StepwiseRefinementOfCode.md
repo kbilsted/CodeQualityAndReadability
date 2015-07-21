@@ -12,6 +12,10 @@
 
 *A technique I often employ to accommodate these problems, is to step-wise refine the code while reading it during the implementation of change requests or adding features.*
 
+<SocialShareButtons>
+</SocialShareButtons> 
+
+
 <img src="img/pixabay.com_da_arbejder-vedligeholdelse-sejlere-665004.jpg">
 
 
@@ -262,20 +266,15 @@ I hope you are inspired to do safe refactorings the next time you have to unders
 A point we haven't touched upon is how distributed version control systems directly support this way of working. Every time we have completed a small step, we can issue a commit. Then, before pushing, we can combine the change sets into one. See `git reset --soft head~xx` or `hg combine xx` for further information on combining commits.
 
 
+<SocialShareButtons>
+</SocialShareButtons> 
+
 
 ## 9. Comments
 
-**Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away.**
+<CommentText>
+</CommentText>
 
-*Comments should go below this line (and use the following template).*
-
-Name: Bubba Jones
-> text.. 
-> text..
-
-
-<br>
-<br>
 <br>
 Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
 

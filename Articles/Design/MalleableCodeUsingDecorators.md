@@ -12,8 +12,10 @@
 
 *Using the decorator design pattern, we get an exquisite separation of concern, while at the same time make the code more malleable.*
 
- 
- <img src="img/httpspixabay.comdavand-anlæg-grøn-bøde-lag-abstrakt-821293.jpg" alt="from https://pixabay.com/da/vand-anl%C3%A6g-gr%C3%B8n-b%C3%B8de-lag-abstrakt-821293/" >
+<SocialShareButtons>
+</SocialShareButtons> 
+
+<img src="img/httpspixabay.comdavand-anlæg-grøn-bøde-lag-abstrakt-821293.jpg" alt="from https://pixabay.com/da/vand-anl%C3%A6g-gr%C3%B8n-b%C3%B8de-lag-abstrakt-821293/" >
  
  
 Table of Content
@@ -279,20 +281,14 @@ Essentially, these figures are identical. But can we explain why this is the cas
 * Maybe since we are referring to the cached code generator from only one place in the code, which is a `readonly` variable, the JIT'er is quick to discover that the interface type and the indirection it causes, can be optimized away.
 
 
+<SocialShareButtons>
+</SocialShareButtons> 
+
 
 
 # 6. Comments and corrections
 
-**Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away.**
-
-*Comments should go below this line (and use the following template).*
-
-Name: Bubba Jones
-> text.. 
-> text..
-
-
-<br>
-<br>
+<CommentText>
+</CommentText>
 <br>
 Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)

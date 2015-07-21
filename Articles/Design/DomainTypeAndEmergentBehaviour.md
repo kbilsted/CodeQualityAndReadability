@@ -8,6 +8,9 @@
 
 *The focus of this article is how readability and maintainability is improved by replacing simple types with domain types. Consequences of introducing domain types is both a closer relationship between model and implementation, and that the domain types establishes a conceptual foundation making it easier to extend and adapt the application for future changes.*
 
+<SocialShareButtons>
+</SocialShareButtons> 
+
 
 <img src="img/httpspixabay.comdasommerfugl-insekt-oejne-sensor-376876.jpg">
 
@@ -428,20 +431,14 @@ That being said, in the general case, there is a dichotomy between the "single r
 * Despite the initial judgement call, where we deemed an abstraction over the file system  "too academic", eventually I did  create said abstraction. A `FileRepository` replacing  calls to  `DirectoryInfo` and `File`. This abstraction enabled us to do unit testing without hitting the hard drive and needing to clean up files. I guess, some times, unit testing can drive you to do domain types as well :-)
 
 
+<SocialShareButtons>
+</SocialShareButtons> 
 
 
 ## 6. Comments and corrections
 
-**Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away.**
+<CommentText>
+</CommentText>
 
-*Comments should go below this line (and use the following template).*
-
-Name: Bubba Jones
-> text.. 
-> text..
-
-
-<br>
-<br>
 <br>
 Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
