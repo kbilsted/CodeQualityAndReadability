@@ -20,6 +20,9 @@ D
 E
 * [Emergent Behaviour](Tags/Emergent_Behaviour.md)
 
+R
+* [Refactoring](Tags/Refactoring.md)
+
 S
 * [Single Responsibility Principle](Tags/Single_Responsibility_Principle.md)
 * [SOLID](Tags/SOLID.md)
