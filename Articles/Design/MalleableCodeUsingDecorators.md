@@ -10,10 +10,11 @@
 [![Stats](https://img.shields.io/badge/Tag-Wrapper-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Wrapper.md)
 [![Stats](https://img.shields.io/badge/Tag-Cache-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Cache.md)
 
+*Using the decorator design pattern, we get an exquisite separation of concern, while at the same time make the code more malleable.*
+
  
  <img src="img/httpspixabay.comdavand-anlæg-grøn-bøde-lag-abstrakt-821293.jpg" alt="from https://pixabay.com/da/vand-anl%C3%A6g-gr%C3%B8n-b%C3%B8de-lag-abstrakt-821293/" >
  
-*Using the decorator design pattern, we get an exquisite separation of concern, while at the same time make the code more malleable.*
  
 Table of Content
  * [1. Introduction](#1-introduction)
