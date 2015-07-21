@@ -15,6 +15,12 @@ This [book](http://www.amazon.co.uk/gp/product/0735619654/ref=as_li_tl?ie=UTF8&c
 
 > Too long, too hard to read, too few real-life examples. Great book for historical and philosophical background information.
 
+<SocialShareButtons>
+[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/ObjectThinking.md&text=Book%20review:%20Object%20Thinking&via=kbilsted)
+[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/ObjectThinking.md)  
+</SocialShareButtons>
+
+
 David West's book "Object Thinking", is a strange creation in the realm of computer books. For it is more philosophy, hand waving and prose than any other book I've come across. Clearly, David is a well-read scholar. Indeed he has his references in order. Claims backed up by yet other scholars. Despite this very academic style, I am not convinced about any argument in the book.
 
 According to West, OOP can reap in order-of-magnitude improvements over traditional structured design methods. However, just jotting your code into classes doesn't make it "real OOP". It takes a very special mindset - "object thinking" - to utilize OOP effectively. We are given guidance as to how to do object thinking. These come in the form of metaphors. One of them being the "object as a person", which amongst other things state:
@@ -53,3 +59,17 @@ To help future readers, here is an extract of advice to be found in the book
 
 
 Go to http://www.amazon.co.uk/gp/product/0735619654/ref=as_li_tl?ie=UTF8&camp=1634&creative=19450&creativeASIN=0735619654&linkCode=as2&tag=linkedin_kbg-21&linkId=OZVOEWC4UBJCU6OU
+
+
+## Comments
+
+<CommentText>
+**Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away. Have I left out important information about your favorite langue, press the edit button. Are there wordings that definitely are not english, press the edit button. Do you have something to elaborate.. press the edit button!! :-)**
+
+*Comments should go below this line (and use the following template).*
+
+Name: Bubba Jones
+> text..  
+> text..  
+
+</CommentText>

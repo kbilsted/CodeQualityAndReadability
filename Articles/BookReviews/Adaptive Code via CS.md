@@ -13,6 +13,11 @@ This [book](http://www.amazon.co.uk/gp/product/0735683204/ref=as_li_tl?ie=UTF8&c
 *Skilled:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px">  
 *Wizard:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px">  
 
+<SocialShareButtons>
+[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md&text=Book%20review:%20Adaptive%20Code%20via%20C#%20#&via=kbilsted)
+[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md)  
+</SocialShareButtons>
+
 
 Despite the title being fairly narrow (agile and SOLID), there are gold nuggets to be picked here. The target audience of the book are more junior people, but the way most parts of the book take on relentless abstractions and code reuse via wrappers, delegators, adaptors and lambdas, is a great read for anyone. I have 10+ years experience in the IT world, so naturally not all parts of the book was of relevance.
 
@@ -29,3 +34,18 @@ The language used is easily understandable for a person whose second language is
 Great read. Please serve more.
 
 Go to http://www.amazon.co.uk/gp/product/0735683204/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0735683204&linkCode=as2&tag=linkedin_kbg-21&linkId=YAXKJGZZ6UKZQHPM
+
+
+
+## Comments 
+
+<CommentText>
+**Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away. Have I left out important information about your favorite langue, press the edit button. Are there wordings that definitely are not english, press the edit button. Do you have something to elaborate.. press the edit button!! :-)**
+
+*Comments should go below this line (and use the following template).*
+
+Name: Bubba Jones
+> text..  
+> text..  
+
+</CommentText>
