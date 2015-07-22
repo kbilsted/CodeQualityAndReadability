@@ -40,7 +40,7 @@ Table of Content
    
 ## 1. Introduction
 
-This article chronicles a real session of reading and step-wise refining a piece of code from the.
+This article chronicles a real session of reading and step-wise refining a piece of code from the beginning.
 
  Let me stress, that the refinements are made in small and safe increments. Each of which denotes a safe place to stop. Safety is of utmost importance. When you are afraid of making change in the fear of breaking something, you refrain from making them. 
 
@@ -160,12 +160,12 @@ List<SanitiedFieldInfo> Filter(List<SanitiedFieldInfo> fields)
 {
     var res = new List<SanitiedFieldInfo>();
     foreach (var field in fields)
-        FilterPublic(field, res);
+        AddFieldIfPublic(field, res);
 
     return res;
 }
 
-void FilterPublic(SanitiedFieldInfo field, List<SanitiedFieldInfo> res)
+void AddFieldIfPublic(SanitiedFieldInfo field, List<SanitiedFieldInfo> res)
 {
     switch (field.FieldInfo.MemberType) 
     {
@@ -260,14 +260,14 @@ bool IsPublic(SanitiedFieldInfo field)
 ## 8. Conclusions
 The article in summary form
 
-* By step-wise refining the code, we make clearer the intentions of the code. 
+* By step-wise refining the code, we make the intentions of the code clearer. 
 * By constantly separating code into smaller parts we reduce the possibility of mistakes and enable reuse of code. 
-* We always cease the chance to in-line methods when we realize we have created too small methods.
+* We always seize the chance to in-line methods when we realize we have created too small methods.
 * By using LINQ we boost readability.
 
 Notice that we did not jump directly from the first version of the code to the last. By doing simple step-wise refinements, we ensure that each step is safe. Preferably, we take each step with automated tests as the safety net.
 
-I hope you are inspired to do safe refactorings the next time you have to understand a tangled piece of code. Simple refactorings like these do not take a lot of time, and they make life for you as your understanding shapes the code, and it makes it easier to next reader too. So everyone benefits.
+I hope you are inspired to do safe refactorings the next time you have to understand a tangled piece of code. Simple refactorings like these do not take a lot of time, and they make life for you easier as your understanding shapes the code. Also it makes it easier to next reader too. So everyone benefits.
 
 A point we haven't touched upon is how distributed version control systems directly support this way of working. Every time we have completed a small step, we can issue a commit. Then, before pushing, we can combine the change sets into one. See `git reset --soft head~xx` or `hg combine xx` for further information on combining commits.
 
