@@ -15,7 +15,8 @@ This [book](http://www.amazon.co.uk/gp/product/0735683204/ref=as_li_tl?ie=UTF8&c
 *Skilled:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px">  
 *Wizard:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px">  
 
-Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: <SocialShareButtons>
+Please show your support by sharing and voting: 
+<SocialShareButtons>
 
 [![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md)
 [![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md&text=Book%20review:%20Adaptive%20Code%20via%20C#%20#&via=kbilsted)
