@@ -2,8 +2,9 @@
 *Author: Kasper B. Graversen*
 <br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
 <br>
+<Categories Tags="Book_Review">
 [![Stats](https://img.shields.io/badge/Tag-Book_Review-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Book_Review.md)
-
+</Categories>
 
 <img src="ObjectThinking.jpg">
 
@@ -15,7 +16,7 @@ This [book](http://www.amazon.co.uk/gp/product/0735619654/ref=as_li_tl?ie=UTF8&c
 
 > Too long, too hard to read, too few real-life examples. Great book for historical and philosophical background information.
 
-<SocialShareButtons>
+Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: <SocialShareButtons>
 
 [![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/ObjectThinking.md)
 [![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/ObjectThinking.md&text=Book%20review:%20Object%20Thinking&via=kbilsted)

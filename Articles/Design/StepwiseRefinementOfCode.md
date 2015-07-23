@@ -2,15 +2,17 @@
 *Author: Kasper B. Graversen*  
 [[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md) 
 <br>
+<Categories Tags="Refactoring, Code_Readability">
 [![Stats](https://img.shields.io/badge/Tag-Refactoring-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Refactoring.md)
 [![Stats](https://img.shields.io/badge/Tag-Code_Readability-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
+</Categories>
 <br>
 
 *We all know that code left alone rot over time. Yet it is hard to get the time to solely change code for the purpose of changing it. And when you do get the time, it is hard to find the inclination and energy to really dig in.*    
 
 *A technique I often employ to accommodate these problems, is to step-wise refine the code while reading it during the implementation of change requests or adding features.*
 
-<SocialShareButtons>
+Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: <SocialShareButtons>
 
 [![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md)
 [![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md&text=Stepwise%20refinement%20of%20code&via=kbilsted)
@@ -272,7 +274,7 @@ I hope you are inspired to do safe refactorings the next time you have to unders
 A point we haven't touched upon is how distributed version control systems directly support this way of working. Every time we have completed a small step, we can issue a commit. Then, before pushing, we can combine the change sets into one. See `git reset --soft head~xx` or `hg combine xx` for further information on combining commits.
 
 
-<SocialShareButtons>
+Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: <SocialShareButtons>
 
 [![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md)
 [![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md&text=Stepwise%20refinement%20of%20code&via=kbilsted)

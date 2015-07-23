@@ -2,6 +2,8 @@
 *Author: Kasper B. Graversen*
 <br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
 <br>
+
+<Categories Tags="Design, SOLID, Single_Responsibility_Principle, Design_Pattern, Decorator, Wrapper, Cache ">
 [![Stats](https://img.shields.io/badge/Tag-Design-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Design.md)
 [![Stats](https://img.shields.io/badge/Tag-SOLID-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/SOLID.md)
 [![Stats](https://img.shields.io/badge/Tag-Single_Responsibility_Principle-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Single_Responsibility_Principle.md)
@@ -9,10 +11,12 @@
 [![Stats](https://img.shields.io/badge/Tag-Decorator-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Decorator.md)
 [![Stats](https://img.shields.io/badge/Tag-Wrapper-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Wrapper.md)
 [![Stats](https://img.shields.io/badge/Tag-Cache-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Cache.md)
+</Categories>
+
 
 *Using the decorator design pattern, we get an exquisite separation of concern, while at the same time make the code more malleable.*
 
-<SocialShareButtons>
+Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: <SocialShareButtons>
 
 [![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md)
 [![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md&text=Malleable%20code%20by%20using%20decorators&via=kbilsted)
@@ -289,7 +293,7 @@ Essentially, these figures are identical. But can we explain why this is the cas
 * Maybe since we are referring to the cached code generator from only one place in the code, which is a `readonly` variable, the JIT'er is quick to discover that the interface type and the indirection it causes, can be optimized away.
 
 
-<SocialShareButtons>
+Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: <SocialShareButtons>
 
 [![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md)
 [![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md&text=Malleable%20code%20by%20using%20decorators&via=kbilsted)

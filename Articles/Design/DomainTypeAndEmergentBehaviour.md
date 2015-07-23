@@ -2,13 +2,16 @@
 *Author: Kasper B. Graversen*
 <br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
 <br>
+<Categories Tags="Domain_Types, Emergent_Behaviour, Code_Readability">
 [![Stats](https://img.shields.io/badge/Tag-Domain_Types-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Domain_Types.md)
 [![Stats](https://img.shields.io/badge/Tag-Emergent_Behaviour-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Emergent_Behaviour.md)
 [![Stats](https://img.shields.io/badge/Tag-Code_Readability-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
+</Categories>
+
 
 *The focus of this article is how readability and maintainability is improved by replacing simple types with domain types. Consequences of introducing domain types is both a closer relationship between model and implementation, and that the domain types establishes a conceptual foundation making it easier to extend and adapt the application for future changes.*
 
-<SocialShareButtons>
+Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: <SocialShareButtons>
 
 [![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md)
 [![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md&text=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour&via=kbilsted)
@@ -439,7 +442,7 @@ That being said, in the general case, there is a dichotomy between the "single r
 * Despite the initial judgement call, where we deemed an abstraction over the file system  "too academic", eventually I did  create said abstraction. A `FileRepository` replacing  calls to  `DirectoryInfo` and `File`. This abstraction enabled us to do unit testing without hitting the hard drive and needing to clean up files. I guess, some times, unit testing can drive you to do domain types as well :-)
 
 
-<SocialShareButtons>
+Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: <SocialShareButtons>
 
 [![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md)
 [![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md&text=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour&via=kbilsted)
