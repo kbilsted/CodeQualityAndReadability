@@ -17,14 +17,13 @@ This [book](http://www.amazon.co.uk/gp/product/0735683204/ref=as_li_tl?ie=UTF8&c
 
 Please show your support by sharing and voting: 
 <SocialShareButtons>
-
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md)
+[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md&title=Book%20review:%20Adaptive%20Code%20via%20C#%20#)
 [![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md&text=Book%20review:%20Adaptive%20Code%20via%20C#%20#&via=kbilsted)
 [![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md)
+[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md&t=Book%20review:%20Adaptive%20Code%20via%20C#%20#)
 [![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md)
-
-
+[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md)
+[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/Adaptive Code via CS.md&t=Book%20review:%20Adaptive%20Code%20via%20C#%20#)
 </SocialShareButtons>
 
 
