@@ -3,8 +3,8 @@
 <br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
 <br>
 <Categories Tags="Book_Review, SOLID">
-[![Stats](https://img.shields.io/badge/Tag-Book_Review-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Book_Review.md)
-[![Stats](https://img.shields.io/badge/Tag-SOLID-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/SOLID.md)
+[![Tag](https://img.shields.io/badge/-Book_Review-3c8700.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Book_Review.md)
+[![Tag](https://img.shields.io/badge/-SOLID-815bee.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/SOLID.md)
 </Categories>
 
 <img src="Adaptive Code via CS.jpg">

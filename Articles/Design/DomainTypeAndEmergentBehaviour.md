@@ -3,9 +3,9 @@
 <br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
 <br>
 <Categories Tags="Domain_Types, Emergent_Behaviour, Code_Readability">
-[![Stats](https://img.shields.io/badge/Tag-Domain_Types-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Domain_Types.md)
-[![Stats](https://img.shields.io/badge/Tag-Emergent_Behaviour-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Emergent_Behaviour.md)
-[![Stats](https://img.shields.io/badge/Tag-Code_Readability-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
+[![Tag](https://img.shields.io/badge/-Domain_Types-400cdb.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Domain_Types.md)
+[![Tag](https://img.shields.io/badge/-Emergent_Behaviour-80b3ec.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Emergent_Behaviour.md)
+[![Tag](https://img.shields.io/badge/-Code_Readability-2cbbe2.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
 </Categories>
 
 

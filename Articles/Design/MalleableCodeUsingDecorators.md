@@ -4,13 +4,13 @@
 <br>
 
 <Categories Tags="Design, SOLID, Single_Responsibility_Principle, Design_Pattern, Decorator, Wrapper, Cache ">
-[![Stats](https://img.shields.io/badge/Tag-Design-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Design.md)
-[![Stats](https://img.shields.io/badge/Tag-SOLID-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/SOLID.md)
-[![Stats](https://img.shields.io/badge/Tag-Single_Responsibility_Principle-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Single_Responsibility_Principle.md)
-[![Stats](https://img.shields.io/badge/Tag-Design_Pattern-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Design_Pattern.md)
-[![Stats](https://img.shields.io/badge/Tag-Decorator-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Decorator.md)
-[![Stats](https://img.shields.io/badge/Tag-Wrapper-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Wrapper.md)
-[![Stats](https://img.shields.io/badge/Tag-Cache-99CC00.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Cache.md)
+[![Tag](https://img.shields.io/badge/-Design-eee6bb.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Design.md)
+[![Tag](https://img.shields.io/badge/-SOLID-815bee.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/SOLID.md)
+[![Tag](https://img.shields.io/badge/-Single_Responsibility_Principle-27d630.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Single_Responsibility_Principle.md)
+[![Tag](https://img.shields.io/badge/-Design_Pattern-9e89d7.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Design_Pattern.md)
+[![Tag](https://img.shields.io/badge/-Decorator-1549c6.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Decorator.md)
+[![Tag](https://img.shields.io/badge/-Wrapper-7d8750.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Wrapper.md)
+[![Tag](https://img.shields.io/badge/-Cache-3dda0b.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Cache.md)
 </Categories>
 
 
