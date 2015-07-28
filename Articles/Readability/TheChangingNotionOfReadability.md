@@ -22,7 +22,7 @@ Please show your support by sharing and voting:
 </SocialShareButtons>
 
 
-<img src="http_uxmastery.com_wp-content_uploads_2013_09_readability-tests.png" width="90%">
+<img src="img/http_uxmastery.com_wp-content_uploads_2013_09_readability-tests.png" width="90%">
 
 
 Table of Content
