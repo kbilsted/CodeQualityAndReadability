@@ -7,10 +7,10 @@ Information on achieving super readable and maintainable code.
 
 Newest additions
 
+* [On the Changing Notion Of Readability](Articles/Readability/TheChangingNotionOfReadability.md)
 * [Stepwise refinement of code](Articles/Design/StepwiseRefinementOfCode.md)
 * [Domain types creates readability and emergent behaviour](Articles/Design/DomainTypeAndEmergentBehaviour.md)
 * [Malleable code through using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
-* [Book review: Adaptive Code via C#](Articles/BookReviews/Adaptive%20Code%20via%20CS.md)
 
 [[All articles]](AllArticles.md)  [[All tags]](AllTags.md)
   
