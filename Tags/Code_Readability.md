@@ -6,6 +6,7 @@
 
 * [Domain types creates readability ...and emergent behaviour](../Articles/Design/DomainTypeAndEmergentBehaviour.md)
 * [Stepwise refinement of code](../Articles/Design/StepwiseRefinementOfCode.md)
+* [On the changing notion of code readability](../Articles/Readability/TheChangingNotionOfReadability.md)
 
 
 

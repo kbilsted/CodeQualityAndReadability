@@ -15,6 +15,10 @@
 * [Stepwise refinement of code](Articles/Design/StepwiseRefinementOfCode.md)
 
 
+**Articles/Readability**
+* [On the changing notion of code readability](Articles/Readability/TheChangingNotionOfReadability.md)
+
+
 
 
 
