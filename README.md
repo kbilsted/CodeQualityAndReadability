@@ -49,3 +49,5 @@ Empathy in itself, however, doesn't get us very far. You need to grow passion fo
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/kbilsted/codequalityandreadability/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Analytics](https://ga-beacon.appspot.com/UA-65034248-2/QualityAndReadability/Introduction)](https://github.com/igrigorik/ga-beacon)
+
