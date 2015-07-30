@@ -319,4 +319,8 @@ Name: Bubba Jones
 
 </CommentText>
 <br>
+
+
 Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+<br>
+[![Analytics](https://ga-beacon.appspot.com/UA-65034248-2/QualityAndReadability/Articles_Design_MalleableCodeUsingDecorators.md)](https://github.com/igrigorik/ga-beacon)

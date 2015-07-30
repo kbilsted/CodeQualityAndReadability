@@ -57,3 +57,7 @@ Name: Bubba Jones
 > text..  
 
 </CommentText>
+
+Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+<br>
+[![Analytics](https://ga-beacon.appspot.com/UA-65034248-2/QualityAndReadability/Articles_BookReviews_Adaptive_Code_via_CS.md)](https://github.com/igrigorik/ga-beacon)
