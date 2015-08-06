@@ -8,7 +8,7 @@
 [![Tag](https://img.shields.io/badge/-Design_Pattern-9e89d7.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Design_Pattern.md)
 </Categories>
 
-*Investigating the effects that the indent size has on source code & figure out what is optimal...*
+*In this article, we investigate the effects on source code, when using small or large indentation size. Small idention sizes seems to have a negative effect on code readability. Larger ones, the opposite.*
 
 Please show your support by sharing and voting:
 <SocialShareButtons>
@@ -183,12 +183,9 @@ Rating: *Good*. Here we see a nice trade-of between indention to clearly demarca
 
 ### 4.1 Recommendation: Use 4 space indent
 
-<img src="img/" align="right" width="120">
-My recommendation: **Use 4 space indention for modern OOP languages**. Anything else is like starring death in its fugly eyes.
+My recommendation: **Use 4 space indention for modern OOP languages**. Now, why on earth do I prefer an indent size of 4 when having just wholeheartedly given my blessing to the Linux style guide line advocating indention of 8? 
 
-Now, why on earth do I prefer an indent size of 4 when having just wholeheartedly given my blessing to the Linux style guide line advocating indention of 8? 
-
-I has to do with the programming language. Linux is programmed in C, my recommendation targets languages like C<sup>#</sup> and Java. In those languages, you have the "horizontal overhead" of having to wrap methods inside a name space and a class. That is not the case for C. Let us compare a "hello world" program in the two languages.
+I has to do with the programming language. Linux is programmed in C, my recommendation targets languages like C<sup>#</sup> and Java. In those languages, you have a significant "horizontal overhead" of having to wrap methods inside a name space *and* a class. That is not the case for C. Let us compare a "hello world" program in the two languages.
 
 **C:** (indent size = 8)
 ```C
@@ -217,7 +214,7 @@ __________________________Console.WriteLine("Hello World");
 
 For the C program, the code starts at column **8**, while for the C# program, code starts at column **24**. With 80-character limit pr. line you are spending *30%* of your screen real estate on blanks. That is insane.
 
-The indent size of 4 is a good trade of between making it hurt to indent, and giving enough space to enable easy scanning down the code. If you need more than around three levels of indention - you are most probably going to regret it if you don't fix your code immediately. 
+The indent size of 4 is a good trade of between making it "hurt" to indent, and giving enough space to enable easily scanning down the code. If you need more than around three levels of indention - you are most probably going to regret it if you don't fix your code immediately. 
 
 Ok, so if 4 is better than 8, why not use an indent size of 2?
 
@@ -236,7 +233,7 @@ ______Console.WriteLine("Hello World");
 }
 ```
 
-With smaller indention size, you don't have that "horizontal pain" when making a new scope. This subtly encourage the developer to just indent another level. It may be so subtle that the developer doesn't even notice. And the code may look fine and nicely within the boundaries of the monitor standing a meter away from the screen. 
+With smaller indention sizes, you don't have that "horizontal pain" when making a new scope. This subtly encourage the developer to just indent another level. It may be so subtle that the developer doesn't even notice. And the code may look fine and nicely within the boundaries of the monitor standing a meter away from the screen. 
 
 Typically, we don't like over-nested methods - they tend to grow in complexity. Section 4 addresses mechanisms to employ when using larger indention sizes.
 
@@ -246,15 +243,14 @@ Probably the only time I would ever use an indention of 2 is when doing power po
 
 
 ### 4.2. Recommendation: A single statement pr. line
-
-Another way of making it hard to scan down code is to have two statements on one line. Like the Linux coding guideline says: *"Don't put multiple statements on a single line unless you have something to hide"**. That is, avoid coding style like
+Another way of making it hard to scan down code is to have two statements on one line. This is often done when the "if" and the "then" part takes up less space than the max. line length. Like the Linux coding guideline says: *"Don't put multiple statements on a single line unless you have something to hide"**. That is, **avoid** coding style like
 
 ```C#
 if (a > 10 && b > 5) doSomethingA();
 if (c < 5 || c+3+b == 6) doSomeB();
 ```
 
-In effect we are dealing with an indention size of 1. And as pr. our previous recommendation to use indent size of 4, we are breaking that rule-.
+In effect we are dealing with an indention size of 1. And as pr. our previous recommendation to use indent size of 4, we are breaking that rule.
  
 The code is much easier to scan if it looks like
  
@@ -266,7 +262,7 @@ if (c < 5 || c+3+b == 6)
     doSomeB();
 ```
  
- if you find you have to in-line the "then-part" of your "if" in order to save vertical space (for example to fit your method to the screen's real estate), you are likely to get more readability from extracting parts of that method into separate methods instead.
+If you find you have to in-line the "then-part" of your "if" in order to save vertical space (for example to fit your method to the screen's real estate), you are likely to get more readability from extracting part(s) of that method into separate method(s) instead.
  
  
 
