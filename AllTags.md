@@ -9,6 +9,7 @@ B
 
 C
 * [![Tag](https://img.shields.io/badge/-Cache-3dda0b.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Cache.md)
+* [![Tag](https://img.shields.io/badge/-Code_Layout-e41098.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Layout.md)
 * [![Tag](https://img.shields.io/badge/-Code_Readability-2cbbe2.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
 
 D

@@ -1,4 +1,4 @@
-# Code Quality & Readability
+﻿# Code Quality & Readability
 
 Information on achieving super readable and maintainable code.
 
@@ -48,6 +48,6 @@ Empathy in itself, however, doesn't get us very far. You need to grow passion fo
 
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/kbilsted/codequalityandreadability/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-[![Analytics](https://ga-beacon.appspot.com/UA-65034248-2/QualityAndReadability/Introduction)](https://github.com/igrigorik/ga-beacon)
-
+Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+<br>
+[![Analytics](https://ga-beacon.appspot.com/UA-65034248-2/QualityAndReadability/README.md)](https://github.com/igrigorik/ga-beacon)

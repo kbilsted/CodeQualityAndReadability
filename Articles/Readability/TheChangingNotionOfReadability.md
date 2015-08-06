@@ -1,4 +1,4 @@
-# On the changing notion of code readability
+﻿# On the changing notion of code readability
 *Author: Kasper B. Graversen*
 <br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
 <br>
@@ -29,7 +29,7 @@ Please show your support by sharing and voting:
 Table of Content
    * [1. Introduction](#1-introduction)
    * [2. The psychology of less experienced developers](#2-the-psychology-of-less-experienced-developers)
-   * [3. Investigating "surface complexity"](#3-investigating-"surface-complexity")
+   * [3. Investigating "surface complexity"](#3-investigating-surface-complexity)
      * [3.1 The notion of readability changes with growing experience](#31-the-notion-of-readability-changes-with-growing-experience)
        * [Version A](#version-a)
        * [Version B](#version-b)
@@ -40,7 +40,7 @@ Table of Content
        * [Final version](#final-version)
        * [Conclusions](#conclusions)
      * [3.2 The veterans perspective](#32-the-veterans-perspective)
-   * [4. Investigating "underlying complexity"](#4-investigating-"underlying-complexity")
+   * [4. Investigating "underlying complexity"](#4-investigating-underlying-complexity)
    * [4.1 The architectural simplification that never became](#41-the-architectural-simplification-that-never-became)
    * [5. Conclusions](#5-conclusions)
    * [6. Comments](#6-comments)
