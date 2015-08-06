@@ -47,7 +47,7 @@ Table of Content
      * [5.4 Design patterns](#54-design-patterns)
        * [5.4.1 The strategy design pattern](#541-the-strategy-design-pattern)
        * [5.4.2 The decorator design pattern](#542-the-decorator-design-pattern)
-     * [Conclusions](#conclusions)
+     * [5.5 Summary](#55-summary)
    * [6. Conclusions](#6-conclusions)
    * [7. Comments and corrections](#7-comments-and-corrections)
 
@@ -426,7 +426,7 @@ The decorator design pattern is another pattern that enable you to separate your
 See also [Malleable code by using decorators](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md) describing some of the additional benefits to be reaped from using this pattern.
 
 
-### Conclusions
+### 5.5 Summary
 
 The techniques shown all reduces indentation of code. Additionally, they have the following very nice properties concerning code readability in general:
 
