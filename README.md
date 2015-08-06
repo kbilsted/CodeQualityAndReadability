@@ -1,18 +1,21 @@
 ﻿# Code Quality & Readability
+By Kasper B. Graversen  
+[[All articles]](AllArticles.md)  [[All tags]](AllTags.md)  
 
-Information on achieving super readable and maintainable code.
+A site provifing information on achieving super readable and maintainable code.
 
 
 
 
 Newest additions
 
+* [Optimal indent size for code readability](Articles/Readability/OptimalIndentSizeForCodeReadability.md)
 * [On the Changing Notion Of Readability](Articles/Readability/TheChangingNotionOfReadability.md)
 * [Stepwise refinement of code](Articles/Design/StepwiseRefinementOfCode.md)
 * [Domain types creates readability and emergent behaviour](Articles/Design/DomainTypeAndEmergentBehaviour.md)
 * [Malleable code through using decorators](Articles/Design/MalleableCodeUsingDecorators.md)
 
-[[All articles]](AllArticles.md)  [[All tags]](AllTags.md)
+  
   
 ## Introduction
 
