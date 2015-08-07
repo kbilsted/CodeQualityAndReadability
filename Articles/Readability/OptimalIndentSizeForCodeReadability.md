@@ -117,6 +117,8 @@ Possibly the greatest source of inspiration for my thinking on indent size is th
 
 
 
+
+
 ## 3. Investigating the primary effect
 
 To better understand the rationale for using indent size *x*, let us experiment first with extreme values, then hone in on a tolerable value. We continually reformat the same code snippet using different indention sizes. This experiment serves to reveal the *primary effect* indention size has on our source code.
@@ -445,6 +447,8 @@ The techniques shown all reduces indentation of code. Additionally, they have th
 * We recommend using an indentation size of 4 for modern OOP languages.
 
 
+Further reading
+* [Seven Pillars of Pretty Code](http://www.perforce.com/resources/white-papers/seven-pillars-pretty-code)
 
 
 Please show your support by sharing and voting:
