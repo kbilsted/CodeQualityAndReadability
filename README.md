@@ -9,7 +9,7 @@ A site provifing information on achieving super readable and maintainable code.
 
 Newest additions
 
-* [Productivity features that may ruin code readability](Articles/ProductivityFeaturesThatMayRuinCodeReadability.md)
+* [Productivity features that may ruin code readability](Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md)
 * [Optimal indent size for code readability](Articles/Readability/OptimalIndentSizeForCodeReadability.md)
 * [On the Changing Notion Of Readability](Articles/Readability/TheChangingNotionOfReadability.md)
 * [Stepwise refinement of code](Articles/Design/StepwiseRefinementOfCode.md)
