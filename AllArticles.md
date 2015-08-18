@@ -18,6 +18,7 @@
 **Articles/Readability**
 * [On the changing notion of code readability](Articles/Readability/TheChangingNotionOfReadability.md)
 * [Optimal indent size for code readability](Articles/Readability/OptimalIndentSizeForCodeReadability.md)
+* [Productivity features that may ruin code readability](Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md)
 
 
 

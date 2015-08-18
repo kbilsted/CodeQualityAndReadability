@@ -441,14 +441,17 @@ The techniques shown all reduces indentation of code. Additionally, they have th
  
 ## 6. Conclusions
  
- **Why is the indent size important?** The indent size is about  the ease with which you quickly scan through code. Additionally, and perhaps most importantly, the indent size subtly  shape how you structure your code.
+I cannot tell you what indent size is the right one for you. You should pick the one that moves the code in the direction you desire. We have presented the fundamental properties of code indentation and shown:
 
-* Larger indention reduces the number of scopes in a method, while smaller indention sizes encourages more scopes within a method.
-* We recommend using an indentation size of 4 for modern OOP languages.
+> Larger indention reduces the number of scopes in a method,  
+> while smaller indention sizes encourages more scopes within a method.
+
+We recommend using an indentation size of 4 for modern OOP languages, but feel free to make up your own mind.
 
 
 Further reading
-* [Seven Pillars of Pretty Code](http://www.perforce.com/resources/white-papers/seven-pillars-pretty-code)
+
+* [Seven Pillars of Pretty Code](http://www.perforce.com/resources/white-papers/seven-pillars-pretty-code) is a short article on seven easy to follow rules for code readability.
 
 
 Please show your support by sharing and voting:

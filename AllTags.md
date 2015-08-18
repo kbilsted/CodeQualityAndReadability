@@ -28,6 +28,9 @@ S
 * [![Tag](https://img.shields.io/badge/-Single_Responsibility_Principle-27d630.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Single_Responsibility_Principle.md)
 * [![Tag](https://img.shields.io/badge/-SOLID-815bee.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/SOLID.md)
 
+T
+* [![Tag](https://img.shields.io/badge/-Tools-5d59a2.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Tools.md)
+
 W
 * [![Tag](https://img.shields.io/badge/-Wrapper-7d8750.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Wrapper.md)
 
