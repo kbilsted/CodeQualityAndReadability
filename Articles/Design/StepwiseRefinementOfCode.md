@@ -1,10 +1,8 @@
 ﻿# Stepwise refinement of code
 *Author: Kasper B. Graversen*  
-[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md) 
+[[Introduction]](http://kbilsted.github.io/CodeQualityAndReadability/) [[All categories]](http://kbilsted.github.io/CodeQualityAndReadability/AllTags.html) [[All articles]](http://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html) 
 <br>
 <Categories Tags="Refactoring, Code_Readability">
-[![Tag](https://img.shields.io/badge/-Refactoring-c6dc6b.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Refactoring.md)
-[![Tag](https://img.shields.io/badge/-Code_Readability-2cbbe2.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
 </Categories>
 <br>
 
@@ -14,14 +12,7 @@
 
 Please show your support by sharing and voting: 
 
- <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md&title=Stepwise%20refinement%20of%20code)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md&text=Stepwise%20refinement%20of%20code&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md&t=Stepwise%20refinement%20of%20code)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md&t=Stepwise%20refinement%20of%20code)
+<SocialShareButtons>
 </SocialShareButtons> 
 
 
@@ -29,6 +20,7 @@ Please show your support by sharing and voting:
 
 
 Table of Content
+
    * [1. Introduction](#1-introduction)
    * [2. Hands on the code](#2-hands-on-the-code)
    * [3. Adding notes](#3-adding-notes)
@@ -55,7 +47,7 @@ Aside from safety, making changes in small increments has the added benefit, tha
 
 The other day I was grokking some code for the [StatePrinter project](https://github.com/kbilsted/StatePrinter). I was at a point where the internal circuitry  of the project was in need of rewiring due to new features.  I fell upon the following code which judging from the name, parameters and return type converts a `Type` into a list of fields. But is that really what the method is doing? This code is by no means magic, it is the bread-and-butter for project. Hence we are interested in proper naming and/or separation of concerns.
 
-```C#
+```
 public List<SanitiedFieldInfo> GetFields(Type type) 
 {
     var fields = new HarvestHelper().GetFields(type);
@@ -89,7 +81,7 @@ After a one-pass trawl over the code, we realize that the method does two distin
 
 If I have difficulties reading code, maybe due to lack of experience with that part of the code base, or lack of domain knowledge, I sometimes add notes to the code. I annotate the code using comments with my first impression understanding as I go along. Now I don't want to document every single line, just highlight the main themes. This is meant as a light-weight process, I'm definitely not documenting parameters or whether a method may thrown an exception for example.  The result is:
 
-```C#
+```
 public List<SanitiedFieldInfo> GetFields(Type type) 
 {
     var fields = new HarvestHelper().GetFields(type);
@@ -121,7 +113,7 @@ Let us pause for a moment reflect on our deeds. Are we cheating management by im
 ## 4. Removing notes
 To best combat the problem of documentation gradually drifting from the code, we remove comment altogether!  One way to remove a comment this is to apply the "Extract method" refactoring pattern. Below we remove the comment `// filter` and replace it with a method `Filter()`.
 
-```C#
+```
 public List<SanitiedFieldInfo> GetFields(Type type) 
 {
     var fields = new HarvestHelper().GetFields(type);
@@ -131,7 +123,7 @@ public List<SanitiedFieldInfo> GetFields(Type type)
 ```
 and this
 
-```C#
+```
 List<SanitiedFieldInfo> Filter(List<SanitiedFieldInfo> fields) 
 {
     var res = new List<SanitiedFieldInfo>();
@@ -158,7 +150,7 @@ This is somewhat comparable to why I favour using a `foreach` over a `for`. With
 
 When we extract the method body we get
 
-```C#
+```
 List<SanitiedFieldInfo> Filter(List<SanitiedFieldInfo> fields) 
 {
     var res = new List<SanitiedFieldInfo>();
@@ -199,7 +191,7 @@ This lock-in provides a lot of readability. The reader will never ponder *"what 
 
 The result is 
 
-```C#
+```
 List<SanitiedFieldInfo> Filter(List<SanitiedFieldInfo> fields) 
 {
     return fields.Where(IsPublic).ToList();
@@ -231,7 +223,7 @@ Finally, we realize that the `Filter()` is a simple call to `Where` and hence we
 
 The final result is 
     
-```C#
+```
 public List<SanitiedFieldInfo> GetFields(Type type) 
 {
     var fields = new HarvestHelper().GetFields(type);
@@ -277,33 +269,9 @@ A point we haven't touched upon is how distributed version control systems direc
 
 Please show your support by sharing and voting: 
 <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md&title=Stepwise%20refinement%20of%20code)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md&text=Stepwise%20refinement%20of%20code&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md&t=Stepwise%20refinement%20of%20code)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md&t=Stepwise%20refinement%20of%20code)
 </SocialShareButtons> 
 
 
 ## 9. Comments
-
 <CommentText>
-**Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away. Have I left out important information about your favourite language, press the edit button. Are there wordings that definitely are not English, press the edit button. Do you have something to elaborate.. press the edit button!! :-)**
-
-*Comments should go below this line (and use the following template).*
-
-Name: Bubba Jones
-> text..  
-> text..  
-
 </CommentText>
-
-<br>
-
-
-
-Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
-<br>
-[![Analytics](https://ga-beacon.appspot.com/UA-65034248-2/QualityAndReadability/Articles_Design_StepwiseRefinementOfCode.md)](https://github.com/igrigorik/ga-beacon)

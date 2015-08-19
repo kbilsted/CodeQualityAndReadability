@@ -1,23 +1,14 @@
 ﻿# Productivity features that may ruin code readability 
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+<br>[[Introduction]](http://kbilsted.github.io/CodeQualityAndReadability/) [[All categories]](http://kbilsted.github.io/CodeQualityAndReadability/AllTags.html) [[All articles]](http://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html)
 <br>
 <Categories Tags="Code_Readability, Tools">
-[![Tag](https://img.shields.io/badge/-Code_Readability-2cbbe2.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
-[![Tag](https://img.shields.io/badge/-Tools-5d59a2.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Tools.md)
 </Categories>
 
 *It is the programmers that builds software, not the tools. Are glossy so-called productivity boosters beneficial or leading to sub-optimal code?*
 
 Please show your support by sharing and voting:
 <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md&title=Productivity%20features%20that%20may%20ruin%20code%20readability)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md&text=Productivity%20features%20that%20may%20ruin%20code%20readability&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md&t=Productivity%20features%20that%20may%20ruin%20code%20readability)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md&t=Productivity%20features%20that%20may%20ruin%20code%20readability)
 </SocialShareButtons>
 
 
@@ -25,6 +16,7 @@ Please show your support by sharing and voting:
 
 
 Table of Content
+
    * [1. Introduction](#1-introduction)
    * [2. Folding](#2-folding)
      * [2.1 Code folding](#21-code-folding)
@@ -44,7 +36,7 @@ Table of Content
 ## 1. Introduction
 
 
-The other day I was reading the book "Object thinking", while [I have my reservations about some of its content](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/ObjectThinking.md) I found the following quote striking. 
+The other day I was reading the book "Object thinking", while [I have my reservations about some of its content](http://kbilsted.github.io/CodeQualityAndReadability/Articles/BookReviews/ObjectThinking.html) I found the following quote striking. 
 
 > "Better people" has been recognized as the most promising silver bullet for addressing  
 > the software crisis, and yet almost all of our energy has been spent on creating better   
@@ -116,7 +108,7 @@ The popular [Productivity Power Tools](https://visualstudiogallery.msdn.microsof
 
 <img src="img/code_indent_guides.png">
 
-Unfortunately, and as the image shows, it may lead to over nested code "looking just fine" when in fact it isn't. Those fancy guides are an open invitation to just do one more indentation (if you want to know more about the effect of code indentation please read [Optimal indent size for code readability](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md)).
+Unfortunately, and as the image shows, it may lead to over nested code "looking just fine" when in fact it isn't. Those fancy guides are an open invitation to just do one more indentation (if you want to know more about the effect of code indentation please read [Optimal indent size for code readability](http://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html)). *If you really appreciate this feature you may need to ask yourself whether your indentation size is too small and/or whether your methods are too long. *
 
 There are fewer problems with many scopes as long as the method is fully visible on the screen. But when code grows, scopes, especially scopes for conditions and loops are heart of code complexity.
 
@@ -192,34 +184,17 @@ and
 
 Please show your support by sharing and voting:
 <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md&title=Productivity%20features%20that%20may%20ruin%20code%20readability)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md&text=Productivity%20features%20that%20may%20ruin%20code%20readability&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md&t=Productivity%20features%20that%20may%20ruin%20code%20readability)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md&t=Productivity%20features%20that%20may%20ruin%20code%20readability)
 </SocialShareButtons>
 
 
 
 
 ## 7. Comments and corrections 
-
-**Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away.**
-
-*Comments should go below this line (and use the following template).*
-
-Name: Bubba Jones
-> text.. 
-> text..
+<CommentText>
+</CommentText>
 
 
 <br>
 <br>
 <br>
 
-
-Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
-<br>
-[![Analytics](https://ga-beacon.appspot.com/UA-65034248-2/QualityAndReadability/Articles_Readability_ProductivityFeaturesThatMayRuinCodeReadability.md)](https://github.com/igrigorik/ga-beacon)

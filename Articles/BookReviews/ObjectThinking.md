@@ -1,9 +1,8 @@
 ﻿# Book review: Object Thinking
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+<br>[[Introduction]](http://kbilsted.github.io/CodeQualityAndReadability/) [[All categories]](http://kbilsted.github.io/CodeQualityAndReadability/AllTags.html) [[All articles]](http://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html)
 <br>
 <Categories Tags="Book_Review">
-[![Tag](https://img.shields.io/badge/-Book_Review-3c8700.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Book_Review.md)
 </Categories>
 
 <img src="ObjectThinking.jpg">
@@ -18,14 +17,7 @@ This [book](http://www.amazon.co.uk/gp/product/0735619654/ref=as_li_tl?ie=UTF8&c
 
 Please show your support by sharing and voting:
 
- <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/ObjectThinking.md&title=Book%20review:%20Object%20Thinking)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/ObjectThinking.md&text=Book%20review:%20Object%20Thinking&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/ObjectThinking.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/ObjectThinking.md&t=Book%20review:%20Object%20Thinking)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/ObjectThinking.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/ObjectThinking.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/BookReviews/ObjectThinking.md&t=Book%20review:%20Object%20Thinking)
+<SocialShareButtons>
 </SocialShareButtons>
 
 
@@ -72,16 +64,5 @@ Go to http://www.amazon.co.uk/gp/product/0735619654/ref=as_li_tl?ie=UTF8&camp=16
 ## Comments
 
 <CommentText>
-**Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away. Have I left out important information about your favourite language, press the edit button. Are there wordings that definitely are not English, press the edit button. Do you have something to elaborate.. press the edit button!! :-)**
-
-*Comments should go below this line (and use the following template).*
-
-Name: Bubba Jones
-> text..  
-> text..  
-
 </CommentText>
 
-Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
-<br>
-[![Analytics](https://ga-beacon.appspot.com/UA-65034248-2/QualityAndReadability/Articles_BookReviews_ObjectThinking.md)](https://github.com/igrigorik/ga-beacon)

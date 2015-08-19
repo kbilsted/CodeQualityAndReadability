@@ -1,9 +1,8 @@
 ﻿# On the changing notion of code readability
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+<br>[[Introduction]](http://kbilsted.github.io/CodeQualityAndReadability/) [[All categories]](http://kbilsted.github.io/CodeQualityAndReadability/AllTags.html) [[All articles]](http://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html)
 <br>
 <Categories Tags="Code_Readability">
-[![Tag](https://img.shields.io/badge/-Code_Readability-2cbbe2.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
 </Categories>
 
 *We investigate the divide of opinion regarding what constitutes readable code -
@@ -13,13 +12,6 @@ We show that there are multiple layers of complexity when it comes to issues of 
 
 Please show your support by sharing and voting:
 <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md&title=On%20the%20changing%20notion%20of%20code%20readability)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md&text=On%20the%20changing%20notion%20of%20code%20readability&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md&t=On%20the%20changing%20notion%20of%20code%20readability)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md&t=On%20the%20changing%20notion%20of%20code%20readability)
 </SocialShareButtons>
 
 
@@ -27,6 +19,7 @@ Please show your support by sharing and voting:
 
 
 Table of Content
+
    * [1. Introduction](#1-introduction)
    * [2. The psychology of less experienced developers](#2-the-psychology-of-less-experienced-developers)
    * [3. Investigating "surface complexity"](#3-investigating-surface-complexity)
@@ -372,13 +365,6 @@ Be cautious when requiring dumbing down the code base. It may seem to be resulti
 
 
 <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md&title=On%20the%20changing%20notion%20of%20code%20readability)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md&text=On%20the%20changing%20notion%20of%20code%20readability&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md&t=On%20the%20changing%20notion%20of%20code%20readability)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md&t=On%20the%20changing%20notion%20of%20code%20readability)
 </SocialShareButtons>
 
 
@@ -387,20 +373,5 @@ Be cautious when requiring dumbing down the code base. It may seem to be resulti
 
 
 ## 6. Comments
-
 <CommentText>
-**Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away. Have I left out important information about your favourite language, press the edit button. Are there wordings that definitely are not English, press the edit button. Do you have something to elaborate.. press the edit button!! :-)**
-
-*Comments should go below this line (and use the following template).*
-
-Name: Bubba Jones
-> text..  
-> text..  
-
 </CommentText>
-
-<br>
-
-Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
-<br>
-[![Analytics](https://ga-beacon.appspot.com/UA-65034248-2/QualityAndReadability/Articles_Readability_TheChangingNotionOfReadability.md)](https://github.com/igrigorik/ga-beacon)

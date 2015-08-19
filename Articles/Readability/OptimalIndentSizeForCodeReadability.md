@@ -1,24 +1,14 @@
 ﻿# Optimal indent size for code readability
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+<br>[[Introduction]](http://kbilsted.github.io/CodeQualityAndReadability/) [[All categories]](http://kbilsted.github.io/CodeQualityAndReadability/AllTags.html) [[All articles]](http://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html)
 <br>
 <Categories Tags="Code_Layout, Code_Readability, Design_Pattern">
-[![Tag](https://img.shields.io/badge/-Code_Layout-e41098.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Layout.md)
-[![Tag](https://img.shields.io/badge/-Code_Readability-2cbbe2.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
-[![Tag](https://img.shields.io/badge/-Design_Pattern-9e89d7.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Design_Pattern.md)
 </Categories>
 
 *In this article, we investigate the effects on source code, when using small or large indentation size. Small idention sizes seems to have a negative effect on code readability. Larger ones, the opposite.*
 
 Please show your support by sharing and voting:
 <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md&title=Optimal%20indent%20size%20for%20code%20readability)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md&text=Optimal%20indent%20size%20for%20code%20readability&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md&t=Optimal%20indent%20size%20for%20code%20readability)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md&t=Optimal%20indent%20size%20for%20code%20readability)
 </SocialShareButtons>
 
 
@@ -26,6 +16,7 @@ Please show your support by sharing and voting:
 
 
 Table of Content
+
    * [1. Introduction](#1-introduction)
    * [2. Background information](#2-background-information)
      * [2.1 Code consistency](#21-code-consistency)
@@ -126,7 +117,7 @@ To better understand the rationale for using indent size *x*, let us experiment 
 
 ### 3.1 Indent size: 0
 
-```C#
+```
 void Test()
 {
 int x = 23;
@@ -146,7 +137,7 @@ Rating: *Bad*. With too little indention the structure of the code diminishes. Y
 
 ### 3.2 Indent size: 18
 
-```C#
+```
 void Test() {
                   int x = 23;
                   for (i = 0; i <= 6; i++) {
@@ -163,7 +154,7 @@ Rating: *Bad*. Loads of indentation is obviously bad too. It becomes very diffic
 
 ### 3.3 Indent size: 4
 
-```C#
+```
 void Test() {
     int x = 23;
     for (i = 0; i <= 6; i++) {
@@ -190,7 +181,7 @@ My recommendation: **Use 4 space indention for modern OOP languages**. Now, why 
 I has to do with the programming language. Linux is programmed in C, my recommendation targets languages like C<sup>#</sup> and Java. In those languages, you have a significant "horizontal overhead" of having to wrap methods inside a name space *and* a class. That is not the case for C. Let us compare a "hello world" program in the two languages.
 
 **C:** (indent size = 8)
-```C
+```
 main()
 {
 ________printf("Hello World");
@@ -201,7 +192,7 @@ ________printf("Hello World");
   
 **C<sup>#</sup>:** (indent size = 8)
 
-```C#
+```
 namespace com.indentsize.example
 {
          class Greeter
@@ -222,7 +213,7 @@ Ok, so if 4 is better than 8, why not use an indent size of 2?
 
 **C<sup>#</sup>:** (indent size = 2)
 
-```C#
+```
 namespace com.indentsize.example
 {
   class Greeter
@@ -247,7 +238,7 @@ Probably the only time I would ever use an indention of 2 is when doing power po
 ### 4.2. Recommendation: A single statement pr. line
 Another way of making it hard to scan down code is to have two statements on one line. This is often done when the "if" and the "then" part takes up less space than the max. line length. Like the Linux coding guideline says: *"Don't put multiple statements on a single line unless you have something to hide"**. That is, **avoid** coding style like
 
-```C#
+```
 if (a > 10 && b > 5) doSomethingA();
 if (c < 5 || c+3+b == 6) doSomeB();
 ```
@@ -256,7 +247,7 @@ In effect we are dealing with an indention size of 1. And as pr. our previous re
  
 The code is much easier to scan if it looks like
  
-```C#
+```
 if (a > 10 && b > 5) 
     doSomethingA();
     
@@ -285,7 +276,8 @@ Notice, that many of these techniques goes against the principle of "Single Entr
 
 This technique is about substituting if-branching with `continue` in loops.
 
-```C#
+
+```
 for (int i = 0; i < 5; i++)
 {
     if(IsOfInterest(i))
@@ -295,9 +287,11 @@ for (int i = 0; i < 5; i++)
 } 
 ```
 
+
 becomes
 
-```C#
+
+```
 for (int i = 0; i < 5; i++)
 {
     if(!IsOfInterest(i))
@@ -308,11 +302,12 @@ for (int i = 0; i < 5; i++)
 ```
 
 
+
 ### 5.2 Technique: Early return / Fail fast
 
 This technique is about substituting if-branching with `return` in method bodies. Typically this is happening at the beginning of the method body. Sometimes this technique is also referred to as ["fail fast"](http://martinfowler.com/ieeeSoftware/failFast.pdf).
 
-```C#
+```
 void DoThing()
 {
     if(user.HasAccess("Print"))
@@ -331,7 +326,7 @@ void DoThing()
 
 becomes
 
-```C#
+```
 private void PrintMessage()
 {
     if(!user.HasAccess("Print"))
@@ -357,7 +352,7 @@ I find the second easier to read, modify, maintain and debug.
 In an effort to generally reduce nesting and method body length, the body of looping constructs are separated into a method.  This technique is often advocated by "uncle Bob".
 
 
-```C#
+```
 void ProcessElements(Person[] elements)
 {
     int accumulated = 0;
@@ -370,7 +365,7 @@ void ProcessElements(Person[] elements)
 }    
 ```
 
-```C#
+```
 void ProcessElements(Person[] elements)
 {
     int accumulated = 0;
@@ -392,7 +387,7 @@ I found this technique to take a little getting used to. But it actually makes a
 
 For traditional looping using a variable such as the `for(int i = 0, ...)`, the benefits are even greater.
 
-```C#
+```
     for (int i = 0; i < elements.Length; i++)
     {
         var tmp = elements[i].Age + DateTime.Now.Year;
@@ -425,7 +420,7 @@ interchangeable to the client.
 #### 5.4.2 The decorator design pattern
 The decorator design pattern is another pattern that enable you to separate your logic into smaller interchangeable bits. Different to the strategy pattern, decorators are meant to be added to some base structure and enhance it. Eg. a decorator for implementing `3ItemsFor2` which you could combine with a `PayWithUserCredits` decorator. As shown in the UML for the strategy pattern, strategies are typically not combined.
 
-See also [Malleable code by using decorators](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md) describing some of the additional benefits to be reaped from using this pattern.
+See also [Malleable code by using decorators](http://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/MalleableCodeUsingDecorators.html) describing some of the additional benefits to be reaped from using this pattern.
 
 
 ### 5.5 Summary
@@ -456,33 +451,12 @@ Further reading
 
 Please show your support by sharing and voting:
 <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md&title=Optimal%20indent%20size%20for%20code%20readability)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md&text=Optimal%20indent%20size%20for%20code%20readability&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md&t=Optimal%20indent%20size%20for%20code%20readability)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md&t=Optimal%20indent%20size%20for%20code%20readability)
 </SocialShareButtons>
 
 
 
 ## 7. Comments and corrections
+<CommentText>
+</CommentText>
 
-**Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away.**
-
-*Comments should go below this line (and use the following template).*
-
-Name: Bubba Jones
-> text.. 
-> text..
-
-
-<br>
-<br>
-<br>
-
-
-Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
-<br>
-[![Analytics](https://ga-beacon.appspot.com/UA-65034248-2/QualityAndReadability/Articles_Readability_OptimalIndentSizeForCodeReadability.md)](https://github.com/igrigorik/ga-beacon)
+<br><br>

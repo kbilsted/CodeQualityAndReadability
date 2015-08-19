@@ -1,11 +1,8 @@
 ﻿# Domain types creates readability ...and emergent behaviour
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+<br>[[Introduction]](http://kbilsted.github.io/CodeQualityAndReadability/) [[All categories]](http://kbilsted.github.io/CodeQualityAndReadability/AllTags.html) [[All articles]](http://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html)
 <br>
 <Categories Tags="Domain_Types, Emergent_Behaviour, Code_Readability">
-[![Tag](https://img.shields.io/badge/-Domain_Types-400cdb.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Domain_Types.md)
-[![Tag](https://img.shields.io/badge/-Emergent_Behaviour-80b3ec.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Emergent_Behaviour.md)
-[![Tag](https://img.shields.io/badge/-Code_Readability-2cbbe2.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Code_Readability.md)
 </Categories>
 
 
@@ -13,13 +10,6 @@
 
 Please show your support by sharing and voting: 
 <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md&title=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md&text=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md&t=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md&t=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour)
 </SocialShareButtons> 
 
 
@@ -27,6 +17,7 @@ Please show your support by sharing and voting:
 
 
 Table of Content
+
    * [1. Describing the problem domain](#1-describing-the-problem-domain)
    * [2. Solution 1: Using simple types](#2-solution-1-using-simple-types)
      * [2.1 Problems with using the simple types.](#21-problems-with-using-the-simple-types)
@@ -95,7 +86,7 @@ Here's how we are going to implement the above model
 
 Implementing this in a top-down fashion, makes us start at the document reading and parsing.  `GetTags()` just below traverses the directory structure and for each document reads it and asks a parser to identify the tags. The tags are then accumulated in the `tagsCollection` variable and returned.
 
-```C#
+```
 public class DocumentParser
 {
     public Dictionary<string, List<Tuple<string, string>>> GetTags(string rootFilePath)
@@ -122,7 +113,7 @@ public class DocumentParser
 
 The tags extraction is a private method of the class which uses some secret regex sauce, finds the relevant information
 
-```C#
+```
 readonly Regex headerEx = new Regex("^#(?<title> .*)");
 readonly Regex tagEx = new Regex("... (?<tagname> .*) .*");
 
@@ -152,7 +143,7 @@ A site generator will first invoke the `DocumentParser`, then call a `PageGenera
 
 Instead, we focus on the type signatures of the page generator. Type signatures tells you  a lot about your code and readability in general.
 
-```C#
+```
 public class PageGenerator
 {
     public string GenerateAllTagsPage(List<string> tagToUrl)  { ... }
@@ -207,7 +198,7 @@ Let us first define our domain classes, hereafter evaluate how the core implemen
 The `Tag` class is merely a wrapper for a string. While any string can be supplied to the constructor of `Tag`, the **intention**  of the code, is that it be fed only tag strings. For technical reasons uninteresting to this article, spaces must be replaced by `_` in the tag name. A validation that tags do not contain spaces would be an appropriate validation in the constructor. It is not always the case that we can add validation logic or add extra functionality to your domain classes. Do not feel bad when writing a simple wrapper class like below. Eventually evolution of the requirements - or refactorings - may find your domain type to be just the place for new code.
 
 
-```C#
+```
 public class Tag : IEquatable<Tag>
 {
     public readonly string Value;
@@ -249,7 +240,7 @@ Phew! 30 lines of code just to wrap a string! In order to cut the lines of code,
 
 Probably less disturbing to your nerves, is the replacement of  `Tuple<string, string>` with a domain class. The gut feeling many people have first introduced domain types, is that of doubt and reluctance. They fail to immediately see the benefits of wrapping just one value in a separate class. Most people, luckily, are more welcoming to the thought of wrapping two or more values in a class. At least it is a huge *readability boost* to access `.Title` rather than `.Item1`, and `.Url` rather than `.Item2`. As for the implementation, it is straight forward. 
 
-```C#
+```
 public class Page : IEquatable<Page>
 {
     public readonly string Title;
@@ -290,7 +281,7 @@ Similar to the `Tag` class it is verbose. Luckily the lines are very easily writ
 Before going into the code heavy `DocumentParser` re-implementation, let's first confirm that we are on the right track by evaluating how the `PageGenerator` changes from hieroglyphic-like to plain English readable code.
 
 
-```C#
+```
 public class PageGenerator
 {
     public string GenerateAllTagsPage(List<Tag> tags)  { ... }
@@ -311,7 +302,7 @@ Looking at code how readable the code is now almost brings a tear to my eyes. It
 
 The last helper class is the `TagCollection` class. This class rectifies the reoccurring problem we had when wanting to add an element to our dictionary. Since the value of the dictionary is a `List<>` we need to ensure proper initialization on each insert. We *could* have made this a static method on our main class `DocumentParser`. I've seen this done many times over. However, this makes reuse harder in other situations, or make the code seem very artificial when accessing a DocumentParser class solely for the same of some dictionary util method.
 
-```C#
+```
 public class TagCollection
 {
     public readonly Dictionary<Tag, List<Page>> Tags = new Dictionary<Tag, List<Page>>();
@@ -348,7 +339,7 @@ As I leave it up to the reader to complete the class, I am absolutely certain, t
 
 For the sake of brevity, let us look at only a subset of the `DocumentParser` re-implementation using domain types.
 
-```C#
+```
 public class DocumentParser
 {
     public TagCollection GetTags(string rootFilePath)
@@ -386,21 +377,21 @@ Earlier we saw the emergence of the `ManyValuesDictionary`. Now we will see emer
 
 As mentioned earlier, the tag names are defined with an `_` substituting spaces. Our naïve HTML generation created links by the following code
 
-```C#
+```
 stringBuilder.AppendFormat("* <a href='Tags/{0}.html'>{0}</a>", tag.Value);
 ```
 
 effectively rendering the links with `_` separating words in the tag, rather space which is  more aesthetic to the eye. We can easily fix this  bug with a needlestick type of change - local and not disturbing anything else. 
 
 
-```C#
+```
 stringBuilder.AppendFormat("* <a href='Tags/{0}.html'>{1}</a>", tag.Value, tag.Value.Replace("_", " "));
 ```
 
 It works, but it is not elegant. And certainly, it has nothing to do with OOP. So what are the alternatives? We could extract the code into a method on the generator.
 
 
-```C#
+```
 stringBuilder.AppendFormat("* <a href='Tags/{0}.html'>{1}</a>", tag.Value, RinseForLinkText(tag.Value));
 ...
 private string RinseForLinkText(string s) 
@@ -411,7 +402,7 @@ private string RinseForLinkText(string s)
 
 This is already an improvement. But we can do better. The `Tag` class is the natural place to put this method, or maybe expose as a property.
 
-```C#
+```
 class Tag
 {
     public string Value;
@@ -421,7 +412,7 @@ class Tag
 
 with using the property
 
-```C#
+```
 stringBuilder.AppendFormat("* <a href='Tags/{0}.html'>{1}</a>", tag.Value, tag.LinkText);
 ```
 
@@ -443,31 +434,10 @@ That being said, in the general case, there is a dichotomy between the "single r
 
 
 Please show your support by sharing and voting: <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md&title=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md&text=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md&t=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md&t=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour)
+
 </SocialShareButtons> 
 
 
 ## 6. Comments and corrections
-
 <CommentText>
-**Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away. Have I left out important information about your favourite language, press the edit button. Are there wordings that definitely are not English, press the edit button. Do you have something to elaborate.. press the edit button!! :-)**
-
-*Comments should go below this line (and use the following template).*
-
-Name: Bubba Jones
-> text..  
-> text..  
-
 </CommentText>
-
-
-
-Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
-<br>
-[![Analytics](https://ga-beacon.appspot.com/UA-65034248-2/QualityAndReadability/Articles_Design_DomainTypeAndEmergentBehaviour.md)](https://github.com/igrigorik/ga-beacon)

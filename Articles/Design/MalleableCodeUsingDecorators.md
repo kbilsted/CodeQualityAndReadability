@@ -1,16 +1,9 @@
 ﻿# Malleable code by using decorators
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) [[All categories]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllTags.md) [[All articles]](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
+<br>[[Introduction]](http://kbilsted.github.io/CodeQualityAndReadability/) [[All categories]](http://kbilsted.github.io/CodeQualityAndReadability/AllTags.html) [[All articles]](http://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html)
 <br>
 
 <Categories Tags="Design, SOLID, Single_Responsibility_Principle, Design_Pattern, Decorator, Wrapper, Cache ">
-[![Tag](https://img.shields.io/badge/-Design-eee6bb.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Design.md)
-[![Tag](https://img.shields.io/badge/-SOLID-815bee.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/SOLID.md)
-[![Tag](https://img.shields.io/badge/-Single_Responsibility_Principle-27d630.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Single_Responsibility_Principle.md)
-[![Tag](https://img.shields.io/badge/-Design_Pattern-9e89d7.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Design_Pattern.md)
-[![Tag](https://img.shields.io/badge/-Decorator-1549c6.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Decorator.md)
-[![Tag](https://img.shields.io/badge/-Wrapper-7d8750.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Wrapper.md)
-[![Tag](https://img.shields.io/badge/-Cache-3dda0b.svg)](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Tags/Cache.md)
 </Categories>
 
 
@@ -19,19 +12,13 @@
 Please show your support by sharing and voting: 
 
 <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md&title=Malleable%20code%20by%20using%20decorators)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md&text=Malleable%20code%20by%20using%20decorators&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md&t=Malleable%20code%20by%20using%20decorators)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md&t=Malleable%20code%20by%20using%20decorators)
 </SocialShareButtons> 
 
 <img src="img/httpspixabay.comdavand-anlæg-grøn-bøde-lag-abstrakt-821293.jpg" alt="from https://pixabay.com/da/vand-anl%C3%A6g-gr%C3%B8n-b%C3%B8de-lag-abstrakt-821293/" >
  
  
 Table of Content
+
    * [1. Introduction](#1-introduction)
    * [2. The all-in-one-class implementation](#2-the-all-in-one-class-implementation)
      * [2.1 Extracting methods for clarity](#21-extracting-methods-for-clarity)
@@ -57,7 +44,7 @@ Let's look at the cache implementation as probably a lot of people would write i
 
 Fear not, if you have no experience with run-time code generation. Just think of it as a way to dynamically create a lambda or delegate for later invocation.
 
-```C#
+```
 public class RunTimeCodeGenerator
 {
     static readonly Dictionary<MemberInfo, Func<object, object>> cache = new Dictionary<MemberInfo, Func<object, object>>();
@@ -109,7 +96,7 @@ From a readability and a malleability perspective this code is a bit of a  mess.
 In order to increase readability, let's extract the run-time code generation into a separate method. This separates functionality, and allows us to read and understand the code generation separately from the caching. We are not afraid of the extra method call this refactoring causes, it is easily in-lined by the JIT'er. Unfortunately, we are still tighly coupling the two concerns.
 
 
-```C#
+```
 public class RunTimeCodeGenerator
 {
     ...
@@ -162,7 +149,7 @@ Certainly, this makes the code clearer. But this technique only takes us so far.
 
 The first attempt at prying apart the two concerns, is by means of wrapping. We Create a cache-class which in turn calls the code generator. Users will always be using the cache class not the code generator.
 
-```C#
+```
 public class RunTimeCodeGeneratorCache
 {
     static readonly Dictionary<MemberInfo, Func<object, object>> cache = new Dictionary<MemberInfo, Func<object, object>>();
@@ -194,7 +181,7 @@ Notice how we are down a road of more elegant implementations. The class is sole
 
 Similarly trivial is the run-time code generating bit. Basically, it is the extracted method that has now found a new home in a separate class along with the parameter checking.
 
-```C#
+```
 internal class RunTimeCodeGenerator
 {
     public Func<object, object> CreateGetter(MemberInfo memberInfo)
@@ -229,7 +216,7 @@ Usually malleability is an attribute of code that come for free when we strive t
 
 First we define a common type.
 
-```C#
+```
 public interface IRunTimeCodeGenerator
 {
     Func<object, object> CreateGetter(MemberInfo memberInfo);
@@ -238,7 +225,7 @@ public interface IRunTimeCodeGenerator
 
 The cache is now slightly modified compared to the previous version. The decorator should not hard-code what it is wrapping, so a constructor takes a `IRunTimeCodeGenerator` as an argument. Potentially the code generator, but it could be another decorator. The implementation cares not - and shouldn't.
  
-```C#
+```
 public class RunTimeCodeGeneratorCache : IRunTimeCodeGenerator
 {
     static readonly Dictionary<MemberInfo, Func<object, object>> cache = new Dictionary<MemberInfo, Func<object, object>>();
@@ -258,7 +245,7 @@ public class RunTimeCodeGeneratorCache : IRunTimeCodeGenerator
 
 Finally, the code generator, now made `public` and implementing `IRunTimeCodeGenerator` so we can pass it to the constructor of `RunTimeCodeGeneratorCache`.
 
-```C#
+```
 public class RunTimeCodeGenerator : IRunTimeCodeGenerator
 {
     public Func<object, object> CreateGetter(MemberInfo memberInfo)
@@ -294,33 +281,12 @@ Essentially, these figures are identical. But can we explain why this is the cas
 * Maybe since we are referring to the cached code generator from only one place in the code, which is a `readonly` variable, the JIT'er is quick to discover that the interface type and the indirection it causes, can be optimized away.
 
 
-Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: Please show your support by sharing and voting: <SocialShareButtons>
-[![Reddit this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/reddit.png)](https://www.reddit.com/submit?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md&title=Malleable%20code%20by%20using%20decorators)
-[![Tweet this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/twitter.png)](https://twitter.com/intent/tweet?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md&text=Malleable%20code%20by%20using%20decorators&via=kbilsted)
-[![Googleplus this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/gplus.png)](https://plus.google.com/share?url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md)
-[![Facebook this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/facebook.png)](https://facebook.com/sharer.php?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md&t=Malleable%20code%20by%20using%20decorators)
-[![LinkedIn this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/linkedin.png)](http://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md)
-[![Feedly this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/feedly.png)](http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md)
-[![Ycombinator this](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/img/ycombinator.png)](http://news.ycombinator.com/submitlink?u=https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md&t=Malleable%20code%20by%20using%20decorators)
+Please show your support by sharing and voting: 
+<SocialShareButtons>
 </SocialShareButtons> 
 
 
 
 ## 6. Comments and corrections
-
 <CommentText>
-**Comments, corrections and other editorial changes are very welcome. Just log onto Github, press the edit button and fire away. Have I left out important information about your favourite language, press the edit button. Are there wordings that definitely are not English, press the edit button. Do you have something to elaborate.. press the edit button!! :-)**
-
-*Comments should go below this line (and use the following template).*
-
-Name: Bubba Jones
-> text..  
-> text..  
-
 </CommentText>
-<br>
-
-
-Read the [Introduction](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/README.md) or browse the rest [of the site](https://github.com/kbilsted/CodeQualityAndReadability/blob/master/AllArticles.md)
-<br>
-[![Analytics](https://ga-beacon.appspot.com/UA-65034248-2/QualityAndReadability/Articles_Design_MalleableCodeUsingDecorators.md)](https://github.com/igrigorik/ga-beacon)
