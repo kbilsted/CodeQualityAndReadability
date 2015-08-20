@@ -18,19 +18,19 @@ Please show your support by sharing and voting:
 
 Table of Content
 
-   * [1. Describing the problem domain](#1-describing-the-problem-domain)
-   * [2. Solution 1: Using simple types](#2-solution-1-using-simple-types)
-     * [2.1 Problems with using the simple types.](#21-problems-with-using-the-simple-types)
-   * [3. Solution 2: Domain types to the rescue](#3-solution-2-domain-types-to-the-rescue)
-     * [3.1 The `Tag` class](#31-the-tag-class)
-     * [3.2 The `Page` class](#32-the-page-class)
-     * [3.3 The `PageGenerator`](#33-the-pagegenerator)
-     * [3.4 The `TagCollection` class](#34-the-tagcollection-class)
-     * [3.5 The `DocumentParser`](#35-the-documentparser)
-   * [4. Emergent behaviour](#4-emergent-behaviour)
-     * [4.1 Bug fixing the link name creation](#41-bug-fixing-the-link-name-creation)
-   * [5. Conclusions](#5-conclusions)
-   * [6. Comments and corrections](#6-comments-and-corrections)
+   * [1. Describing the problem domain](#describing-the-problem-domain)
+   * [2. Solution 1: Using simple types](#solution--using-simple-types)
+     * [2.1 Problems with using the simple types.](#problems-with-using-the-simple-types)
+   * [3. Solution 2: Domain types to the rescue](#solution--domain-types-to-the-rescue)
+     * [3.1 The `Tag` class](#the-tag-class)
+     * [3.2 The `Page` class](#the-page-class)
+     * [3.3 The `PageGenerator`](#the-pagegenerator)
+     * [3.4 The `TagCollection` class](#the-tagcollection-class)
+     * [3.5 The `DocumentParser`](#the-documentparser)
+   * [4. Emergent behaviour](#emergent-behaviour)
+     * [4.1 Bug fixing the link name creation](#bug-fixing-the-link-name-creation)
+   * [5. Conclusions](#conclusions)
+   * [6. Comments and corrections](#comments-and-corrections)
    
    
    

@@ -20,10 +20,10 @@ Please show your support by sharing and voting:
 
 Table of Content
 
-   * [1. Introduction](#1-introduction)
-   * [2. The psychology of less experienced developers](#2-the-psychology-of-less-experienced-developers)
-   * [3. Investigating "surface complexity"](#3-investigating-surface-complexity)
-     * [3.1 The notion of readability changes with growing experience](#31-the-notion-of-readability-changes-with-growing-experience)
+   * [1. Introduction](#introduction)
+   * [2. The psychology of less experienced developers](#the-psychology-of-less-experienced-developers)
+   * [3. Investigating "surface complexity"](#investigating-surface-complexity)
+     * [3.1 The notion of readability changes with growing experience](#the-notion-of-readability-changes-with-growing-experience)
        * [Version A](#version-a)
        * [Version B](#version-b)
        * [Version C](#version-c)
@@ -32,11 +32,11 @@ Table of Content
        * [Version F](#version-f)
        * [Final version](#final-version)
        * [Conclusions](#conclusions)
-     * [3.2 The veterans perspective](#32-the-veterans-perspective)
-   * [4. Investigating "underlying complexity"](#4-investigating-underlying-complexity)
-   * [4.1 The architectural simplification that never became](#41-the-architectural-simplification-that-never-became)
-   * [5. Conclusions](#5-conclusions)
-   * [6. Comments](#6-comments)
+     * [3.2 The veterans perspective](#the-veterans-perspective)
+   * [4. Investigating "underlying complexity"](#investigating-underlying-complexity)
+   * [4.1 The architectural simplification that never became](#the-architectural-simplification-that-never-became)
+   * [5. Conclusions](#conclusions)
+   * [6. Comments](#comments)
    
    
    

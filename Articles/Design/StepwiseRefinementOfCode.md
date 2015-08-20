@@ -21,15 +21,15 @@ Please show your support by sharing and voting:
 
 Table of Content
 
-   * [1. Introduction](#1-introduction)
-   * [2. Hands on the code](#2-hands-on-the-code)
-   * [3. Adding notes](#3-adding-notes)
-   * [4. Removing notes](#4-removing-notes)
-   * [5. Extract to private method repeatedly...](#5-extract-to-private-method-repeatedly)
-   * [6. Extract to public method](#6-extract-to-public-method)
-   * [7. Inline method](#7-inline-method)
-   * [8. Conclusions](#8-conclusions)
-   * [9. Comments](#9-comments)
+   * [1. Introduction](#introduction)
+   * [2. Hands on the code](#hands-on-the-code)
+   * [3. Adding notes](#adding-notes)
+   * [4. Removing notes](#removing-notes)
+   * [5. Extract to private method repeatedly...](#extract-to-private-method-repeatedly)
+   * [6. Extract to public method](#extract-to-public-method)
+   * [7. Inline method](#inline-method)
+   * [8. Conclusions](#conclusions)
+   * [9. Comments](#comments)
 
    
    

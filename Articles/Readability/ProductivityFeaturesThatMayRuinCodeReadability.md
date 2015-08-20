@@ -17,18 +17,18 @@ Please show your support by sharing and voting:
 
 Table of Content
 
-   * [1. Introduction](#1-introduction)
-   * [2. Folding](#2-folding)
-     * [2.1 Code folding](#21-code-folding)
-     * [2.2 Region folding](#22-region-folding)
-   * [3. Outlining](#3-outlining)
-     * [3.1 Code scrollbar](#31-code-scrollbar)
-     * [3.2 Vertical indentation guides](#32-vertical-indentation-guides)
-     * [3.3 Scope outlining](#33-scope-outlining)
-   * [4. Syntax highlighting](#4-syntax-highlighting)
-   * [5. Conclusions](#5-conclusions)
-   * [6. Quotes...](#6-quotes)
-   * [7. Comments and corrections](#7-comments-and-corrections)
+   * [1. Introduction](#introduction)
+   * [2. Folding](#folding)
+     * [2.1 Code folding](#code-folding)
+     * [2.2 Region folding](#region-folding)
+   * [3. Outlining](#outlining)
+     * [3.1 Code scrollbar](#code-scrollbar)
+     * [3.2 Vertical indentation guides](#vertical-indentation-guides)
+     * [3.3 Scope outlining](#scope-outlining)
+   * [4. Syntax highlighting](#syntax-highlighting)
+   * [5. Conclusions](#conclusions)
+   * [6. Quotes...](#quotes)
+   * [7. Comments and corrections](#comments-and-corrections)
    
    
    

@@ -19,15 +19,15 @@ Please show your support by sharing and voting:
  
 Table of Content
 
-   * [1. Introduction](#1-introduction)
-   * [2. The all-in-one-class implementation](#2-the-all-in-one-class-implementation)
-     * [2.1 Extracting methods for clarity](#21-extracting-methods-for-clarity)
-     * [2.2 The need for further separation](#22-the-need-for-further-separation)
-   * [3. Cache as a wrapper object](#3-cache-as-a-wrapper-object)
-   * [4. Improving the design with decorators](#4-improving-the-design-with-decorators)
-     * [4.1 The decorator implementation](#41-the-decorator-implementation)
-   * [5. Performance](#5-performance)
-   * [6. Comments and corrections](#6-comments-and-corrections)
+   * [1. Introduction](#introduction)
+   * [2. The all-in-one-class implementation](#the-all-in-one-class-implementation)
+     * [2.1 Extracting methods for clarity](#extracting-methods-for-clarity)
+     * [2.2 The need for further separation](#the-need-for-further-separation)
+   * [3. Cache as a wrapper object](#cache-as-a-wrapper-object)
+   * [4. Improving the design with decorators](#improving-the-design-with-decorators)
+     * [4.1 The decorator implementation](#the-decorator-implementation)
+   * [5. Performance](#performance)
+   * [6. Comments and corrections](#comments-and-corrections)
 
 
 ## 1. Introduction
