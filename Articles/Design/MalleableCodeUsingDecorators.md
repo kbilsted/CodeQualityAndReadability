@@ -27,7 +27,6 @@ Table of Content
    * [4. Improving the design with decorators](#improving-the-design-with-decorators)
      * [4.1 The decorator implementation](#the-decorator-implementation)
    * [5. Performance](#performance)
-   * [6. Comments and corrections](#comments-and-corrections)
 
 
 ## 1. Introduction
@@ -287,6 +286,8 @@ Please show your support by sharing and voting:
 
 
 
-## 6. Comments and corrections
+<br><br>
 <CommentText>
 </CommentText>
+
+<br><br>

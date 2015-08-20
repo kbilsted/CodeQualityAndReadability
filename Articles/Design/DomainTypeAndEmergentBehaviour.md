@@ -30,7 +30,6 @@ Table of Content
    * [4. Emergent behaviour](#emergent-behaviour)
      * [4.1 Bug fixing the link name creation](#bug-fixing-the-link-name-creation)
    * [5. Conclusions](#conclusions)
-   * [6. Comments and corrections](#comments-and-corrections)
    
    
    
@@ -438,6 +437,8 @@ Please show your support by sharing and voting: <SocialShareButtons>
 </SocialShareButtons> 
 
 
-## 6. Comments and corrections
+<br><br>
 <CommentText>
 </CommentText>
+
+<br><br>

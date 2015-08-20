@@ -61,8 +61,8 @@ To help future readers, here is an extract of advice to be found in the book
 Go to http://www.amazon.co.uk/gp/product/0735619654/ref=as_li_tl?ie=UTF8&camp=1634&creative=19450&creativeASIN=0735619654&linkCode=as2&tag=linkedin_kbg-21&linkId=OZVOEWC4UBJCU6OU
 
 
-## Comments
-
+<br><br>
 <CommentText>
 </CommentText>
 
+<br><br>

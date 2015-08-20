@@ -28,7 +28,6 @@ Table of Content
    * [4. Syntax highlighting](#syntax-highlighting)
    * [5. Conclusions](#conclusions)
    * [6. Quotes...](#quotes)
-   * [7. Comments and corrections](#comments-and-corrections)
    
    
    
@@ -188,8 +187,8 @@ Please show your support by sharing and voting:
 
 
 
+<br><br>
 
-## 7. Comments and corrections 
 <CommentText>
 </CommentText>
 

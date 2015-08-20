@@ -36,7 +36,6 @@ Table of Content
    * [4. Investigating "underlying complexity"](#investigating-underlying-complexity)
    * [4.1 The architectural simplification that never became](#the-architectural-simplification-that-never-became)
    * [5. Conclusions](#conclusions)
-   * [6. Comments](#comments)
    
    
    
@@ -369,9 +368,9 @@ Be cautious when requiring dumbing down the code base. It may seem to be resulti
 
 
 
+<br><br>
 
-
-
-## 6. Comments
 <CommentText>
 </CommentText>
+
+<br><br>

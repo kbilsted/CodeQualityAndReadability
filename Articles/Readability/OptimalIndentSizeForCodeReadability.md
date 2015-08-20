@@ -40,7 +40,6 @@ Table of Content
        * [5.4.2 The decorator design pattern](#the-decorator-design-pattern)
      * [5.5 Summary](#summary)
    * [6. Conclusions](#conclusions)
-   * [7. Comments and corrections](#comments-and-corrections)
 
    
 ## 1. Introduction
@@ -455,7 +454,7 @@ Please show your support by sharing and voting:
 
 
 
-## 7. Comments and corrections
+<br><br>
 <CommentText>
 </CommentText>
 

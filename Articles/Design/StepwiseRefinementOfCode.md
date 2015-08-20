@@ -29,7 +29,6 @@ Table of Content
    * [6. Extract to public method](#extract-to-public-method)
    * [7. Inline method](#inline-method)
    * [8. Conclusions](#conclusions)
-   * [9. Comments](#comments)
 
    
    
@@ -272,6 +271,8 @@ Please show your support by sharing and voting:
 </SocialShareButtons> 
 
 
-## 9. Comments
+<br><br>
 <CommentText>
 </CommentText>
+
+<br><br>
