@@ -49,7 +49,7 @@ to create software. The mantra always being "productivity". And every new featur
 
 I couldn't help but reflect upon some of the features in my IDE that over the passed years have surfaced, and which seem cool. But are these features simply masquerading bad code? As counter intuitively as it may sound, perhaps all those glossy features and eye candy may be leading us **in the wrong direction**. Towards worse code, with worse readability. Don't get me wrong, I'm not here to preach the use of Notepad or - god forbid - Edlin. I love and enjoy my development environment, but hear me out.
 
-I've assembled a list of features we may or may not really want in our IDE's. I have no delusions as to whether this trend can be stopped adding nice looking features. My mission is simply for you to gulp the list, reflect for a moment, maybe your favourite features of the editor are in fact making the  worse code in the long run.
+I've assembled a list of features we may or may not really want in our IDE's. I have no delusions as to whether this trend can be stopped adding nice looking features. My mission is simply for you to gulp the list, reflect for a moment, maybe your favourite features of the editor are in fact making the code worse in the long run.
 
 
 
@@ -75,7 +75,7 @@ Why do we dislike regions? **Because they hide code, and force the developer to 
 
 There are circumstances where regions have its merits. Particularly when working with very big files. A first step towards splitting up such files is to annotate them with regions. It can change your life from miserable to just bearable. It enables you to compress the file to a screen-full from which you may expand the appropriate region. But often times, since we have the code folding we are not allowed the time to enable multiple configuration files, that are merged in memory when the application starts.
 
-Another occasional usage that is when grouping the methods and properties implementing a specific interface. Especially when the class implements many interfaces. In these situations, however, one can also consider using C#'s "interface implementation feature" - be wary, as it requires a different way of accessing your objects.
+Another occasional usage that is when grouping the methods and properties implementing a specific interface. Especially when the class implements many interfaces. In these situations, however, one can also consider using C#'s "explicit interface implementation feature" - be wary, as it requires a different way of accessing your objects.
 
 **Rather than using regions in your code, you should break larger classes into smaller classes and break larger methods into smaller methods. As with comments, if you feel the need to introduce it, re-think if you can express the same with code the compiler doesn't ignore**.
 
