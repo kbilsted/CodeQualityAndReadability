@@ -87,7 +87,7 @@ Given some field `txtName` on a Gui we have to figure out if anything has been e
 **Here we look at surface complexity**
 
 #### Version A
-```java
+```
 bool CheckName()
 {
     string text;
@@ -113,7 +113,7 @@ With a bit of experience you can tell that this code is *too verbose*. It actual
 #### Version B
 Students are quick to realize that we don't need the variable `text`, and they learn we never write `== true`
 
-```java
+```
 bool CheckName()
 {
     bool returnValue;
@@ -134,7 +134,7 @@ A much shorter version, the `returnValue` variable is still a thorn in the eye a
 
 #### Version C
 
-```java
+```
 bool CheckName()
 {
     if (txtName.getText().equals("")) 
@@ -155,7 +155,7 @@ Now we are getting somewhere. The intent of the code is prevailing.
 
 Now is the time to start dusting off the final trivialities. We don't need `else` since `return false` can only be reached if `return true` hasn't been executed.
 
-```java
+```
 bool CheckName() 
 {
     if (txtName.getText().equals("")) 
@@ -169,7 +169,7 @@ bool CheckName()
 #### Version E
 An alternative implementation can be achieved using the ternary operator.
 
-```java
+```
 bool CheckName() 
 {
     return (txtName.getText().equals("") ? true : false);
@@ -181,7 +181,7 @@ bool CheckName()
 We now realize that, when the expression is true we return true, otherwise false. We can thus in-line this directly in by simply returning the result of the expression.
 
 
-```java
+```
 bool CheckName() 
 {
     return txtName.getText() == "";
@@ -192,7 +192,7 @@ bool CheckName()
 #### Final version
 At this stage, we must ponder whether we need this code to reside inside a methods at all. There are good arguments for concealing code, even tiny chunks of code inside a method, but alternatively we can just use the code as:
 
-```java
+```
 if (txtName.getText() == "")
     ... 
 ```
@@ -234,7 +234,7 @@ Looking at this list in retrospective, it is clear that it revolves around *surf
 The other day I was visiting a cemetery for code. http://codebituary.com/  which is a resting place for start-up code that never made it. Through there, I clicked a random project which led to Github, and from there I clicked the first file name I found to be interesting. Take my check list and see how well I would score the below code.
 
 
-```java
+```
 //offline crawl
 public static void crawl(){
     //0) download main page
