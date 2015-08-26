@@ -91,7 +91,17 @@ The code scrollbar is according to [Microsoft](https://msdn.microsoft.com/en-us/
 
 This is all backwards. Why are the files so long, that you have no overview without this feature? And frankly, how often have you really saved any time using this feature? I have a nagging feeling this feature is all about looking smart and needlessly burning CPU cycles.
 
-**Rather than having to rely on code scrollbar, you should break larger classes into smaller classes and break larger methods into smaller methods. This will greatly improve the code and its reusability**.
+**Rather than having to rely on code scrollbar, you should break larger classes into smaller classes and break larger methods into smaller methods. This will greatly improve the code and its reusability**. This is in line with Uncle Bob who on NDC 2009 - Norwegegian developers Conference said:
+
+
+
+> How many of you have dealt with functions thousands of lines long..   
+> and you find your way around it by the number of indents..  
+> oh yeah, now we're at the third indent down..  
+> its the third-if-statement.. now we are navigating the code geographically ..by landmarks.  
+> We should navigate the code by name instead of geography.  
+> Those landmarks should be method calls.  
+
 
 Many years ago I started the project [Euphoria](http://euphoria.sourceforge.net/), an attempt at creating an editor for the LaTeX language. One of its features was a graphical outlining as can be seen to the right hand of the below picture
 
