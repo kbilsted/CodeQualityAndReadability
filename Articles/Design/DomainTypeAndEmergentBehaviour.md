@@ -1,6 +1,6 @@
 ﻿# Domain types creates readability ...and emergent behaviour
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](http://kbilsted.github.io/CodeQualityAndReadability/) [[All categories]](http://kbilsted.github.io/CodeQualityAndReadability/AllTags.html) [[All articles]](http://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html)
+<br>[[Introduction]](<BaseUrl/>CodeQualityAndReadability/) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html)
 <br>
 <Categories Tags="Domain_Types, Emergent_Behaviour, Code_Readability">
 </Categories>
@@ -22,11 +22,11 @@ Table of Content
    * [2. Solution 1: Using simple types](#solution--using-simple-types)
      * [2.1 Problems with using the simple types.](#problems-with-using-the-simple-types)
    * [3. Solution 2: Domain types to the rescue](#solution--domain-types-to-the-rescue)
-     * [3.1 The `Tag` class](#the-tag-class)
-     * [3.2 The `Page` class](#the-page-class)
-     * [3.3 The `PageGenerator`](#the-pagegenerator)
-     * [3.4 The `TagCollection` class](#the-tagcollection-class)
-     * [3.5 The `DocumentParser`](#the-documentparser)
+     * [3.1 The `Tag` class](#the--class)
+     * [3.2 The `Page` class](#the--class)
+     * [3.3 The `PageGenerator`](#the)
+     * [3.4 The `TagCollection` class](#the--class)
+     * [3.5 The `DocumentParser`](#the)
    * [4. Emergent behaviour](#emergent-behaviour)
      * [4.1 Bug fixing the link name creation](#bug-fixing-the-link-name-creation)
    * [5. Conclusions](#conclusions)

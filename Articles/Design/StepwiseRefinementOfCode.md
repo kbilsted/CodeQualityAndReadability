@@ -1,6 +1,6 @@
 ﻿# Stepwise refinement of code
 *Author: Kasper B. Graversen*  
-[[Introduction]](http://kbilsted.github.io/CodeQualityAndReadability/) [[All categories]](http://kbilsted.github.io/CodeQualityAndReadability/AllTags.html) [[All articles]](http://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html) 
+<br>[[Introduction]](<BaseUrl/>CodeQualityAndReadability/) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html)
 <br>
 <Categories Tags="Refactoring, Code_Readability">
 </Categories>

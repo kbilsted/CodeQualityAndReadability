@@ -1,6 +1,6 @@
 ﻿# Optimal indent size for code readability
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](http://kbilsted.github.io/CodeQualityAndReadability/) [[All categories]](http://kbilsted.github.io/CodeQualityAndReadability/AllTags.html) [[All articles]](http://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html)
+<br>[[Introduction]](<BaseUrl/>CodeQualityAndReadability/) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html)
 <br>
 <Categories Tags="Code_Layout, Code_Readability, Design_Pattern">
 </Categories>

@@ -1,6 +1,6 @@
 ﻿# Productivity features that may ruin code readability 
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](http://kbilsted.github.io/CodeQualityAndReadability/) [[All categories]](http://kbilsted.github.io/CodeQualityAndReadability/AllTags.html) [[All articles]](http://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html)
+<br>[[Introduction]](<BaseUrl/>CodeQualityAndReadability/) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html)
 <br>
 <Categories Tags="Code_Readability, Tools">
 </Categories>
@@ -91,7 +91,7 @@ The code scrollbar is according to [Microsoft](https://msdn.microsoft.com/en-us/
 
 This is all backwards. Why are the files so long, that you have no overview without this feature? And frankly, how often have you really saved any time using this feature? I have a nagging feeling this feature is all about looking smart and needlessly burning CPU cycles.
 
-**Rather than having to rely on code scrollbar, you should break larger classes into smaller classes and break larger methods into smaller methods. This will greatly improve the code and its reusability**. This is in line with Uncle Bob who on NDC 2009 - Norwegegian developers Conference said:
+**Rather than having to rely on code scrollbar, you should break larger classes into smaller classes and break larger methods into smaller methods. This will greatly improve the code and its reusability**. This is in line with Uncle Bob who on NDC 2009 - Norwegian developers Conference said:
 
 
 
