@@ -9,9 +9,9 @@ By Kasper B. Graversen
 
 Newest articles
 
+* [Restrict expressibility when iterating (new)](Articles/Readability/RestrictExpressibilityWhenIterating.html)
 * [Productivity features that may ruin code readability](Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html)
 * [Optimal indent size for code readability](Articles/Readability/OptimalIndentSizeForCodeReadability.html)
-* [On the Changing Notion Of Readability](Articles/Readability/TheChangingNotionOfReadability.html)
 
   
   
