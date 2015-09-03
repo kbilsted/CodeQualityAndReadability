@@ -1,11 +1,11 @@
-﻿# Restricting expressibility enhances readability: Iterations 
+﻿# Restrict expressibility when iterating 
 *Author: Kasper B. Graversen*
 <br>[[Introduction]](<BaseUrl/>CodeQualityAndReadability/) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html)
 <br>
 <Categories Tags="Code_Readability, Coding_Guideline, Looping, Iteration, goto, foreach, while, for">
 </Categories>
 
-*The more restrictive the language mechanisms in use, the more readable the code tends to become. To solidify this claim, we show a number of approaches all implementing the same business logic of iterate-and-collect over a collection. We discuss each approach and its affects on code readability. We then show how to express more complicated requirements when looping.*
+*The more restrictive the language mechanisms in use, the more readable the code tends to become. To solidify this claim, we show a number of approaches all implementing "iterate-and-collect logic" over a collection. We discuss each approach and its affects on readability. We then show how to express more complicated requirements when looping.*
 
 Please show your support by sharing and voting:
 <SocialShareButtons>
@@ -39,19 +39,18 @@ Table of Content
    
 ## 1. Introduction
 
-What makes code readable? That is a very hard question to which many answers are correct. There are many facets to code readability, and that's what makes it interesting to discuss, study and so forth. *One* way I have found that improves code readability is using a coding style that is *the least expressible*. I try to use language features (or build my own components) in a way that limits what you can do with them and limit what they do. 
+What makes code readable? That is a very hard question to which many answers are correct. There are many facets to code readability, and that's what makes it interesting to discuss, study and so forth. *One* perspective is enforcing a coding style *of the least expressibility*. 
+
+Iteration is a very general subject, but it's something we happen to do a lot in code. And quite interestingly, iterations can be performed in a lot of ways. This means you are bound to be exposed to virtually all approaches in a larger code base. 
 
 When writing a program, you want to write it in such a fashion that future readers mentally are taken in a certain direction when they read the code. Preferably, readers are taken by their hands, and shown bit by bit, a complex task broken down in smaller steps. Using construct with *limited  expressibility* naturally leads the reader down a narrower garden path. With less expressive constructs or language mechanisms, the ability to introduce complexity is reduced. Less complex code involves less possibilities/choices, and hence is easier to overview. 
 
-I happen to like like narrow garden paths. It takes away my worries. Just like the image above. In order to get from A to B, simply follow the stair case (to heaven?) - don't try to funble your way in the wildernes outside the path.
+I happen to like narrow garden paths. It takes away my worries. Just like the picture above. In order to get from A to B, simply follow the stair case (to heaven?). When I need to fix a bug and I see the code is inside a loop-construct that is so extensive that it can not fit a screen, I get a little nervous divulging into the beast. And depending on which looping mechanism is used, the more things I tend to worry about. I cannot help but get a little paranoid. The looping, how is it done? Are all elements of an array being visited? Are some visited twice (by design - or by accident?) etc. 
 
-When I need to fix a bug and I see the code is inside a loop-construct that is so extensive that it can not fit a screen, I get a little nervous divulging into the beast. And depending on which looping mechanism is used, the more things I tend to worry about. I cannot help but get a little paranoid. The looping, how is it done? Are all elements of an array being visited? Are some visited twice (by design - or by accident?) etc. 
-
-Iteration is a very general subject, but it's something we happen to do a lot in code. And quite interestingly, iterations can be performed in a lot of ways. This means you are bound to be exposed to virtually all approaches in a larger code complex. 
-
-We will investigate  **8** different ways to iterate over, and, perform some business logic to some collection. The examples will gradually **decrease in expressibility**, while at the same time **increase in readability**. I hope you feel the same when reading the example, or else please do challenge this trail of though in the comments section at the bottom.
+We investigate 8 different ways to iterate over, and perform, some business logic to a collection. The examples gradually **decrease in expressibility**, while at the same time **increase in readability**. 
 
 Then, we turn to more complex business rules where simple iteration does not suffice and show one way I've found to combat complexity.
+
 
 
 ## 2. Simple iteration over all elements of a collection
@@ -439,18 +438,34 @@ It is a bit more verbose, but the intent of the code is very clear. It also supp
 
 ## 4. Conclusions
 
-I we have established, that using the least expressive approach to solving a task may result in easier to read code. Simply due to the fact that with the lesser expressive constructs, there is no room to wiggle in the wrong direction. By design you cut yourself off a whole range of potential bugs.
+It is easy to dismiss this article with the argument that if you are used to code using `goto` all over the place, they are not at all unreadable. In fact, not using `goto` would break the common style of the code base. Habit truly is a significant factor when discussing code. But I think that we have established, that despite being used to `goto`'s (or not), being able to replace a construct like a `while` or `goto` with a `foreach`, and often even better, a LINQ expression, reduces the possible things that can be expressed in code, thus leading the reader down the correct path - Automatically making the code easier to understand. Just by looking at the first line he can determine eg. *"that we are just looping linearly over all elements"*. Simply due to the fact that with the lesser expressive constructs, there is no room to wiggle in the wrong direction. By design you cut yourself off a whole range of potential bugs.
 
 We have argued for using LINQ over `foreach` where possible. We have argued for using `foreach` over `for` where possible. And we have argued for using `for` over `while` where possible and finally, only use `goto` when none of the others are suitable. 
 
-To paraphrase everything we can boil it down to the following scale
+To paraphrase a bit, we can boil it down to the following scale
 
 | Typically more readable |           |             |       |         | Typically less readable |
 |:-----------------------:|-----------|-------------|-------|---------|:-----------------------:|
 | LINQ                    | `foreach` | enumeration | `for` | `while` | `goto`                  |
 
+Of course, this does not hold water when in each iteration we need several elements of the array. Then it's more like
 
-Further we have argued for using an intent-revealing structure when you are performing non-trivial iteration over a collection by separating the looping logic from the looping body.
+
+| Typically more readable |                 | Typically less readable |
+|:-----------------------:|-----------------|:-----------------------:|
+| `for`                   | `while`         |                  `goto` | 
+
+And when we are implementing an forever running background worker, we may have even further limits of choice with regards to implementation
+
+
+| Typically more readable | Typically less readable |
+|:-----------------------:|:-----------------------:|
+| `while`                 | `goto`                  |
+
+
+Finally, we have argued for using an intent-revealing structure when you are performing non-trivial iteration over a collection by separating the looping logic from the looping body.
+
+
 
 Please show your support by sharing and voting:
 <SocialShareButtons>
