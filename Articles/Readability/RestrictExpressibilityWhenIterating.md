@@ -2,7 +2,7 @@
 *Author: Kasper B. Graversen*
 <br>[[Introduction]](<BaseUrl/>CodeQualityAndReadability/) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html)
 <br>
-<Categories Tags="Code_Readability, Coding_Guideline, Looping, Iteration, goto, foreach, while, for">
+<Categories Tags="Code_Readability, Coding_Guideline, Looping, Iteration, goto, foreach, while, for, LINQ">
 </Categories>
 
 *The more restrictive the language mechanisms in use, the more readable the code tends to become. To solidify this claim, we show a number of approaches all implementing "iterate-and-collect logic" over a collection. We discuss each approach and its affects on readability. We then show how to express more complicated requirements when looping.*
