@@ -1,6 +1,6 @@
 ﻿# Malleable code by using decorators
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](<BaseUrl/>CodeQualityAndReadability/) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html)
+<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html)
 <br>
 
 <Categories Tags="Design, SOLID, Single_Responsibility_Principle, Design_Pattern, Decorator, Wrapper, Cache ">

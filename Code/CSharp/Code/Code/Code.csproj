@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertingForToLinq\LinqReplacer.cs" />
+    <Compile Include="ConvertingForToLinq\IntCollection.cs" />
+    <Compile Include="ConvertingForToLinq\Span.cs" />
     <Compile Include="Iteration\IterationExamples.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

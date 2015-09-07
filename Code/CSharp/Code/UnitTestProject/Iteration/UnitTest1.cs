@@ -4,7 +4,7 @@ using Code.Iteration;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTestProject
+namespace UnitTestProject.Iteration
 {
     [TestClass]
     public class UnitTest1

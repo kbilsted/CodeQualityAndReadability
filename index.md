@@ -9,7 +9,8 @@ By Kasper B. Graversen
 
 Newest articles
 
-* [Restrict expressibility when iterating (new)](Articles/Readability/RestrictExpressibilityWhenIterating.html)
+* [From imperative to declarative code using LINQ extension methods](Articles/Readability/FromImperativeTtoDeclarativeCodeUsingLINQ.html) <img src="img/new.gif">
+* [Restrict expressibility when iterating](Articles/Readability/RestrictExpressibilityWhenIterating.html) <img src="img/new.gif">
 * [Productivity features that may ruin code readability](Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html)
 * [Optimal indent size for code readability](Articles/Readability/OptimalIndentSizeForCodeReadability.html)
 
