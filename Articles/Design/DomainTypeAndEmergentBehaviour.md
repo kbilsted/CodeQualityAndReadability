@@ -51,13 +51,13 @@ An analysis of our problem domain thus reveals the following *nouns*:
 
 | Noun      | Description      |
 | --------- | ---------------- |
-| Tag       | A title          | 
-| Page      | A title and a path   | 
-| Document  | A text           | 
-| Document tag parser | Parsing documents and locating tags          | 
-| Page generator      | Generate html for the navigation pages         | 
-| File reader/writer  | A file-reader and a file-write         | 
-| File system document scanner | A scanner to recursively visit directories         | 
+| Tag       | A title          |
+| Page      | A title and a path   |
+| Document  | A text           |
+| Document tag parser | Parsing documents and locating tags          |
+| Page generator      | Generate html for the navigation pages        |
+| File reader/writer  | A file-reader and a file-write         |
+| File system document scanner | A scanner to recursively visit directories         |
 
 
 Potentially each of these nouns are to be modelled by its own class. Rather than turning this into an academic exercise, let us investigate how a lot of people would implement this application. It s straight forward to concoct a solution using simple type already provided by our programming language. We call this *solution 1*. 
@@ -74,13 +74,13 @@ Here's how we are going to implement the above model
 
 | Noun      | Implementation |
 | --------- | -------------- |
-| Tag       | `string`       | 
-| Page      | `Tuple<string, string>`           | 
-| Document  | `string`       | 
-| Document tag parser | A class `DocumentParser` with a parse method           | 
-| Page generator      | A class with a method for each page to generate          | 
-| File reader/writer  | `System.IO.File`          | 
-| File system document scanner | `System.IO.DirectoryInfo`         | 
+| Tag       | `string`       |
+| Page      | `Tuple<string, string>`           |
+| Document  | `string`       |
+| Document tag parser | A class `DocumentParser` with a parse method           |
+| Page generator      | A class with a method for each page to generate          |
+| File reader/writer  | `System.IO.File`          |
+| File system document scanner | `System.IO.DirectoryInfo`         |
 
 
 Implementing this in a top-down fashion, makes us start at the document reading and parsing.  `GetTags()` just below traverses the directory structure and for each document reads it and asks a parser to identify the tags. The tags are then accumulated in the `tagsCollection` variable and returned.

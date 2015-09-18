@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BestPractivcesWritingLinqExtensionMethods\Extensions.cs" />
     <Compile Include="ConvertingForToLinq\LinqReplacer.cs" />
     <Compile Include="ConvertingForToLinq\IntCollection.cs" />
     <Compile Include="ConvertingForToLinq\Span.cs" />

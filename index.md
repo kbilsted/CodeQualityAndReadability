@@ -7,13 +7,12 @@ By Kasper B. Graversen
 
 
 
-Newest articles
+Newest 4 articles out of <ArticleCount/> articles.
 
+* [The 6 best practices for writing LINQ extension methods](Articles/Readability/LINQExtensionMethodsBestPractices.html) <img src="img/new.gif">
 * [From imperative to declarative code using LINQ extension methods](Articles/Readability/FromImperativeTtoDeclarativeCodeUsingLINQ.html) <img src="img/new.gif">
 * [Restrict expressibility when iterating](Articles/Readability/RestrictExpressibilityWhenIterating.html) <img src="img/new.gif">
 * [Productivity features that may ruin code readability](Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html)
-* [Optimal indent size for code readability](Articles/Readability/OptimalIndentSizeForCodeReadability.html)
-
   
   
 ## Introduction
