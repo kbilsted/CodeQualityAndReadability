@@ -1,7 +1,6 @@
 ﻿# Restrict expressibility when iterating 
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html)
-<br>
+<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
 <Categories Tags="Code_Readability, Coding_Guideline, Looping, Iteration, goto, foreach, while, for, LINQ">
 </Categories>
 
@@ -453,7 +452,7 @@ Of course, this does not hold water when in each iteration we need several eleme
 
 | Typically more readable |                 | Typically less readable |
 |:-----------------------:|-----------------|:-----------------------:|
-| `for`                   | `while`         |                  `goto` | 
+| `for`                   | `while`         |                  `goto` |
 
 And when we are implementing an forever running background worker, we may have even further limits of choice with regards to implementation
 

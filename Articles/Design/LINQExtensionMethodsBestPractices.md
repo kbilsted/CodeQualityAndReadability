@@ -1,6 +1,6 @@
 ﻿# The 6 best practices for writing LINQ extension methods
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html)
+<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)
 <br>
 <Categories Tags="LINQ, Extension_Methods">
 </Categories>
@@ -281,7 +281,7 @@ Naturally, there will be times where side-effects is the only viable solution. S
 
 ## 7. Summary
 
-The main takeaway from this article is a checklist of things to go through each time you write a LINQ extension method.
+The main takeaway from this article is a check list of things to go through each time you write a LINQ extension method.
 
   1. Use a dedicated and easy-to-find namespace for your LINQ extension methods.
   2. Invest energy into proper naming.

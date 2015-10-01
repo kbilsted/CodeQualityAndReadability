@@ -1,7 +1,6 @@
 ﻿# Book review: Object Thinking
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html)
-<br>
+<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
 <Categories Tags="Book_Review">
 </Categories>
 

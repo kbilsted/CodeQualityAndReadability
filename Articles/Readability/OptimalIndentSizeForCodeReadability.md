@@ -1,7 +1,6 @@
 ﻿# Optimal indent size for code readability
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html)
-<br>
+<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
 <Categories Tags="Code_Layout, Code_Readability, Design_Pattern">
 </Categories>
 
