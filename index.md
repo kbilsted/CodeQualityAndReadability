@@ -9,10 +9,10 @@ By Kasper B. Graversen
 
 Newest 4 articles out of <ArticleCount/> articles.
 
-* [The 6 best practices for writing LINQ extension methods](Articles/Design/LINQExtensionMethodsBestPractices.html) <img src="img/new.gif">
-* [From imperative to declarative code using LINQ extension methods](Articles/Readability/FromImperativeTtoDeclarativeCodeUsingLINQ.html) <img src="img/new.gif">
-* [Restrict expressibility when iterating](Articles/Readability/RestrictExpressibilityWhenIterating.html) <img src="img/new.gif">
-* [Productivity features that may ruin code readability](Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html)
+* [When IOC containers become an anti-pattern](Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html) <img src="img/new.gif">
+* [The 6 best practices for writing LINQ extension methods](Articles/Design/LINQExtensionMethodsBestPractices.html) 
+* [From imperative to declarative code using LINQ extension methods](Articles/Readability/FromImperativeTtoDeclarativeCodeUsingLINQ.html) 
+* [Restrict expressibility when iterating](Articles/Readability/RestrictExpressibilityWhenIterating.html) 
   
   
 ## Introduction

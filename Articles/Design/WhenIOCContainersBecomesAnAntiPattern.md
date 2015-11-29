@@ -5,7 +5,7 @@
 </Categories>
 
 
-*For many years IOC containers have been touted the tool that ensure testable and reusable software. Any large enterprise software with self respect got one. However, when refactoring to micro services, the world looks quite different. IOC frameworks play less of a role, to the extend, that their use may be regarded an anti-pattern.*
+*For many years IOC containers have been touted the tool that ensure testable and reusable software. Any large enterprise project with self respect uses one. Interestingly, when refactoring to micro services, IOC frameworks play less of a role - To the extend, that their use may be regarded an anti-pattern.*
 
 
 Please show your support by sharing and voting: 
@@ -14,17 +14,17 @@ Please show your support by sharing and voting:
 
 
 
-<img src="img/Knee_Jerk_large.png">
+<img src="img/pixabay_com_greater-roadrunner-854405_640.jpg">
 
    
 Table of Content
 
-   * [The popularization of IOC container frameworks](#the-popularization-of-ioc-container-frameworks)
-   * [IOC containers as an anti-pattern](#ioc-containers-as-an-anti-pattern)
+   * [1. Historical background](#historical-background)
+   * [2. IOC containers as an anti-pattern](#ioc-containers-as-an-anti-pattern)
    * [Conclusion](#conclusion)
     
    
-## The popularization of IOC container frameworks
+## 1. Historical background
 First at bit of history to set the scene. Around 2005-2006 people started writing about dependency injection in MSDN Magazine and Dr. Dobbs. With the popularization of dependency injection techniques, the ecosystem of IOC container frameworks proliferated, giving further momentum to the movement. Inevitably, IOC containers became modern. There was excitement. Finally, we had the technique, and tool support, for creating testable code. Heck, I was excited too. Enterprise software, unit testing, maybe even a bit of TDD - combined!
 
 In any modern larger software project with self respect, you will find the use of an IOC framework. If you're not using IOC containers, you'll hear experienced programmers complain your ears off about it. Nothing wrong with that. Their benefits generally out-weigh the introduced complexity. At least so long as they are not used as service locators. Personally. I've done magic with IOC containers! Test-enabling a behemoth of an application framework that otherwise was not impenetrable to testing. But more on that another time.
@@ -37,7 +37,7 @@ Before we continue, it is important to the terminology straight. There are two c
 So you can do dependency injection perfectly fine without an IOC container if you so choose.
 
 
-## IOC containers as an anti-pattern
+## 2. IOC containers as an anti-pattern
 Part of my job at MVNO, is to tease apart functionality of a large monolith, and placing it in independent micro services. Independent of each other, we made an interesting observation. 
 
 > The first thing we do after moving the code to the micro service, <br>
@@ -51,7 +51,6 @@ Cutting the ties to the IOC container dependency yields the following advantages
 * No registering of interfaces to types.
 * No life-time management.
 * One less dependency to manage when building and deploying.
-* No potential upgrade hell when new versions of the framework are released.
 
 Make no mistake. We do a whole lot of dependency injection - we just don't employ an IOC framework.
 
