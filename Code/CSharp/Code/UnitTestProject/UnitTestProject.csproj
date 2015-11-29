@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -45,12 +46,19 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BestPractivcesWritingLinqExtensionMethods\ExtensionsTest.cs" />
     <Compile Include="ConvertingForToLinq\ConvertForToLinqTest.cs" />
+    <Compile Include="FinancialDesignPatterns\ProRataDistributorNaiveTest.cs" />
+    <Compile Include="FinancialDesignPatterns\ProRataDistributorAllButLast.cs" />
+    <Compile Include="FinancialDesignPatterns\SplitMatchingTest.cs" />
+    <Compile Include="FinancialDesignPatterns\UnitTest1.cs" />
     <Compile Include="Iteration\UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -59,6 +67,9 @@
       <Project>{401A1F43-15A2-4C42-A690-A2F3028B168A}</Project>
       <Name>Code</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
