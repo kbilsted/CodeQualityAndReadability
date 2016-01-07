@@ -34,7 +34,7 @@ Table of Content
    
 
 
-Our investigations take outset in implementing an application with and without domain types. The implementations are easily coparably, and thus provides ample  opportunity to reflect and compare. 
+Our investigations take outset in implementing an application with and without domain types. The implementations are easily comparable, and thus provides ample  opportunity to reflect and compare. 
 
 What is a domain type anyways?? A domain type is a type that cover the information or intent of a phenomenon in the *problem domain* (i.e. the real life "thing" we are creating software for). The domain type is expressed in the *solution domain* (i.e. our code). Some times, a domain type is a mere wrapper for say a `string` or an `int`.  This thought may be alien to you, maybe it even feels like a complete waste of time to do all that wrappin'. Allot me to show you differently. 
 
@@ -269,7 +269,7 @@ public class Page : IEquatable<Page>
 }
 ```
 
-Similar to the `Tag` class it is verbose. Luckily the lines are very easily written. Since the Page is not used as a key in any collection, we could omit implementing the `GetHashCode` and `Equals` methods. I prefer to keep them. If ever we were to use instances of `Page` as a key, it would just work out of the box. And when omitted all sorts of suprising behavior and hard to find bugs arise. Also when unit testing (and not using [Stateprinter](https://github.com/kbilsted/StatePrinter/), it is very convenient to have the `Equals` so the `Assert.AreEquals()` will work :-). 
+Similar to the `Tag` class it is verbose. Luckily the lines are very easily written. Since the Page is not used as a key in any collection, we could omit implementing the `GetHashCode` and `Equals` methods. I prefer to keep them. If ever we were to use instances of `Page` as a key, it would just work out of the box. And when omitted all sorts of surprising behavior and hard to find bugs arise. Also when unit testing (and not using [Stateprinter](https://github.com/kbilsted/StatePrinter/), it is very convenient to have the `Equals` so the `Assert.AreEquals()` will work :-). 
 
 
 
@@ -325,7 +325,7 @@ The implementation just wrap a dictionary, and makes it easy to add one or more 
 
 Notice that the previous domain types were immutable, this wrapper is not. A long story can be spun over the theme of visibility and control. Rather than exposing the `Tags` field of the class, should the class itself implement `IEnumerable<KeyValuePair<Tag, List<Page>>` or `Tags` could expose the underlying data through a  `ReadOnlyDictionary`. Our implementation is derived from our needs. We are not making any attempts locking down the data structure. We are merely interested in making the dictionary interaction easy. So we are as mutable as the dictionary itself. Needles to say, other situations may require a different kind of wrapping over a collection type.
     
-After having created my tag collection class, I writing about it here in this article, I could not help but thinking about the class from a generalization perspective. I quickly recognized, that the problem we are solving in `TagCollection` really applies to *any* dictionary holding a `List<>` as the value. Hence we can easily change the class into a `ManyValuesDictionary<TKey, TValue>` which wrap a  `Dictionary<TKey, List<TValue>>` and solves this problem once and for all. Having such an implementation at hand, we can consider if we want to create yet another wrapper for this called `TagCollection`, subclass it to get a `TagCollection` type or if we are content with using `ManyValuesDictionary<Tag, Page>`. It really depends on the size of your application and how wide-spread through out it is using a collection og tags.
+After having created my tag collection class, I writing about it here in this article, I could not help but thinking about the class from a generalization perspective. I quickly recognized, that the problem we are solving in `TagCollection` really applies to *any* dictionary holding a `List<>` as the value. Hence we can easily change the class into a `ManyValuesDictionary<TKey, TValue>` which wrap a  `Dictionary<TKey, List<TValue>>` and solves this problem once and for all. Having such an implementation at hand, we can consider if we want to create yet another wrapper for this called `TagCollection`, subclass it to get a `TagCollection` type or if we are content with using `ManyValuesDictionary<Tag, Page>`. It really depends on the size of your application and how wide-spread through out it is using a collection of tags.
 
 
 As I leave it up to the reader to complete the class, I am absolutely certain, that such a reusable construct would **never** have evolved, had we settled with implementing a helper method for adding elements. Nor, god forbid, if we felt compelled to sticking with the initial implementation with the clumsy add-logic spread all over the code base.  You don't have to accept poor code like that!
