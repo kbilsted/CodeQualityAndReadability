@@ -9,10 +9,10 @@ By Kasper B. Graversen
 
 Newest 4 articles out of <ArticleCount/> articles.
 
+* [Debugging using windbg.exe](Articles/Programming/DebuggingWithWindbg.html) <img src="img/new.gif">
 * [When IOC containers become an anti-pattern](Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html) <img src="img/new.gif">
 * [The 6 best practices for writing LINQ extension methods](Articles/Design/LINQExtensionMethodsBestPractices.html) 
 * [From imperative to declarative code using LINQ extension methods](Articles/Readability/FromImperativeTtoDeclarativeCodeUsingLINQ.html) 
-* [Restrict expressibility when iterating](Articles/Readability/RestrictExpressibilityWhenIterating.html) 
   
   
 ## Introduction
