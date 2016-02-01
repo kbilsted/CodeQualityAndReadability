@@ -230,7 +230,7 @@ Fragmented blocks larger than 0.5 MB:
 </pre>
 
 
-Clearly the cult prints are `Okanshi.MonitorMessage+IncrementSuccess` and `Okanshi.MonitorMessage+Time` which take up `329704560` and `494556456` bytes of memory respectively. At the same time we see a very high object count `20606535` and `20606519`.
+Clearly the culprits are `Okanshi.MonitorMessage+IncrementSuccess` and `Okanshi.MonitorMessage+Time` which take up `329704560` and `494556456` bytes of memory respectively. At the same time we see a very high object count `20606535` and `20606519`.
 
 I can dig deeper into the memory allocations investigating the raw memory of the allocations, eg. the `Char[]` allocations found at `$72c847d8`.
 
