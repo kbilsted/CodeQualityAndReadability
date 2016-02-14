@@ -24,7 +24,7 @@ Table of Content
    * [6. Conclusion](#conclusion)
  
 
-At my company I was doing multi-threaded programming for an integrations project with a third party application. At some point we wondered what the speed of the `lock()` construct was. Was it a slow operation to be used with care? Rather than relying on Internet hear-say I measured the situation for my use case. 
+At MVNO I was doing multi-threaded programming for an integrations project with a third party application. At some point we wondered what the speed of the `lock()` construct was. Was it a slow operation to be used with care? Rather than relying on Internet hear-say I measured the situation for my use case. 
 
 The third party system required for each call a sequence number to be supplied with calls. Since we do communication through multiple threads, we need a `Sequence` abstraction that is shared among the threads. Let's give this a first stab.
 
