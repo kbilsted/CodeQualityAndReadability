@@ -134,5 +134,4 @@ namespace Code.FinancialDesignPatterns {
         /// </summary>
         public bool IsFullyConsumed { get; set; }
     }
-
 }
