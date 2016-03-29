@@ -19,7 +19,7 @@ Table of Content
    * [1. Table sharing: One database for different applications](#table-sharing-one-database-for-different-applications)
    * [2. Multitenancy: One database for multiple application instances](#multitenancy-one-database-for-multiple-application-instances)
    * [3. One databases for one application instance](#one-databases-for-one-application-instance)
-   * [4. OLTP-OLAP segregation: Two database for one application instance](#oltp-olap-segregation-two-database-for-one-application-instance)
+   * [4. OLTP-OLAP segregation: Two databases for one application instance](#oltp-olap-segregation-two-databases-for-one-application-instance)
    * [​5. Multiple databases for one application instance](#​-multiple-databases-for-one-application-instance)
    * [6. Summary](#summary)
 
