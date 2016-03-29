@@ -5,7 +5,7 @@
 <Categories Tags="Architecture, Design, Database, Monolith, Micro_service">
 </Categories>
 
-*Through time as hardware got faster and cheaper, the role of databases in application architecture vastly changed - From many applications sharing the same database, to having a single application using many databases. Let's have a look at the various architectures.*
+*Through time as hardware got faster and cheaper, the role of databases in application architecture vastly changed - from many applications sharing the same database, to having a single application using many databases. Let's have a look at the various architectures.*
 
 
 Please show your support by sharing and voting:
@@ -24,7 +24,7 @@ Table of Content
    * [6. Summary](#summary)
 
 
-With the rise of the micro service architecture in particular, we see a new way of organizing data storage of an application. From ancient time (1960's) till today we see vastly different perspectives on what constitutes proper database design. Not surprisingly, the technical evolution of the hardware databases are running on impact how we use them. But just as importantly, the growing dependence on tooling and the maturity of those, raise the bar for increasingly looser coupling.
+With the rise of the micro service architecture in particular, we see a new way of organizing data storage of an application. From ancient time (1960s) till today we see vastly different perspectives on what constitutes proper database design. Not surprisingly, the technical evolution of the hardware databases are running on impact how we use them. But just as importantly, the growing dependence on tooling and the maturity of those, raise the bar for increasingly looser coupling.
 
  
  
@@ -181,7 +181,7 @@ Required tooling maturity: 10
 
 ## 6. Summary
 
-With the different architectural styles we observe a fan of approaches. The more you entangle your applications, the more opportunities there are for riping resource benefits and light-weight transactional safety. Partly that is the reason it has shown surprisingly difficult to re-write old mainframe in modern programming languages using modern architectures whilst maintaining performance. On the other hand, changes become increasingly difficult to carry out, to the point where your applications are in a choke-hold. 
+With the different architectural styles we observe a fan of approaches. The more you entangle your applications, the more opportunities there are for reaping resource benefits and light-weight transactional safety. Partly that is the reason it has shown surprisingly difficult to re-write old mainframe in modern programming languages using modern architectures whilst maintaining performance. On the other hand, changes become increasingly difficult to carry out, to the point where your applications are in a choke-hold. 
 
 At the other end of the spectrum, emphasis is put on isolating business in bounded contexts. Isolation enable independent upgrade and roll-out of new features, and easier extension of the system. The cost is sacrificing the ACID properties across business entities, more data duplication, and a growing need for infrastructure. I
 
