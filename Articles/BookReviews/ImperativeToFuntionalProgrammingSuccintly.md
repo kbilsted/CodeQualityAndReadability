@@ -17,29 +17,27 @@ Please show your support by sharing and voting:
 <SocialShareButtons>
 </SocialShareButtons>
 
-​I've been meaning to writing this review for some time now. Reviews are more fun when you have something possitive to say. And I do like this book. It's the kind of book just up my alley. 
+**Why should you read this book??** Because it explains *"how to think functionally"*, which is very different from thinking imperatively - or object-oriented for that matter. That is why learning F# (or any other functional programming language) **will change how you think about problems the next time you are solving one**. 
 
-  * Its **succint**.
-  * it addresses a **general subject** rather than narrowly focusing on a framework. 
-  * And it's **free**. 
+​I've been meaning to writing this review for some time now. Reviews are more fun when you have something possitive to say. And I do like this book. It's the kind of book just up my alley: 
+
+  * Its *succint*.
+  * it addresses a *general subject*. 
+  * And it's *free*. 
   
-It is a short book, and judging by the number of pages, quick read . But it *will* require time for material to really sink in. Expect to be reading some of the sections more than once. It is unfortunate that this title has so very little exposure in the community. Whenever you see a listing of free F# resources, chances are that this book is *not* mentioned. I think this is a real shame. Quite possibly this it is due to the "email-wall" you have to penetrate - yes you need to sell your soul and give up your email adress in order to be able to download the book!
+It is a short book, and judging by the number of pages, quick read. But it *will* require time for material to really sink in. Expect to be reading some of the sections more than once. It is unfortunate that this title has so very little exposure in the community. Whenever you see a listing of free F# resources, chances are that this book is *not* mentioned. I think this is a real shame. Quite possibly this it is due to the "email-wall" you have to penetrate - yes you need to sell your soul and give up your email adress in order to be able to download the book!
 
-The book explains *"how to think functionally"*, which is very different from thinking imperatively - or object-oriented for that matter. That is why learning F# (or any other functional programming language) will change how you think about problems the next time you are solving one. 
 
 All examples of the book are written in F#, but there is little emphasis on the F# language itself. Instead, the book discuss functional programming concepts such as:
 
-  * Currying
-  * Partial application
+  * Currying and Partial application
   * Immutability
   * First-class functions
   * Higher-order functions
-  * Function pipelines
-  * Function composition
+  * Function pipelines and composition
   * Recursion
   * Map, filter, and reduce
-  * Continuations
-  * Continuation passing style
+  * Continuations and Continuation passing style
   * Monads (computation expressions)
 
 These concepts together is what constitute functional programming and hence is the critical path to becoming a proficient functional programmer. I especially enjoyed the section "Function pipelining, partial application, and function composition" explaining the core difference in organizing and composing code.
