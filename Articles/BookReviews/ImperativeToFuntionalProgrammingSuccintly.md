@@ -9,9 +9,9 @@
 
 This free [e-book](https://www.syncfusion.com/resources/techportal/details/ebooks/imperative) is highly recommended for people interested in broadening their programming horizon - as well as for beginner functional programmers.
 
-*Novice:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><br>
-*Skilled:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><br>
-*Wizard:* <img src="star.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px">
+*Novice:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px">  
+*Skilled:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px">  
+*Wizard:* <img src="star.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px">  
 
 Please show your support by sharing and voting:
 <SocialShareButtons>
