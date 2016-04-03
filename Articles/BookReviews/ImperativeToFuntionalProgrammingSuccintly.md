@@ -17,7 +17,7 @@ Please show your support by sharing and voting:
 <SocialShareButtons>
 </SocialShareButtons>
 
-**Why should you read this book??** Because it explains *"how to think functionally"*, which is very different from thinking imperatively - or object-oriented for that matter. That is why learning F# (or any other functional programming language) **will change how you think about problems the next time you are solving one**. 
+**Why should you read this book??** Because it explains *"how to think functionally"*, which is very different from thinking imperatively - or object-oriented for that matter. That is why learning F# (or any other functional programming language) **will change how you think about solutions the next time you are solving a problem**. 
 
 ​I've been meaning to writing this review for some time now. Reviews are more fun when you have something possitive to say. And I do like this book. It's the kind of book just up my alley: 
 
