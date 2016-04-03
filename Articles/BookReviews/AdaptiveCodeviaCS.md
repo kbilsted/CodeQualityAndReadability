@@ -1,7 +1,7 @@
 ﻿# Book review: Adaptive Code via C# #
 *Author: Kasper B. Graversen*
 <br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
-<Categories Tags="Book_Review, SOLID">
+<Categories Tags="Book_Review, SOLID, OOP, Design_Pattern">
 </Categories>
 
 <img src="Adaptive Code via CS.jpg">

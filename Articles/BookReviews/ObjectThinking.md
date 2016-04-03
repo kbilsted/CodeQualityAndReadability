@@ -1,16 +1,16 @@
 ﻿# Book review: Object Thinking
 *Author: Kasper B. Graversen*
 <br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
-<Categories Tags="Book_Review">
+<Categories Tags="Book_Review, OOP">
 </Categories>
 
 <img src="ObjectThinking.jpg">
 
 This [book](http://www.amazon.co.uk/gp/product/0735619654/ref=as_li_tl?ie=UTF8&camp=1634&creative=19450&creativeASIN=0735619654&linkCode=as2&tag=linkedin_kbg-21&linkId=OZVOEWC4UBJCU6OU) is mostly for the historically interested.
 
-*Novice:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px">  
-*Skilled:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px">  
-*Wizard:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px">  
+*Novice:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px">
+*Skilled:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px">
+*Wizard:* <img src="star.jpg" width="40px"><img src="star.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px"><img src="missingstar.jpg" width="40px">
 
 > Too long, too hard to read, too few real-life examples. Great book for historical and philosophical background information.
 
