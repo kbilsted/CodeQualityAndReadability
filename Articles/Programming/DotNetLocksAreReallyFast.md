@@ -25,10 +25,11 @@ Table of Content
    * [6. Conclusion](#conclusion)
  
 
-At MVNO I was doing multi-threaded programming for an integrations project with a third party application. At some point we wondered what the speed of the `lock()` construct was. Was it a slow operation to be used with care? Rather than relying on Internet hear-say I measured the situation for my use case. 
+At my company I was doing multi-threaded programming for an integrations project with a third party application. At some point we wondered what the speed of the `lock()` construct was. Was it a slow operation to be used with care? Rather than relying on Internet hear-say I measured the situation for my use case. 
 
 The third party system required for each call a sequence number to be supplied with calls. Since we do communication through multiple threads, we need a `Sequence` abstraction that is shared among the threads. Let's give this a first stab.
 
+Notice, this is a two-part article, part two [is found here](StrategiesForFastThreadSafeCode.html)
 ## 1. The unsafe approach
 
 ```
@@ -206,7 +207,7 @@ The trick to testing this is to ensure that by merging all numbers from all work
 
 For workers doing very little work, the `lock()` construct is amazingly fast. Very close to a low-level busy-wait strategy.
 
-In the next installment, I'll show using other features of the `Interlocked` Api, that achieves speed close to the thread-unsafe implementation!
+[In the next installment](StrategiesForFastThreadSafeCode.html), I'll show using other features of the `Interlocked` Api, that achieves speed close to the thread-unsafe implementation!
 
 
 
