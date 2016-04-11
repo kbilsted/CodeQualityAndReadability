@@ -18,9 +18,9 @@ Please show your support by sharing and voting:
 Table of Content
 
    * [1. Describing the problem domain](#describing-the-problem-domain)
-   * [2. Solution 1: Using simple types](#solution--using-simple-types)
+   * [2. Solution 1: Using simple types](#solution-1-using-simple-types)
      * [2.1 Problems with using the simple types.](#problems-with-using-the-simple-types)
-   * [3. Solution 2: Domain types to the rescue](#solution--domain-types-to-the-rescue)
+   * [3. Solution 2: Domain types to the rescue](#solution-2-domain-types-to-the-rescue)
      * [3.1 The `Tag` class](#the--class)
      * [3.2 The `Page` class](#the--class)
      * [3.3 The `PageGenerator`](#the)

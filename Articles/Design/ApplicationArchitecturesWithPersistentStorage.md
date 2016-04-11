@@ -20,7 +20,7 @@ Table of Content
    * [2. Multitenancy: One database for multiple application instances](#multitenancy-one-database-for-multiple-application-instances)
    * [3. One databases for one application instance](#one-databases-for-one-application-instance)
    * [4. OLTP-OLAP segregation: Two databases for one application instance](#oltp-olap-segregation-two-databases-for-one-application-instance)
-   * [​5. Multiple databases for one application instance](#​-multiple-databases-for-one-application-instance)
+   * [5. Multiple databases for one application instance](#multiple-databases-for-one-application-instance)
    * [6. Summary](#summary)
 
 
@@ -145,7 +145,7 @@ Required tooling maturity: 5
 
 
 
-## ​5. Multiple databases for one application instance
+## 5. Multiple databases for one application instance
 
 This is the idea that a single application instance is using *several* databases for storing its state. The databases may (mix and match different technologies)[http://www.martinfowler.com/bliki/PolyglotPersistence.html] (e.g. SQL and NoSQL) that best fit the problem domain. The choice of database technology hinges on whether your business data is more in alignment with say a graph than a relation database. For example, you centralize all logging in ElasticSearch and all your performance metrics in InfluxDb. These services are tailored for these exact use scenarios. And similarly, other parts of your application may choose to store its data in a database of its own. Yes, we are now entering the land of micro services. And while not explicitly shown in the depiction, this architecture can easily encompass one or more OLAP databases thrown into the mix.​
 

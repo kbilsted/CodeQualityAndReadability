@@ -13,9 +13,9 @@ Table of Content
 
    * [1. Introduction](#introduction)
    * [2. Revisiting the example problem](#revisiting-the-example-problem)
-   * [3. Strategy 1: Compare-and-exchange](#strategy--compare-and-exchange)
-   * [4. Strategy 2: Copy local scope](#strategy--copy-local-scope)
-   * [5. Strategy 3: Reducing the lock scope](#strategy--reducing-the-lock-scope)
+   * [3. Strategy 1: Compare-and-exchange](#strategy-1-compare-and-exchange)
+   * [4. Strategy 2: Copy local scope](#strategy-2-copy-local-scope)
+   * [5. Strategy 3: Reducing the lock scope](#strategy-3-reducing-the-lock-scope)
    * [6. Performance measurements](#performance-measurements)
    * [7. Conclusions](#conclusions)
 
