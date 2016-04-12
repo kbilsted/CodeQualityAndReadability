@@ -119,7 +119,7 @@ public class Sequence_from_prequel_slow
 The hint here to improving speed, is that 
 
   * `string.Format()` and `Substring()` are costly compared to the cost of `lock`. 
-  * These operations does not mutate state defined outside our `Netxt` method.
+  * These operations does not mutate state defined outside our `Next` method.
 
 Recall, that with each method invocation, state declared inside the method is instantiated. Hence code that only operate on method-local state is thread safe out of the box. So by making a local copy of the state that needs be type safely mutated, we can leave the rest of the code outside the lock. 
 
