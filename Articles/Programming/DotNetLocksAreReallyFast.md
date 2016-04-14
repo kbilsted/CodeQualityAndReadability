@@ -126,7 +126,7 @@ The `Interlocked` Api reads a little strange at first sight. `Interlocked.Exchan
 ## 4. Performance measurements - wow lock is fast! 
 I'm not really interested in a complete micro performance benchmark, only look at the overall trends. Thus we perform only a single test case of 800.000 numbers to be drawn pr. worker, and 13 workers in total at play. We resume the testing details in the next section.
 
-The measurements are as follows on a quad code 3.5 Ghz machine
+The measurements are as follows on a quad core 3.5 Ghz machine
 
 | Approach            | Time         
 |---------------------|----------------:
