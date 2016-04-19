@@ -1,7 +1,6 @@
 ﻿# Malleable code by using decorators
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
-
+<ArticleHeaderUrls/>
 <Categories Tags="Design, SOLID, Single_Responsibility_Principle, Design_Pattern, Decorator, Wrapper, Cache ">
 </Categories>
 

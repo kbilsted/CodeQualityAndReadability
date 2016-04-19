@@ -1,7 +1,6 @@
 ﻿# On the changing notion of code readability
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
-<Categories Tags="Code_Readability">
+<ArticleHeaderUrls/><Categories Tags="Code_Readability">
 </Categories>
 
 *We investigate the divide of opinion regarding what constitutes readable code -

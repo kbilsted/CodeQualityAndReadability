@@ -1,13 +1,16 @@
 ﻿# Strategies for making high performance thread safe code
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
-
+<ArticleHeaderUrls/>
 <Categories Tags=".Net,lock,Threads,Multi threaded programming, Semaphore, Interlocked">
 </Categories>
 
 **We explain three strategies for making thread safe code extremely fast. The strategies are called "Compare-and-exchange", "copy local scope" and "reducing the lock scope". The strategies are easy to apply in practice.**
 
 
+Please show your support by sharing and voting:
+
+<SocialShareButtons>
+</SocialShareButtons>
 
 Table of Content
 

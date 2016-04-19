@@ -1,7 +1,6 @@
 # Book review: Imperative to functional programming succintly
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
-<Categories Tags="Book_Review, FSharp, Functional_Programming">
+<ArticleHeaderUrls/><Categories Tags="Book_Review, FSharp, Functional_Programming">
 </Categories>
 
 <img src="imperative_funtional.png">

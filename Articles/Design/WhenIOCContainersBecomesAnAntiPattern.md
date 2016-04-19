@@ -1,7 +1,6 @@
 ﻿# When IOC containers become an anti-pattern
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
-<Categories Tags="Architecture, Micro_Service, Refactor_to_Micro_Services, Dependency_Injection, IOC, IOC_Container, Service_Locator">
+<ArticleHeaderUrls/><Categories Tags="Architecture, Micro_Service, Refactor_to_Micro_Services, Dependency_Injection, IOC, IOC_Container, Service_Locator">
 </Categories>
 
 

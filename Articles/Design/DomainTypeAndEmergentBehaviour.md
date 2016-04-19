@@ -1,7 +1,6 @@
 ﻿# Domain types creates readability ...and emergent behaviour
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
-<Categories Tags="Domain_Types, Emergent_Behaviour, Code_Readability">
+<ArticleHeaderUrls/><Categories Tags="Domain_Types, Emergent_Behaviour, Code_Readability">
 </Categories>
 
 

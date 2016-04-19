@@ -1,7 +1,6 @@
 ﻿# Explicit and implicit interface implementations in F#
 *Author: Kasper B. Graversen*
-<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
-
+<ArticleHeaderUrls/>
 <Categories Tags="FSharp">
 </Categories>
 

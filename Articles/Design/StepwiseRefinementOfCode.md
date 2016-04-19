@@ -1,7 +1,6 @@
 ﻿# Stepwise refinement of code
 *Author: Kasper B. Graversen*  
-<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
-<Categories Tags="Refactoring, Code_Readability">
+<ArticleHeaderUrls/><Categories Tags="Refactoring, Code_Readability">
 </Categories>
 <br>
 
