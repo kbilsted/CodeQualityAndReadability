@@ -1,4 +1,4 @@
-﻿# Optimal indent size for code readability
+# Optimal indent size for code readability
 *Author: Kasper B. Graversen*
 <ArticleHeaderUrls/><Categories Tags="Code_Layout, Code_Readability, Design_Pattern">
 </Categories>
@@ -75,7 +75,7 @@ Evidently, they cannot agree on anything either.
 Little research has been carried out in terms of readability and indent size. The only I've come across carried out in "recent times" is 
  [*"Program Indentation and Comprehensibility"* by Miaria et. al, Communications of the ACM 26, (Nov. 1983) p.861-867](https://www.cs.umd.edu/~ben/papers/Miara1983Program.pdf)
 
-They investigate novice programmers (2 years) reading a Pascal program. They found 2, 4 spaces to be optimal and that there there is no measurable difference between the two. 6 is measurably worse and code without indentation is measurably awful. You probably could have guessed that.
+They investigate novice programmers (2 years) reading a Pascal program. They found 2, 4 spaces to be optimal and that there is no measurable difference between the two. 6 is measurably worse and code without indentation is measurably awful. You probably could have guessed that.
 
 Are these results the final truth? I doubt it. Ultimately, research in this area, measure with great bias the disposition of the subject more than anything else.
 
@@ -84,7 +84,7 @@ Are these results the final truth? I doubt it. Ultimately, research in this area
 ### 2.4 Tabs or spaces
 No one seem to be able to agree on this either. It seems that tabs are becomming less popular, e.g. forbidden in F# and tolerated in Python 3 (Python 2 didn't mind tabs).  Nowadays most people seem to agree, that tabs causes too many problems with inconsistent formatting when sharing code between developers. 
 
-Historically, tabs have played an important since they significantly reduced the source code size, and possibly were more convenient in a time where there was no IDE to continually format your code.
+Historically, tabs have played an important role since they significantly reduced the source code size, and possibly were more convenient in a time where there was no IDE to continually format your code.
 
 Others prefer tabs over spaces, since then the indentation on the screen is configurable to each programmer without disturbing colleagues preferences.  In practice, many have mixed experiences with this.
 
@@ -233,7 +233,7 @@ Probably the only time I would ever use an indention of 2 is when doing power po
 
 
 ### 4.2. Recommendation: A single statement pr. line
-Another way of making it hard to scan down code is to have two statements on one line. This is often done when the "if" and the "then" part takes up less space than the max. line length. Like the Linux coding guideline says: *"Don't put multiple statements on a single line unless you have something to hide"**. That is, **avoid** coding style like
+Another way of making it hard to scan down code is to have two statements on one line. This is often done when the "if" and the "then" part takes up less space than the max. line length. Like the Linux coding guideline says: *"Don't put multiple statements on a single line unless you have something to hide"*. That is, **avoid** coding style like
 
 ```
 if (a > 10 && b > 5) doSomethingA();
@@ -380,7 +380,7 @@ int ProcessElement(Person p)
 }
 ```
 
-I found this technique to take a little getting used to. But it actually makes a lot of sense. once you have it in your fingers. What we are doing is to separate the logic for the iteration with that of processing. 
+I found this technique to take a little getting used to. But it actually makes a lot of sense, once you have it in your fingers. What we are doing is to separate the logic for the iteration with that of processing. 
 
 For traditional looping using a variable such as the `for(int i = 0, ...)`, the benefits are even greater.
 
