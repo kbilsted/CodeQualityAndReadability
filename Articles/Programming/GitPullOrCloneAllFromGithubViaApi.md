@@ -1,4 +1,4 @@
-﻿# `PullOrCloneAll` - pulling and updating Git repositories through the GitHub Api
+﻿# `PullOrCloneAll` - cloning  and updating Git repositories through the GitHub Api
 *Author: Kasper B. Graversen*
 <ArticleHeaderUrls/>
 <Categories Tags="Git, GitHub, Powershell">
@@ -25,8 +25,7 @@ Table of Content
 	 
 ## 1. Introduction
 
-We want to automate the cloning and pulling of GitHub repositories. This is particularly welcomming when the number of repositories grow beyond a handful.
-Rather than maintaining a list of repositories in a text file manually, we can utilize the GitHub Api and fetch the list of repos.
+We want to automate the cloning and pulling of GitHub repositories. This is particularly welcomming when the number of repositories grow beyond a handful. Rather than maintaining a list of repositories in a text file manually, we can utilize the GitHub Api and fetch the list of repos.
 
 The flow of the script works as follows
 
@@ -38,13 +37,13 @@ The flow of the script works as follows
 	 * Ensure we are in a situation where we can fetch
 	 * `git pull`
 
-A complication in using the Github api is that the result is paginated. If you have more than 100 repositories (which is my current situation) - we have to fetch all pages first
+A complication in using the Github api is that the result is paginated. If you have more than 100 repositories (which is my current situation) - we have to fetch all pages one before we have full list of repositories.
 	 
-For my current work situation, all work is done in feature branches - hence I know that if I'm on the `master` branch, the coast is clear for taking in new change sets. Am I on a feature branch, I don't want to be disturbed. 
+For my current work situation, all work is done on feature branches - hence I know that a repository is on the `master` branch, the coast is clear for pulling new change sets. Am I on a feature branch, I don't want to be disturbed by potential merge conflicts. 
 
-A tempting thought is to support pulling while having local changes. For example by the stashing the local changes, switch to `master`, pull, and then return to the working branch and pop the stash. I've been reluctant to taking this step mostly due to error situations where the flow is stopped halfway through. What is the state of the repo if  the network connection suddenly drops, how do I detect the various errors? If my repo is in a semi-bad state, do we need to pop the stash? etc. 
+It is tempt to support pulling while having local changes and/or not be on `master`. For example by the stashing the local changes, switch to `master`, pull, and then return to the working branch and pop the stash. I've been reluctant to taking this step mostly due to error situations where the flow is stopped halfway through. What is the state of the repo if  the network connection suddenly drops, how do I detect the various errors? If my repo is in a semi-bad state, do we need to pop the stash? etc. 
 
-Maybe it's straight forward, but I'm no powershell wizard - improvement suggestions are welcommed.
+Maybe it's straight forward, but I'm no powershell wizard - *improvement suggestions are welcommed.*
 
 
 
@@ -91,7 +90,7 @@ function PullOrCloneAll($path="c:\src")
 ```
 function FetchRepoList()
 {
-	$uri = "https://api.github.com:443/orgs/mvno/repos?page=&per_page=100&access_token="+$gitHubApiKey
+	$uri = "https://api.github.com:443/orgs/MYNAMEORORGANIZATION/repos?page=&per_page=100&access_token="+$gitHubApiKey
 	
 	$all = @()
 	$page = 0
