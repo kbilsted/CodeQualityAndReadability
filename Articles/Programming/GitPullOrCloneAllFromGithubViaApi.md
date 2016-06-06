@@ -122,7 +122,7 @@ function MayPullFromRepo()
 	$status = & $git status --porcelain
 	if($status.Length -gt 0)
 	{
-		Write-Host("!! LOCAL CHANGES - giving up")
+		Write-Host -ForegroundColor red "!! LOCAL CHANGES - giving up"
     	Write-Host("'"+$status+"'" + $status.Length)
 		return $FALSE
 	}
@@ -130,7 +130,7 @@ function MayPullFromRepo()
 	$branch = & $git rev-parse --abbrev-ref HEAD
 	if($branch -ne "master")
 	{
-		Write-Host("!! NOT ON MASTER - giving up")		
+		Write-Host -ForegroundColor red "!! NOT ON MASTER - giving up"		
 		return $FALSE
 	}
 	
@@ -146,7 +146,7 @@ function Pull($repo)
 		$pullresult = & $git pull --ff-only --no-stat
 		if($pullresult -ne "Already up-to-date.")
 		{
-			Write-Host("" + $pullresult)				
+			Write-Host -ForegroundColor green "" + $pullresult
 		}
 	}
 	
