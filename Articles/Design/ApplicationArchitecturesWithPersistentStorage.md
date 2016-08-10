@@ -1,7 +1,7 @@
 ﻿# Application architectures with persistent storage
 *Author: Kasper B. Graversen*
 <ArticleHeaderUrls/>
-<Categories Tags="Architecture, Design, Database, Monolith, Micro_service">
+<Categories Tags="Architecture, Design, Database, Monolith, Micro_Service">
 </Categories>
 
 *Through time as hardware got faster and cheaper, the role of databases in application architecture vastly changed - from many applications sharing the same database, to having a single application using many databases. Let's have a look at the various architectures.*

@@ -65,7 +65,7 @@ Please show your support by sharing and voting: <SocialShareButtons>
 </SocialShareButtons> 
 
 
-**December 2015 NOTICE: MVNO IS HIRING** *MVNO at Telenor is looking for talented developers.  MVNO is the infrastructure that keep mobile companies running. Our clients include CBB, Bibob, and OK Mobil.
+**August 2016 NOTICE: MVNO IS HIRING** *MVNO at Telenor is looking for talented developers.  MVNO is the infrastructure that keep mobile companies running. Our clients include CBB, Bibob, and OK Mobil.
 Do you want to expand or further grow your skills within the realm of Micro services, IOC containers, NHibernate, Kafka, C#, F#, Javascript, Angular, ASP.NET MVC, Command-Query-Separation, DBA skills, Git, Github, Appveyor, Octopus, look no further. 
 <br>MVNO offers a unique culture where a big part of the working life if about optimizing for happiness. Your happiness! We have 20% of our time allocated for innovation or fixing stuff that bothers us. Great work place with 37h work week, six weeks vacation and highly skilled friendly colleagues.
 <br> If you are interested please contact mokc@telenor.dk for further details. The office is situated at Telenor Copenhagen.*
