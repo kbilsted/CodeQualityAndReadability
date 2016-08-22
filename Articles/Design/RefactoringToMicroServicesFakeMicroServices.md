@@ -105,7 +105,7 @@ Thus, while it is fairly straight forward to upgrade the fake customerlog servic
 
 Getting rid of a fake service is a two-step process. 
 
-First we must change the monolith into using events rather than writing directly to the database. For this we leverage upon the [event queue design pattern](RefactoringToMicroServicesTheEventQueue.html) to ensure our event publishing is aligned with our database transactions. **Conceptually, this is an interesting step: We are reducing the coupling of the code without making separating code into services**. 
+First we must change the monolith into using events rather than writing directly to the database. For this we leverage upon the [event queue design pattern](RefactoringToMicroServicesTheEventQueue.html) to ensure our event publishing is aligned with our database transactions. **Conceptually, this is an interesting step: We are reducing the coupling of the code without separating code into services**. 
 
 Second, we must upgrade our fake service to a real service. We do this by cutting ties to our dependencies in the monolith - perhaps by moving the code to the service. This is possible now that the monolith is publishing events rather than calling said code. Also, we need to migrate data either to some other schema or another database entirely.
 
