@@ -1,0 +1,282 @@
+﻿<html>
+<head>
+<title>Stepwise refinement of code</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="stepwise-refinement-of-code">Stepwise refinement of code</h1>
+<p><em>Author: Kasper B. Graversen</em><br />
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Refactoring.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #c6dc6b;    display: inline-block;">Refactoring</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2;    display: inline-block;">Code Readability</a></p>
+<p><br></p>
+<p><em>We all know that code left alone rot over time. Yet it is hard to get the time to solely change code for the purpose of changing it. And when you do get the time, it is hard to find the inclination and energy to really dig in.</em>    </p>
+<p><em>A technique I often employ to accommodate these problems, is to step-wise refine the code while reading it during the implementation of change requests or adding features.</em></p>
+<p>Please show your support by sharing and voting: </p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html&amp;title=Stepwise%20refinement%20of%20code"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html&amp;text=Stepwise%20refinement%20of%20code&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html&amp;t=Stepwise%20refinement%20of%20code"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html&amp;t=Stepwise%20refinement%20of%20code"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/pixabay.com_da_arbejder-vedligeholdelse-sejlere-665004.jpg"></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#introduction">1. Introduction</a></li>
+<li><a href="#hands-on-the-code">2. Hands on the code</a></li>
+<li><a href="#adding-notes">3. Adding notes</a></li>
+<li><a href="#removing-notes">4. Removing notes</a></li>
+<li><a href="#extract-to-private-method-repeatedly">5. Extract to private method repeatedly...</a></li>
+<li><a href="#extract-to-public-method">6. Extract to public method</a></li>
+<li><a href="#inline-method">7. Inline method</a></li>
+<li><a href="#conclusions">8. Conclusions</a></li>
+</ul>
+<h2 id="introduction">1. Introduction</h2>
+<p>This article chronicles a real session of reading and step-wise refining a piece of code from the beginning.</p>
+<p>Let me stress, that the refinements are made in small and safe increments. Each of which denotes a safe place to stop. Safety is of utmost importance. When you are afraid of making change in the fear of breaking something, you refrain from making them. </p>
+<p>Aside from safety, making changes in small increments has the added benefit, that you can be interrupted by say an emergency situation without much harm. Since the code is lefter better than it was, it can be shipped. We can always return to the code days or months later. With a half-done improvement left days or months is typically work lost. Certainly, it requires extra work, and possibly extra tests to ensure that nothing is broken. </p>
+<h2 id="hands-on-the-code">2. Hands on the code</h2>
+<p>The other day I was grokking some code for the <a href="https://github.com/kbilsted/StatePrinter">StatePrinter project</a>. I was at a point where the internal circuitry  of the project was in need of rewiring due to new features.  I fell upon the following code which judging from the name, parameters and return type converts a <code>Type</code> into a list of fields. But is that really what the method is doing? This code is by no means magic, it is the bread-and-butter for project. Hence we are interested in proper naming and/or separation of concerns.</p>
+<pre class="prettyprint"><code>public List&lt;SanitiedFieldInfo&gt; GetFields(Type type) 
+{
+    var fields = new HarvestHelper().GetFields(type);
+
+    var res = new List&lt;SanitiedFieldInfo&gt;();
+    foreach (var field in fields) 
+    {
+        switch (field.FieldInfo.MemberType) 
+        {
+            case MemberTypes.Field:
+                if ((field.FieldInfo as FieldInfo).IsPublic) 
+                    res.Add(field);
+                break;
+            case MemberTypes.Property:
+                var propertyInfo = (PropertyInfo) field.FieldInfo;
+                if (propertyInfo.GetGetMethod(false) != null) 
+                    res.Add(field);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+    return res.ToList();
+}
+</code></pre>
+<p>After a one-pass trawl over the code, we realize that the method does two distinct things. It gets a list of fields from some reflection-wrapper, then filters away all non-public entries. After having read the code, the empty line between <code>fields</code> and <code>res</code>  (line 2 and 4) was a dead give-away of these two concerns.  While adding empty lines to show a switch of focus is best practice, it is not guaranteed that the next reader will have the same understanding - especially if he is not aware of that convention.</p>
+<h2 id="adding-notes">3. Adding notes</h2>
+<p>If I have difficulties reading code, maybe due to lack of experience with that part of the code base, or lack of domain knowledge, I sometimes add notes to the code. I annotate the code using comments with my first impression understanding as I go along. Now I don't want to document every single line, just highlight the main themes. This is meant as a light-weight process, I'm definitely not documenting parameters or whether a method may thrown an exception for example.  The result is:</p>
+<pre class="prettyprint"><code>public List&lt;SanitiedFieldInfo&gt; GetFields(Type type) 
+{
+    var fields = new HarvestHelper().GetFields(type);
+
+    // Filter
+    var res = new List&lt;SanitiedFieldInfo&gt;();
+    ...
+}
+</code></pre>
+<p>Naturally, in a small piece of code like this, the number of concerns are limited. Only two things are going on. Gathering data, and filtering. Notice that I didn't bother inserting a comment for the first line. I find it hard to properly document a one-liner. If I ever feel the need to do so, I'd rather rename the method being called. Only document what is not self-explanatory. </p>
+<p>Now, the story might as well end here. If we assume that my mental notes are correct, we have left the code a little better than how we found it. <em>&quot;But we haven't changed anything&quot;</em>, you argue. Well, to the compiler we didn't, but for the next reader of the code we did. We made clear to two sub processes of the method. And that has value.  Thinking about it, comments have some nice properties:</p>
+<ol>
+<li>They are guaranteed not to change the behaviour of the code. Are you changing production code, or are you really close to a release deadline, likely you do not want to rock the boat unnecessarily. </li>
+<li>They serve as excellent bookmarks for later refactorings (made by you or some other person).</li>
+</ol>
+<p>Now, there are some pitfalls as well. </p>
+<ol>
+<li>My notes could be wrong, after all they are my first impressions.</li>
+<li>Later changes made to the code is not guaranteed change the documentation, this is especially true when merging in branches where there are no conflicts. </li>
+<li>I value the principle of <em>&quot;don't document the obvious&quot;</em>, so avoid that</li>
+</ol>
+<p>... This is why most of the time I don't stop here.</p>
+<p>Let us pause for a moment reflect on our deeds. Are we cheating management by improving something we are not paid to improve? No. The time-consumer here is <em>not</em> inserting the comments or figuring out how to word them. It is to read and understand the logic of the code. Remember, code is read many times more often than (re-)written. </p>
+<h2 id="removing-notes">4. Removing notes</h2>
+<p>To best combat the problem of documentation gradually drifting from the code, we remove comment altogether!  One way to remove a comment this is to apply the &quot;Extract method&quot; refactoring pattern. Below we remove the comment <code>// filter</code> and replace it with a method <code>Filter()</code>.</p>
+<pre class="prettyprint"><code>public List&lt;SanitiedFieldInfo&gt; GetFields(Type type) 
+{
+    var fields = new HarvestHelper().GetFields(type);
+
+    return Filter(fields);
+}
+</code></pre>
+<p>and this</p>
+<pre class="prettyprint"><code>List&lt;SanitiedFieldInfo&gt; Filter(List&lt;SanitiedFieldInfo&gt; fields) 
+{
+    var res = new List&lt;SanitiedFieldInfo&gt;();
+    foreach (var field in fields) 
+    {
+        switch (field.FieldInfo.MemberType) 
+        {
+            case MemberTypes.Field:
+            ...  
+</code></pre>
+<p>Applying the &quot;Extract method&quot; refactoring may not always be a viable solution. For example,  when the extracted method takes many arguments, say 8. In such cases, and depending on the source code layout, we may spend 8-10 lines calling the method, and a similar amount of lines on defining the parameter list of the function.  Assuming the code we are extracting to a method is less than 8 lines of code, we are replacing a one-liner comment with roughly 20 lines of code for the method call and the method definition. This may instead lead to cluttering the overview and hurt readability.</p>
+<p>Large classes is another example where the code does not lend itself to such refactorings. With a very large class, you now have to mentally juggle all the state and logic of the class along with only being able to read fragments of the code (a method). A first stab on such a code base, it is likely beneficial to separating the class into several classes. </p>
+<p>Naturally, the rules here are not set in store. Once I was faced with code that had so many nested scopes that extracting into methods was the only conceivable way to ensure that new requirements were added correctly. Go with your gut-feeling. </p>
+<h2 id="extract-to-private-method-repeatedly...">5. Extract to private method repeatedly...</h2>
+<p>Now that we have understood the overall motivation for the <code>Filter()</code> method, we can focus our mental energy on the <code>res</code> variable. Clearly it is the result of the execution since it is being returned. I've come to appreciate more and more, to extract the body of looping constructs. The reason being that we separate the traversal of steps from the execution in each step. Typically the two are unrelated.</p>
+<p>This is somewhat comparable to why I favour using a <code>foreach</code> over a <code>for</code>. With the <code>foreach</code> I do not have to concern myself with the indexing variable. Is it modified in the loop body? Is it always incremented by 1? etc. </p>
+<p>When we extract the method body we get</p>
+<pre class="prettyprint"><code>List&lt;SanitiedFieldInfo&gt; Filter(List&lt;SanitiedFieldInfo&gt; fields) 
+{
+    var res = new List&lt;SanitiedFieldInfo&gt;();
+    foreach (var field in fields)
+        AddFieldIfPublic(field, res);
+
+    return res;
+}
+
+void AddFieldIfPublic(SanitiedFieldInfo field, List&lt;SanitiedFieldInfo&gt; res)
+{
+    switch (field.FieldInfo.MemberType) 
+    {
+        case MemberTypes.Field:
+            if ((field.FieldInfo as FieldInfo).IsPublic)
+               res.Add(field);
+            break;
+        case MemberTypes.Property:
+          var propertyInfo = (PropertyInfo)field.FieldInfo;
+          if (propertyInfo.GetGetMethod(false) != null)
+             res.Add(field);
+          break;
+        default:
+            throw new ArgumentOutOfRangeException();
+    }
+}
+</code></pre>
+<h2 id="extract-to-public-method">6. Extract to public method</h2>
+<p>We realize after further scrutiny that if there is a match, we add the current field to the <code>res</code> list. And that for each invocation of the method a maximum of one element (the field) is added. Hence it is a filter. We have a common pattern for doing filtering. It is called LINQ. There are three advantages by using LINQ in the code.</p>
+<ol>
+<li>We use a common and easily recognizable implementation strategy. When people read <code>Where</code> they have a good idea as what is going on.</li>
+<li>We are forced to separate out the &quot;business logic&quot; from the actual filtering (which is the reusable bit LINQ provides). </li>
+<li>Without LINQ, we are free to perform any kind of changes to the list. With LINQ we are tied into just filtering. </li>
+</ol>
+<p>This lock-in provides a lot of readability. The reader will never ponder <em>&quot;what is going on in this loop, some advanced mutation I bet&quot;</em>. With LINQ we have less freedom as to what we can do - ultimately  liberatting many potential detours in the readers mind. </p>
+<p>The result is </p>
+<pre class="prettyprint"><code>List&lt;SanitiedFieldInfo&gt; Filter(List&lt;SanitiedFieldInfo&gt; fields) 
+{
+    return fields.Where(IsPublic).ToList();
+}
+
+bool IsPublic(SanitiedFieldInfo field) 
+{
+    switch (field.FieldInfo.MemberType) 
+    {
+        case MemberTypes.Field:
+            if ((field.FieldInfo as FieldInfo).IsPublic)
+                return true;
+            break;
+        case MemberTypes.Property:
+            var propertyInfo = (PropertyInfo)field.FieldInfo;
+            if (propertyInfo.GetGetMethod(false) != null)
+                return true;
+            break;
+        default:
+          throw new ArgumentOutOfRangeException();
+    }
+    return false;
+}
+</code></pre>
+<h2 id="inline-method">7. Inline method</h2>
+<p>Finally, we realize that the <code>Filter()</code> is a simple call to <code>Where</code> and hence we might as well apply the refactoring pattern &quot;In-line method&quot;.</p>
+<p>The final result is </p>
+<pre class="prettyprint"><code>public List&lt;SanitiedFieldInfo&gt; GetFields(Type type) 
+{
+    var fields = new HarvestHelper().GetFields(type);
+
+    return fields.Where(IsPublic).ToList();
+}
+
+bool IsPublic(SanitiedFieldInfo field) 
+{
+    switch (field.FieldInfo.MemberType) 
+    {
+        case MemberTypes.Field:
+            if ((field.FieldInfo as FieldInfo).IsPublic)
+                return true;
+            break;
+        case MemberTypes.Property:
+            var propertyInfo = (PropertyInfo)field.FieldInfo;
+            if (propertyInfo.GetGetMethod(false) != null)
+                return true;
+            break;
+        default:
+            throw new ArgumentOutOfRangeException();
+    }
+    return false;
+}
+</code></pre>
+<h2 id="conclusions">8. Conclusions</h2>
+<p>The article in summary form</p>
+<ul>
+<li>By step-wise refining the code, we make the intentions of the code clearer. </li>
+<li>By constantly separating code into smaller parts we reduce the possibility of mistakes and enable reuse of code. </li>
+<li>We always seize the chance to in-line methods when we realize we have created too small methods.</li>
+<li>By using LINQ we boost readability.</li>
+</ul>
+<p>Notice that we did not jump directly from the first version of the code to the last. By doing simple step-wise refinements, we ensure that each step is safe. Preferably, we take each step with automated tests as the safety net.</p>
+<p>I hope you are inspired to do safe refactorings the next time you have to understand a tangled piece of code. Simple refactorings like these do not take a lot of time, and they make life for you easier as your understanding shapes the code. Also it makes it easier to next reader too. So everyone benefits.</p>
+<p>A point we haven't touched upon is how distributed version control systems directly support this way of working. Every time we have completed a small step, we can issue a commit. Then, before pushing, we can combine the change sets into one. See <code>git reset --soft head~xx</code> or <code>hg combine xx</code> for further information on combining commits.</p>
+<p>Please show your support by sharing and voting: </p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html&amp;title=Stepwise%20refinement%20of%20code"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html&amp;text=Stepwise%20refinement%20of%20code&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html&amp;t=Stepwise%20refinement%20of%20code"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/StepwiseRefinementOfCode.html&amp;t=Stepwise%20refinement%20of%20code"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/StepwiseRefinementOfCode.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br>
+<br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

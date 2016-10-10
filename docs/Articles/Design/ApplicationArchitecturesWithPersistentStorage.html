@@ -1,0 +1,204 @@
+﻿<html>
+<head>
+<title>Application architectures with persistent storage</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="application-architectures-with-persistent-storage">Application architectures with persistent storage</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/ApplicationArchitecturesWithPersistentStorage.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br>
+<a href="http://firstclassthoughts.co.uk/Tags/Architecture.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #21689d;    display: inline-block;">Architecture</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Design.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #eee6bb;    display: inline-block;">Design</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Database.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #7e97f0;    display: inline-block;">Database</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Monolith.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #f56600;    display: inline-block;">Monolith</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Micro_Service.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #61bfd3;    display: inline-block;">Micro Service</a></p>
+<p><em>Through time as hardware got faster and cheaper, the role of databases in application architecture vastly changed - from many applications sharing the same database, to having a single application using many databases. Let's have a look at the various architectures.</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;title=Application%20architectures%20with%20persistent%20storage"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;text=Application%20architectures%20with%20persistent%20storage&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;t=Application%20architectures%20with%20persistent%20storage"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;t=Application%20architectures%20with%20persistent%20storage"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#table-sharing-one-database-for-different-applications">1. Table sharing: One database for different applications</a></li>
+<li><a href="#multitenancy-one-database-for-multiple-application-instances">2. Multitenancy: One database for multiple application instances</a></li>
+<li><a href="#one-databases-for-one-application-instance">3. One databases for one application instance</a></li>
+<li><a href="#oltp-olap-segregation-two-databases-for-one-application-instance">4. OLTP-OLAP segregation: Two databases for one application instance</a></li>
+<li><a href="#multiple-databases-for-one-application-instance">5. Multiple databases for one application instance</a></li>
+<li><a href="#summary">6. Summary</a></li>
+</ul>
+<p>With the rise of the micro service architecture in particular, we see a new way of organizing data storage of an application. From ancient time (1960s) till today we see vastly different perspectives on what constitutes proper database design. Not surprisingly, the technical evolution of the hardware databases are running on impacts how we use them. But just as importantly, the growing dependence on tooling and the maturity of those, raises the bar for increasingly looser coupling.</p>
+<h2 id="table-sharing-one-database-for-different-applications">1. Table sharing: One database for different applications</h2>
+<p>This is the idea that you have <em>one</em> database available for all your applications. The applications not only share the same database, they may share the tables as well. You'll see this architectural style in use in the oldest of applications - typically mainframe applications. In the banking and stock market industry even today you'll see this application in full use. While the whole idea sounds a bit crazy, remind yourself, that there are still many applications out there plugged together in this style. And moving away from mainframes has proved difficult. Performance and transactional safety is unparallel measured in hardware performance. Simple, fast and transactional inter-application communication. No need for a messaging infrastructure such as messaging-components or file-ftp'ing onto shared drives.</p>
+<p>But there are severe consistency concerns. Any change can have unpredictable consequences. Since any program may write any data to any table, a careless implementation in one application may render the data unusable to other applications - perhaps even making them crash. A change requires the understanding of the invariants of each application and the change must be classified as being a breaking or non-breaking change. In the case of breaking changes <em>multiple applications</em> need be upgraded and released in a <em>big bang</em> fashion.</p>
+<p><center><img src="img/architecture_with_db_1.png" ></center></p>
+<p><strong>Advantages</strong></p>
+<ul>
+<li>Cheap licencing - there is only one server.</li>
+<li>Hardware well utilized as it serves multiple applications.</li>
+<li>Automatically consistent state across applications.</li>
+<li>Backup and restore is simple - there is only one database.</li>
+</ul>
+<p><strong>Disadvantages</strong></p>
+<ul>
+<li>Stability issues, when an application issues heavy queries other applications may suffer to the extent that they become unresponsive.</li>
+<li>Unavailability issues, restarting the database server, perhaps due to some upgrade, all applications experience down time simultaneously.</li>
+<li>Security concerns, any program may access any data - also data that does not belong to it.</li>
+<li>Making changes to the data model is very hard since it requires potentially <em>a whole suite</em> of applications to be changed.</li>
+<li>Consistency issues, when an application changes how it stores data, may damage other applications.</li>
+</ul>
+<p>Required tooling and tooling maturity index: Low</p>
+<h2 id="multitenancy-one-database-for-multiple-application-instances">2. Multitenancy: One database for multiple application instances</h2>
+<p>This is the idea that you keep several instances of an application on the same database. For example, administrative systems licensed and hosted for different clients. The means by which you distinguish rows belonging to one client from the rows of another client is by adding  a column to each database table with the identity of the owner. For example the column <code>OwnerId</code> or <code>ClientId</code>. Notice that the architecture style presented in <em>(1)</em> can easily be combined with this architectural style.</p>
+<p>Many of the concerns raised in <em>(1)</em>, of course, also apply to this architecture. But there are differences to the advantages of this approach. I guess the reason why this architecture arises in system after system, is that it solves concrete problems. The event where a software vendor goes from one to two clients, with little to no automation, suddenly he finds himself seriously lacking automation. And typically, the first few clients are small with little cash in their pockets. So a solution has to be found that is fast and affordable. I believe this is why this pattern is so common... Busy software shops buy time with this architecture: All the infrastructure for propagating database changes, keeping several databases structurally in sync is solved. When the software changes due to features or bug fixing, it is easy to propagate the changes to all clients - after all there is only one database!</p>
+<p>With the rapid advancement of cloud hosting and PaaS, the term <a href="https://en.wikipedia.org/wiki/Multitenancy">multi tenant architecture</a> has been re-branded as more intelligent ways of sharing resources and keeping licensing costs down. It is different in the sense that tenants are isolated from each other and the resource are shared fairly between tenants. In this article we are talking about the low-level implementation at the table level. </p>
+<p><center><img src="img/architecture_with_db_2.png" ></center></p>
+<p><strong>Advantages</strong></p>
+<ul>
+<li>Cheap hardware and licencing - there is only one server. Especially for cloud hosting.</li>
+<li>Good utilization of hardware as clients are sharing the server.</li>
+<li>Making changes is easy. Changes are rolled out to all clients automatically.</li>
+<li>Backup and restore is simple - there is only one database.</li>
+</ul>
+<p><strong>Disadvantages</strong></p>
+<ul>
+<li>Stability issues, when one client is under heavy load pressure, other clients suffer.</li>
+<li>Security concerns, a bug causes the program to operate on data from several clients, which can be disastrous. Imagine trying to ship (and bill the poor bugger) order #2023 from <em>across</em> vastly different clients to a customer. Suddenly the customer is billed for a vacuum cleaner and a sailing boat, in addition to the deodorant he ordered.</li>
+<li>Incremental roll out is much more difficult. Typically, you cannot roll out changes first to the smaller clients and ensure things are working o.k. before rolling out the bigger clients - typically it is all or nothing.</li>
+<li>Slight overhead as each row in the database holds and extra id, additionally, each index too will hold this extra information.</li>
+<li>Higher storage requirements as data may be duplicated in different applications.</li>
+</ul>
+<p>Required tooling maturity: 1</p>
+<h2 id="one-databases-for-one-application-instance">3. One databases for one application instance</h2>
+<p>This is the idea that each application instance should own its own database. This is the natural approach form most modern software development (when they don't choose architecture <em>(5)</em>). For a single application instance there is no overhead of this architecture, whereas more structured work flows are required when the number of application instances grow. As noted above, time pressure may throw a project spiraling down into the architecture described in <em>(2)</em>.</p>
+<p>Interestingly, the advantages and disadvantages in <em>(1)</em> and <em>(2)</em> have now all switched places in this architecture.
+​​
+<center><img src="img/architecture_with_db_3.png" ></center></center></p>
+<p><strong>Advantages</strong></p>
+<ul>
+<li>Allows incremental roll out of new schema definitions and code releases</li>
+<li>Stability: Heavy queries of one application instance does not affect other application instances</li>
+<li>Security: Data for one client is not accessible to other clients</li>
+<li>No overhead of a <code>clientId</code> or similar superfluous columns.</li>
+</ul>
+<p><strong>Disadvantages</strong></p>
+<ul>
+<li>More expensive hardware and licencing - a server for each application instance.</li>
+<li>Rolling out changes requires automation as the number of application instances grow.</li>
+<li>Backup and restore is a bit more involved as several databases need to be operated on.</li>
+<li>Higher storage requirements as data may be duplicated in different applications.</li>
+</ul>
+<p>Required tooling maturity: 3</p>
+<h2 id="oltp-olap-segregation-two-databases-for-one-application-instance">4. OLTP-OLAP segregation: Two databases for one application instance</h2>
+<p>This is the idea that the database is split in two in recognition, that there are two distinct usages of the database. An <em>OLTP</em> (On-line Transaction Processing) database which is characterized by a large volume short lived transactions. Primary concern is fast query processing. An <em>OLAP</em> (On-line Analytical Processing, AKA Data Warehouse) database which is characterized by low volume of transactions, often long-running and complex. Typically these transactions deal with BI or Data mining like historic data and producing key business-performance indicators.</p>
+<p>Data is organized differently in the two systems to cater for the very different nature of the queries performed in the two systems. Hence OLTP-databases typically organize data star schemas (multi-dimensional schemas) that allows for easy aggregation across business entities.</p>
+<p><center><img src="img/architecture_with_db_4.png" ></center></p>
+<p>​​
+<strong>Advantages</strong></p>
+<ul>
+<li>Structure: Data may be structured to cater for two distinct kinds of query needs</li>
+<li>Performance: Heavy OLAP-queries do not affect the responsiveness of the OLTP</li>
+</ul>
+<p><strong>Disadvantages</strong></p>
+<ul>
+<li>More expensive hardware and licencing - a server for each database</li>
+<li>Rolling out changes in the OLTP may require changes in the OLAP</li>
+<li>Backup and restore is a bit more involved as several databases need to be operated on.</li>
+</ul>
+<p>Required tooling maturity: 5</p>
+<h2 id="multiple-databases-for-one-application-instance">5. Multiple databases for one application instance</h2>
+<p>This is the idea that a single application instance is using <em>several</em> databases for storing its state. The databases may <a href="http://www.martinfowler.com/bliki/PolyglotPersistence.html">mix and match different technologies</a> (e.g. SQL and NoSQL) that best fit the problem domain. The choice of database technology hinges on whether your business data is more in alignment with say a graph than a relation database. For example, you centralize all logging in ElasticSearch and all your performance metrics in InfluxDb. These services are tailored for these exact use scenarios. And similarly, other parts of your application may choose to store its data in a database of its own. Yes, we are now entering the land of micro services. And while not explicitly shown in the depiction, this architecture can easily encompass one or more OLAP databases thrown into the mix.​</p>
+<p>Contrasting this architecture to the architecture of (1) this architecture seems almost perverted - the sheer resources required for servers and inter-service communication is staggering.​​ Not to mention, it is quite common for micro services to store state from other parts of the system in their own database in order to reduce the number of requests to other services. Hence the storage requirements rise. A service may choose to listen to one or more kinds of events, and it may update its state about other parts of the system through said events' payload. </p>
+<p>An important side note to this architecture is a considered need for infrastructure. With loose coupling you need a communication mechanism. With the many independent processes on many machines, a simple logging of program state requires tools such as a shared storage for logging messages as it quickly becomes impractical to log on to several machines. </p>
+<p><center><img src="img/architecture_with_db_5.png" ></center></p>
+<p>​​
+<strong>Advantages</strong></p>
+<ul>
+<li>Allows incremental roll out of new schema definitions and code releases</li>
+<li>Stability: Heavy queries in one part of the system do not affect other parts of the application.</li>
+<li>Understandability: A bounded context per database significantly neatly confines the data-space of the application part.</li>
+<li>Enable structuring and storing data in a fashion to cater for the use scenarios of the domain.</li>
+<li>Performance: Heavy queries in one part of the application does not affect other parts of the application.</li>
+</ul>
+<p><strong>Disadvantages</strong></p>
+<ul>
+<li>Loss of transactional consistency. Only the weaker &quot;eventual consistency&quot; can be guaranteed.</li>
+<li>Bigger storage requirements as data often is duplicated in many parts of the application instance.</li>
+<li>A need for a traffic-heavy communication infrastructure such as a message busy.</li>
+<li>More expensive hardware and licencing - more servers are involved.</li>
+<li>Rolling out changes requires automation as the number of databases grow.</li>
+<li>Backup and restore is more involved as several databases need be operated on.</li>
+</ul>
+<p>Required tooling maturity: 10    </p>
+<h2 id="summary">6. Summary</h2>
+<p>With the different architectural styles we observe a fan of approaches. The more you entangle your applications, the more opportunities there are for reaping resource benefits and light-weight transactional safety. Partly that is the reason it has shown surprisingly difficult to re-write old mainframe in modern programming languages using modern architectures whilst maintaining performance. On the other hand, changes become increasingly difficult to carry out, to the point where your applications are in a choke-hold. </p>
+<p>At the other end of the spectrum, emphasis is put on isolating business in bounded contexts. Isolation enables independent upgrade and roll-out of new features, and easier extension of the system. The cost is sacrificing the ACID properties across business entities, more data duplication, and a growing need for infrastructure. I</p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;title=Application%20architectures%20with%20persistent%20storage"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;text=Application%20architectures%20with%20persistent%20storage&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;t=Application%20architectures%20with%20persistent%20storage"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;t=Application%20architectures%20with%20persistent%20storage"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p>​​</p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/ApplicationArchitecturesWithPersistentStorage.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br>
+<br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

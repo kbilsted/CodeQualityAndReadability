@@ -1,0 +1,450 @@
+﻿<html>
+<head>
+<title>Domain types creates readability ...and emergent behaviour</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="domain-types-creates-readability-...and-emergent-behaviour">Domain types creates readability ...and emergent behaviour</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Domain_Types.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #400cdb;    display: inline-block;">Domain Types</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Emergent_Behaviour.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #80b3ec;    display: inline-block;">Emergent Behaviour</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2;    display: inline-block;">Code Readability</a></p>
+<p><em>The focus of this article is how readability and maintainability is improved by replacing simple types with domain types. Consequences of introducing domain types is both a closer relationship between model and implementation, and that the domain types establishes a conceptual foundation making it easier to extend and adapt the application for future changes.</em></p>
+<p>Please show your support by sharing and voting: </p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html&amp;title=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html&amp;text=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html&amp;t=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html&amp;t=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/httpspixabay.comdasommerfugl-insekt-oejne-sensor-376876.jpg"></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#describing-the-problem-domain">1. Describing the problem domain</a></li>
+<li>
+<a href="#solution-1-using-simple-types">2. Solution 1: Using simple types</a>
+<ul>
+<li><a href="#problems-with-using-the-simple-types">2.1 Problems with using the simple types.</a></li>
+</ul>
+</li>
+<li>
+<a href="#solution-2-domain-types-to-the-rescue">3. Solution 2: Domain types to the rescue</a>
+<ul>
+<li><a href="#the--class">3.1 The <code>Tag</code> class</a></li>
+<li><a href="#the--class">3.2 The <code>Page</code> class</a></li>
+<li><a href="#the">3.3 The <code>PageGenerator</code></a></li>
+<li><a href="#the--class">3.4 The <code>TagCollection</code> class</a></li>
+<li><a href="#the">3.5 The <code>DocumentParser</code></a></li>
+</ul>
+</li>
+<li>
+<a href="#emergent-behaviour">4. Emergent behaviour</a>
+<ul>
+<li><a href="#bug-fixing-the-link-name-creation">4.1 Bug fixing the link name creation</a></li>
+</ul>
+</li>
+<li><a href="#conclusions">5. Conclusions</a></li>
+</ul>
+<p>Our investigations take outset in implementing an application with and without domain types. The implementations are easily comparable, and thus provides ample  opportunity to reflect and compare. </p>
+<p>What is a domain type anyways?? A domain type is a type that cover the information or intent of a phenomenon in the <em>problem domain</em> (i.e. the real life &quot;thing&quot; we are creating software for). The domain type is expressed in the <em>solution domain</em> (i.e. our code). Some times, a domain type is a mere wrapper for say a <code>string</code> or an <code>int</code>.  This thought may be alien to you, maybe it even feels like a complete waste of time to do all that wrappin'. Allot me to show you differently. </p>
+<h2 id="describing-the-problem-domain">1. Describing the problem domain</h2>
+<p>We are constructing a small program to help assist in creating a static blog. Based on the content of the blog we need to generate navigational documents linking the blog entries together. </p>
+<p>We must read in a bunch of documents. Each document is parsed in order to locate one or more tags inserted into the document describing the content of the document. From the collection of  tags we mus generate a <em>&quot;tag file&quot;</em> for each tag, containing links to all documents with that tag. In addition, we must  generate a file containing links to all <em>&quot;tag files&quot;</em>. Finally, we must generate a file linking to all documents of the blog where the link text is the title of the document.</p>
+<p>An analysis of our problem domain thus reveals the following <em>nouns</em>:</p>
+<table>
+<thead>
+<tr>
+	<th>Noun</th>
+	<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>Tag</td>
+	<td>A title</td>
+</tr>
+<tr>
+	<td>Page</td>
+	<td>A title and a path</td>
+</tr>
+<tr>
+	<td>Document</td>
+	<td>A text</td>
+</tr>
+<tr>
+	<td>Document tag parser</td>
+	<td>Parsing documents and locating tags</td>
+</tr>
+<tr>
+	<td>Page generator</td>
+	<td>Generate html for the navigation pages</td>
+</tr>
+<tr>
+	<td>File reader/writer</td>
+	<td>A file-reader and a file-write</td>
+</tr>
+<tr>
+	<td>File system document scanner</td>
+	<td>A scanner to recursively visit directories</td>
+</tr>
+</tbody>
+</table>
+<p>Potentially each of these nouns are to be modelled by its own class. Rather than turning this into an academic exercise, let us investigate how a lot of people would implement this application. It s straight forward to concoct a solution using simple type already provided by our programming language. We call this <em>solution 1</em>. </p>
+<p>Then we tweak the code to use domain types while preserving the existing structure. We call this <em>solution 2</em>... I won't be holding my breath waiting for you to applaud the naming!</p>
+<h2 id="solution-1-using-simple-types">2. Solution 1: Using simple types</h2>
+<p>For the first implementation, we will be creating classes, but if possible we avoid modelling the domain. I know I'm the guy leading the pen, and so I can make up any nonsense I want. What I am trying to accomplish, though, is to stay true to the spirit of how many people code. </p>
+<p>Here's how we are going to implement the above model</p>
+<table>
+<thead>
+<tr>
+	<th>Noun</th>
+	<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>Tag</td>
+	<td><code>string</code></td>
+</tr>
+<tr>
+	<td>Page</td>
+	<td><code>Tuple&lt;string, string&gt;</code></td>
+</tr>
+<tr>
+	<td>Document</td>
+	<td><code>string</code></td>
+</tr>
+<tr>
+	<td>Document tag parser</td>
+	<td>A class <code>DocumentParser</code> with a parse method</td>
+</tr>
+<tr>
+	<td>Page generator</td>
+	<td>A class with a method for each page to generate</td>
+</tr>
+<tr>
+	<td>File reader/writer</td>
+	<td><code>System.IO.File</code></td>
+</tr>
+<tr>
+	<td>File system document scanner</td>
+	<td><code>System.IO.DirectoryInfo</code></td>
+</tr>
+</tbody>
+</table>
+<p>Implementing this in a top-down fashion, makes us start at the document reading and parsing.  <code>GetTags()</code> just below traverses the directory structure and for each document reads it and asks a parser to identify the tags. The tags are then accumulated in the <code>tagsCollection</code> variable and returned.</p>
+<pre class="prettyprint"><code>public class DocumentParser
+{
+    public Dictionary&lt;string, List&lt;Tuple&lt;string, string&gt;&gt;&gt; GetTags(string rootFilePath)
+    {
+        var tagsCollection = new Dictionary&lt;string, List&lt;Tuple&lt;string, string&gt;&gt;&gt;();
+        
+        var di = new DirectoryInfo(rootFilePath);
+        foreach (var path in di.EnumerateFiles(&quot;*.txt&quot;, SearchOption.AllDirectories))
+        {
+            var fileContent = File.ReadAllText(path.FullName);
+            var tagsForPage = ParsePage(fileContent, path.FullName);
+            
+            foreach(var tagForPage in tagsForPage)
+            {
+              if(!tagsCollection.Contains(tagForPage.Key))
+                   tagsCollection.Add(tagForPage.Key), new List&lt;Tuple&lt;string, string&gt;&gt;());
+              tagsCollection[tagForPage.Key].AddRange(tagForPage.Value);
+            }
+        }
+
+        return tagsCollection;
+    }
+</code></pre>
+<p>The tags extraction is a private method of the class which uses some secret regex sauce, finds the relevant information</p>
+<pre class="prettyprint"><code>readonly Regex headerEx = new Regex(&quot;^#(?&lt;title&gt; .*)&quot;);
+readonly Regex tagEx = new Regex(&quot;... (?&lt;tagname&gt; .*) .*&quot;);
+
+Dictionary&lt;string, List&lt;Tuple&lt;string, string&gt;&gt;&gt; ParsePage(string pageContent, string fullName)
+{
+    Dictionary&lt;string, List&lt;Tuple&lt;string, string&gt;&gt;&gt; tagsToPages = 
+        new Dictionary&lt;string, List&lt;Tuple&lt;string, string&gt;&gt;&gt;();
+    
+    Match headerMatch = headerEx.Match(pageContent);
+    
+    string title = headerMatch.Groups[&quot;title&quot;].Value.Trim();
+
+    foreach (Match match in tagEx.Matches(pageContent))
+    {
+        string tag = match.Groups[&quot;tagname&quot;].Value;
+        if(!tags.Contains(tag))
+            tags.Add(tag, new List&lt;Tuple&lt;string, string&gt;&gt;());    
+
+        tags[tag].AddRange(Tuple.Create(title, fullName));
+    }
+
+    return tags;
+}
+</code></pre>
+<p>A site generator will first invoke the <code>DocumentParser</code>, then call a <code>PageGenerator</code> and with its output write to the file system. The implementation details are not important as it is a matter of simple traversals over our data-structure and generating HTML. The file writing is equally simple, just a call to <code>File.WriteText()</code>, and thus also omitted.</p>
+<p>Instead, we focus on the type signatures of the page generator. Type signatures tells you  a lot about your code and readability in general.</p>
+<pre class="prettyprint"><code>public class PageGenerator
+{
+    public string GenerateAllTagsPage(List&lt;string&gt; tagToUrl)  { ... }
+
+    public string GenerateAllArticlesPage(List&lt;Tuple&lt;string, string&gt;&gt; pages) { ... }
+
+    public string GenerateTagPage(string tag, List&lt;Tuple&lt;string, string&gt;&gt; links) { ... }
+}
+</code></pre>
+<h3 id="problems-with-using-the-simple-types.">2.1 Problems with using the simple types.</h3>
+<p>Did you trawl through all that code? If not, here is a summary of what we have experienced as problems so far. Feel free to revisit the code as you read along.</p>
+<p><strong>Type parameter madness</strong><br />
+By now, I hope you are growing a bit tired of type definitions like <code>Dictionary&lt;string, List&lt;Tuple&lt;string, string&gt;&gt;&gt;</code>. See, I always feel a headache is coming on, when I have to juggle around with such long-winded types whilst trying to understand the code that I did not write myself.  Constantly, I have to remind myself, what the data components are. Of course, naming is essential here, for example, <code>tags2pages</code> would be a typical name to describe the keys and values of a dictionary. </p>
+<p><strong>Skewed variable- and parameter-names</strong><br />
+As code gets refactored or changed, the first thing to erode are the variable names. The types are ensured to match by the compiler. Thus, an important aspect of code readability and navigability, has to do with expressing intention through use of types.</p>
+<p><strong>Gnarly interaction with the dictionary</strong><br />
+The astute reader may have noticed another issue with the code. The maintenance of the <code>List&lt;&gt;</code> inside the dictionary. Each time we need to add an element to a dictionary, whose value is a collection of some kind, we need to initialize if absent and do a <code>AddRange</code> with out values.  It's not so much the same code block repeating itself (although it is a violation of the DRY principle), more, it has to do with how the code reads. Its clumsy and gnarly. You want to add an element, yet you are faced, again and again, with having to deal with initialization and adding to lists. Needless to say, this calls for an abstraction too. Let's call it a <code>TagCollection</code> and define it further below.</p>
+<h2 id="solution-2-domain-types-to-the-rescue">3. Solution 2: Domain types to the rescue</h2>
+<p>The difficult part in this application is not the algorithm with which to extract the tags or generate the HTML, it is the data structures. And those are only difficult to understand since we are using so many simple types, rather than defining types that encompass the <em>problem domain</em>. The traversal of files, parsing using regular expressions or generating HTML is all trivial. Of course, this is not the case for all types of applications and problem domains, but I have yet to see an application that is harder to read when domain types have been used.</p>
+<p>The &quot;Solution 1&quot; implementation uses the type <code>string</code> to hold the following kinds of data</p>
+<ul>
+<li>File path</li>
+<li>Tag</li>
+<li>Page title</li>
+<li>Page url</li>
+<li>Document</li>
+</ul>
+<p>Since the page contains two separate pieces of information, a <code>Tuple&lt;string, string&gt;</code> is used in representing the page (mapping <code>Item1</code> to the title and <code>Item2</code> to the page url).</p>
+<p>The use of the <code>Tuple</code> class, I must admit, is a bit of a provocation. In my experience with code <code>Tuple</code> is actually not used that much, whereas <code>string</code> is almost always used for representing all kinds of information. I guess the lack of popularity on <code>Tuple</code>'s behalf may originate from the illegible properties <code>Item1</code> and <code>Item2</code>. It only takes ten minutes, or maybe a day, before you have completely forgotten what those anonymous properties hold. I have tried this, and changes are that so have you. This feeling of creepiness, the chilling down your spine, this is the very feeling you must recall whenever you see e.g. <code>string</code> or <code>int</code> holding all sorts of information within the same application.</p>
+<p>Let us first define our domain classes, hereafter evaluate how the core implementation changes.</p>
+<h3 id="the--class">3.1 The <code>Tag</code> class</h3>
+<p>The <code>Tag</code> class is merely a wrapper for a string. While any string can be supplied to the constructor of <code>Tag</code>, the <strong>intention</strong>  of the code, is that it be fed only tag strings. For technical reasons uninteresting to this article, spaces must be replaced by <code>_</code> in the tag name. A validation that tags do not contain spaces would be an appropriate validation in the constructor. It is not always the case that we can add validation logic or add extra functionality to your domain classes. Do not feel bad when writing a simple wrapper class like below. Eventually evolution of the requirements - or refactorings - may find your domain type to be just the place for new code.</p>
+<pre class="prettyprint"><code>public class Tag : IEquatable&lt;Tag&gt;
+{
+    public readonly string Value;
+
+    public Tag(string value)
+    {
+        Value = value;
+    }
+
+    public override int GetHashCode()
+    {
+        return Value.GetHashCode();
+    }
+
+    public override bool Equals(object obj)
+    {
+        return Equals(obj as Tag);
+    }
+    
+    public override bool Equals(Tag other)
+    {
+        if (other == null) 
+            return false;
+        return string.Equals(Value, other);
+    }
+
+    public override string ToString()
+    {
+        return Value;
+    }
+}
+</code></pre>
+<p>Phew! 30 lines of code just to wrap a string! In order to cut the lines of code, it is tempting not to implement the <code>Equals()</code> and <code>GetHashCode()</code> methods. But hold back that urge! They are absolutely vital in our program, since tags are used as keys in dictionaries. In a-soon-to-be-release article, will explore the possibilities of building a reusable domain base class in order to significantly reduce boiler plate code as seen above. </p>
+<h3 id="the--class-1">3.2 The <code>Page</code> class</h3>
+<p>Probably less disturbing to your nerves, is the replacement of  <code>Tuple&lt;string, string&gt;</code> with a domain class. The gut feeling many people have first introduced domain types, is that of doubt and reluctance. They fail to immediately see the benefits of wrapping just one value in a separate class. Most people, luckily, are more welcoming to the thought of wrapping two or more values in a class. At least it is a huge <em>readability boost</em> to access <code>.Title</code> rather than <code>.Item1</code>, and <code>.Url</code> rather than <code>.Item2</code>. As for the implementation, it is straight forward. </p>
+<pre class="prettyprint"><code>public class Page : IEquatable&lt;Page&gt;
+{
+    public readonly string Title;
+    public readonly string FilePath;
+
+    public Page(string title, string filePath)
+    {
+        Title = title;
+        FilePath = filePath;
+    }
+
+    public override int GetHashCode()
+    {
+        return Title.GetHashCode() ^ FilePath.GetHashCode();
+    }
+
+    public bool Equals(Page other)
+    {
+        if (other == null) 
+            return false;
+        return Title == other.Title &amp;&amp; FilePath == other.FilePath;
+    }
+
+    public override bool Equals(object obj)
+    {
+        return Equals(obj as Page);
+    }
+}
+</code></pre>
+<p>Similar to the <code>Tag</code> class it is verbose. Luckily the lines are very easily written. Since the Page is not used as a key in any collection, we could omit implementing the <code>GetHashCode</code> and <code>Equals</code> methods. I prefer to keep them. If ever we were to use instances of <code>Page</code> as a key, it would just work out of the box. And when omitted all sorts of surprising behavior and hard to find bugs arise. Also when unit testing (and not using <a href="https://github.com/kbilsted/StatePrinter/">Stateprinter</a>, it is very convenient to have the <code>Equals</code> so the <code>Assert.AreEquals()</code> will work :-). </p>
+<h3 id="the-">3.3 The <code>PageGenerator</code></h3>
+<p>Before going into the code heavy <code>DocumentParser</code> re-implementation, let's first confirm that we are on the right track by evaluating how the <code>PageGenerator</code> changes from hieroglyphic-like to plain English readable code.</p>
+<pre class="prettyprint"><code>public class PageGenerator
+{
+    public string GenerateAllTagsPage(List&lt;Tag&gt; tags)  { ... }
+
+    public string GenerateAllArticlesPage(List&lt;Page&gt; pages) { ... }
+
+    public string GenerateTagPage(Tag tag, List&lt;Page&gt; pagesForTag) { ... }
+}
+</code></pre>
+<p><img src="img/httpspixabay.comdasommerfugl-insekt-oejne-sensor-376876.jpg" align="right" width="250"><br />
+Looking at code how readable the code is now almost brings a tear to my eyes. It sure was worth those extra lines of boiler plate code! Comparing with the previous version of the page generator, code has been morphed from a scary looking caterpillar into a beautiful colourful butterfly.    </p>
+<h3 id="the--class-2">3.4 The <code>TagCollection</code> class</h3>
+<p>The last helper class is the <code>TagCollection</code> class. This class rectifies the reoccurring problem we had when wanting to add an element to our dictionary. Since the value of the dictionary is a <code>List&lt;&gt;</code> we need to ensure proper initialization on each insert. We <em>could</em> have made this a static method on our main class <code>DocumentParser</code>. I've seen this done many times over. However, this makes reuse harder in other situations, or make the code seem very artificial when accessing a DocumentParser class solely for the same of some dictionary util method.</p>
+<pre class="prettyprint"><code>public class TagCollection
+{
+    public readonly Dictionary&lt;Tag, List&lt;Page&gt;&gt; Tags = new Dictionary&lt;Tag, List&lt;Page&gt;&gt;();
+
+    public void Add(Tag tag, params Page[] pages)
+    {
+        List&lt;Page&gt; values;
+        if (!Tags.TryGetValue(tag, out values))
+            Tags.Add(tag, values = new List&lt;Page&gt;());
+        values.AddRange(pages);
+    }
+
+    public void Add(TagCollection collection)
+    {
+        foreach (var kv in collection.Tags)
+            Add(kv.Key, kv.Value.ToArray());
+    }
+}
+</code></pre>
+<p>The implementation just wrap a dictionary, and makes it easy to add one or more pages. As an extra convenience  <code>Add</code> is overloaded to accept a <code>TagCollection</code>. </p>
+<p>Notice that the previous domain types were immutable, this wrapper is not. A long story can be spun over the theme of visibility and control. Rather than exposing the <code>Tags</code> field of the class, should the class itself implement <code>IEnumerable&lt;KeyValuePair&lt;Tag, List&lt;Page&gt;&gt;</code> or <code>Tags</code> could expose the underlying data through a  <code>ReadOnlyDictionary</code>. Our implementation is derived from our needs. We are not making any attempts locking down the data structure. We are merely interested in making the dictionary interaction easy. So we are as mutable as the dictionary itself. Needles to say, other situations may require a different kind of wrapping over a collection type.</p>
+<p>After having created my tag collection class, I writing about it here in this article, I could not help but thinking about the class from a generalization perspective. I quickly recognized, that the problem we are solving in <code>TagCollection</code> really applies to <em>any</em> dictionary holding a <code>List&lt;&gt;</code> as the value. Hence we can easily change the class into a <code>ManyValuesDictionary&lt;TKey, TValue&gt;</code> which wrap a  <code>Dictionary&lt;TKey, List&lt;TValue&gt;&gt;</code> and solves this problem once and for all. Having such an implementation at hand, we can consider if we want to create yet another wrapper for this called <code>TagCollection</code>, subclass it to get a <code>TagCollection</code> type or if we are content with using <code>ManyValuesDictionary&lt;Tag, Page&gt;</code>. It really depends on the size of your application and how wide-spread through out it is using a collection of tags.</p>
+<p>As I leave it up to the reader to complete the class, I am absolutely certain, that such a reusable construct would <strong>never</strong> have evolved, had we settled with implementing a helper method for adding elements. Nor, god forbid, if we felt compelled to sticking with the initial implementation with the clumsy add-logic spread all over the code base.  You don't have to accept poor code like that!</p>
+<h3 id="the--1">3.5 The <code>DocumentParser</code></h3>
+<p>For the sake of brevity, let us look at only a subset of the <code>DocumentParser</code> re-implementation using domain types.</p>
+<pre class="prettyprint"><code>public class DocumentParser
+{
+    public TagCollection GetTags(string rootFilePath)
+    {
+        var tags = new TagCollection();
+        var di = new DirectoryInfo(rootFilePath);
+        foreach (var path in di.EnumerateFiles(&quot;*.txt&quot;, SearchOption.AllDirectories))
+        {
+            var fileContent = File.ReadAllText(path.FullName);
+            var tagsForPage = ParsePage(fileContent, path.FullName);
+            tags.Add(tagsForPage);
+        }
+
+        return tags;
+    }
+}
+</code></pre>
+<p>We make the following observations</p>
+<ul>
+<li>The <code>tags</code> variable now has a type of its own. </li>
+<li>The add-functionality is a simple one-liner call to an <code>Add()</code> method.</li>
+</ul>
+<h2 id="emergent-behaviour">4. Emergent behaviour</h2>
+<p>Even for a small example such as this, going through the exercise, I have had <strong>two</strong> situations of emergent behaviour. The class definitions add words to my vocabulary, and it sets my mind free to do evolve already existing definitions. I believe this to be fully equivalent to the  linguistic findings in the human sciences. There many believe, that one cannot think without a language. The more words you have the better are your capabilities for abstract thought and synthesis of new systems, language and thoughts.</p>
+<p>Earlier we saw the emergence of the <code>ManyValuesDictionary</code>. Now we will see emergence from a different perspective.</p>
+<h3 id="bug-fixing-the-link-name-creation">4.1 Bug fixing the link name creation</h3>
+<p>As mentioned earlier, the tag names are defined with an <code>_</code> substituting spaces. Our naïve HTML generation created links by the following code</p>
+<pre class="prettyprint"><code>stringBuilder.AppendFormat(&quot;* &lt;a href='Tags/{0}.html'&gt;{0}&lt;/a&gt;&quot;, tag.Value);
+</code></pre>
+<p>effectively rendering the links with <code>_</code> separating words in the tag, rather space which is  more aesthetic to the eye. We can easily fix this  bug with a needlestick type of change - local and not disturbing anything else. </p>
+<pre class="prettyprint"><code>stringBuilder.AppendFormat(&quot;* &lt;a href='Tags/{0}.html'&gt;{1}&lt;/a&gt;&quot;, tag.Value, tag.Value.Replace(&quot;_&quot;, &quot; &quot;));
+</code></pre>
+<p>It works, but it is not elegant. And certainly, it has nothing to do with OOP. So what are the alternatives? We could extract the code into a method on the generator.</p>
+<pre class="prettyprint"><code>stringBuilder.AppendFormat(&quot;* &lt;a href='Tags/{0}.html'&gt;{1}&lt;/a&gt;&quot;, tag.Value, RinseForLinkText(tag.Value));
+...
+private string RinseForLinkText(string s) 
+{ 
+    return s.Replace(&quot;_&quot;, &quot; &quot;) 
+}
+</code></pre>
+<p>This is already an improvement. But we can do better. The <code>Tag</code> class is the natural place to put this method, or maybe expose as a property.</p>
+<pre class="prettyprint"><code>class Tag
+{
+    public string Value;
+    public string LinkText { get { return Value.Replace(&quot;_&quot;, &quot; &quot;); } } 
+}
+</code></pre>
+<p>with using the property</p>
+<pre class="prettyprint"><code>stringBuilder.AppendFormat(&quot;* &lt;a href='Tags/{0}.html'&gt;{1}&lt;/a&gt;&quot;, tag.Value, tag.LinkText);
+</code></pre>
+<p>There are several observations to be made here </p>
+<ul>
+<li>The <code>Tag</code> class was a <em>natural place</em> to extend with the needed behaviour. It is a natural extension of our &quot;vocabulary&quot;.</li>
+<li>The code is more readable, we are simply stating <code>LinkText</code> rather than focusing on exactly what that means.</li>
+</ul>
+<p>That being said, in the general case, there is a dichotomy between the &quot;single responsibility principle&quot; and OOP. The traditional OOP prescribe that an object knows how to fetch and store itself, how to present itself on a GUI etc. The single responsibility principle, prescribes the opposite and would advocate functionality on the html generator dealing with formatting html.</p>
+<h2 id="conclusions">5. Conclusions</h2>
+<ul>
+<li>There is no running away from the fact, that the code has become longer. I don't mind that, the extra code is hidden in external files and the extra lines of code are very easy to spew out.</li>
+<li>With the new domain types, we get improved readability. Code is transformed from hieroglyph-like incantation to almost plain English prose</li>
+<li>The domain types enable the &quot;jump to definition&quot; functionality in your IDE. On the domain types you now have a &quot;go to&quot; place for extra functionality, validations, heck, you can even sprinkle with documentation</li>
+<li>Despite the initial judgement call, where we deemed an abstraction over the file system  &quot;too academic&quot;, eventually I did  create said abstraction. A <code>FileRepository</code> replacing  calls to  <code>DirectoryInfo</code> and <code>File</code>. This abstraction enabled us to do unit testing without hitting the hard drive and needing to clean up files. I guess, some times, unit testing can drive you to do domain types as well :-)</li>
+</ul>
+<p>Please show your support by sharing and voting: 
+<a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html&amp;title=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html&amp;text=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html&amp;t=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/DomainTypeAndEmergentBehaviour.html&amp;t=Domain%20types%20creates%20readability%20...and%20emergent%20behaviour"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/DomainTypeAndEmergentBehaviour.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

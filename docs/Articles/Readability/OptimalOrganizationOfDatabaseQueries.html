@@ -1,0 +1,223 @@
+﻿<html>
+<head>
+<title>Optimal organization of database queries - a class per access</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="optimal-organization-of-database-queries---a-class-per-access">Optimal organization of database queries - a class per access</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalOrganizationOfDatabaseQueries.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br>
+<a href="http://firstclassthoughts.co.uk/Tags/Programming_with_databases.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #daf096;    display: inline-block;">Programming with databases</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Database.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #7e97f0;    display: inline-block;">Database</a>
+<a href="http://firstclassthoughts.co.uk/Tags/SQL.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #e94617;    display: inline-block;">SQL</a>
+<a href="http://firstclassthoughts.co.uk/Tags/OOP.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #a146d0;    display: inline-block;">OOP</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Dependency_Injection.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2d7da0;    display: inline-block;">Dependency Injection</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Design_Pattern.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #9e89d7;    display: inline-block;">Design Pattern</a>
+<a href="http://firstclassthoughts.co.uk/Tags/SOLID.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #815bee;    display: inline-block;">SOLID</a></p>
+<p><em>From when we were toddlers, we have been warned of the terrible horror name 'global state' in our code. Global state is dangerous they said - like playing with fire, acid and gun powder at the same time. But turning to the database, global state is accepted unconditionally. A necessity rather than a danger. But shared state in the database is just as dangerous. This is why database access must be held in a tight leech. It must stand out in the code.</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html&amp;title=Optimal%20organization%20of%20database%20queries%20-%20a%20class%20per%20access"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html&amp;text=Optimal%20organization%20of%20database%20queries%20-%20a%20class%20per%20access&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html&amp;t=Optimal%20organization%20of%20database%20queries%20-%20a%20class%20per%20access"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html&amp;t=Optimal%20organization%20of%20database%20queries%20-%20a%20class%20per%20access"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/bridge-truss-1031571_640.jpg" alt="from https://pixabay.com/en/brooklyn-bridge-suspension-bridge-1031571/"><br>
+(<em>from https://pixabay.com/en/brooklyn-bridge-suspension-bridge-1031571/</em>)</p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#introduction">1. Introduction</a></li>
+<li><a href="#implementation">2. Implementation</a></li>
+<li>
+<a href="#consequences-of-usage">3. Consequences of usage</a>
+<ul>
+<li><a href="#explicate-global-state-access">3.1 Explicate global state access</a></li>
+<li><a href="#helps-keeping-the-architecture-clean">3.2 Helps keeping the architecture clean</a></li>
+<li><a href="#enhances-readability">3.3 Enhances readability</a></li>
+</ul>
+</li>
+<li>
+<a href="#code-readability-experiment">4. Code readability experiment</a>
+<ul>
+<li><a href="#readability-experiment-summary">4.1 Readability experiment summary</a></li>
+</ul>
+</li>
+<li><a href="#but-wont-i-get-swamped-in-classes??">5. But won't I get swamped in classes??</a></li>
+<li><a href="#what-about-the-repository-pattern?">6. What about the &quot;repository pattern&quot;?</a></li>
+<li><a href="#summary">7. Summary</a></li>
+</ul>
+<h2 id="introduction">1. Introduction</h2>
+<p>If you told me half a year ago, that I would come to love organizing each database access of an application as a separate class each containing a single method, I would have smacked you with a rubber fish! That is the way of MVNO - hitting people with rubber fish - and separating separating out  database access into separate classes.</p>
+<p>A popular way of organizing code is to follow the Single Responsibility Principle (<a href="https://blog.8thlight.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html">SRP</a>). The principle dictates, that a class should do only one thing. But do it well. The consequence of this organization is code that easier to understand and compose, and unit test.</p>
+<h2 id="implementation">2. Implementation</h2>
+<p>Glancing over some of the classes I've created recently at work for an integration project with a 3rd party system we find the following classes:  <code>SelectReadyItemsOfType</code>, <code>SelectCountAllReadyItems</code>, <code>UpdateItemRetry</code>, <code>UpdateItemSuccess</code>, <code>UpdateItemFail</code>. Each of these classes contain only a single method <code>Do</code> whose only responsibility is to communicate with the database. </p>
+<p>Basically all the implementation follows the implementation as given below.</p>
+<pre class="prettyprint"><code>public interface ISelectReadyItemsOfType
+{
+    Item[] Do(ITransaction tx, string itemType);
+}
+
+public class SelectReadyItemsOfType : ISelectReadyItemsOfType
+{
+    public Item[] Do(ITransaction tx, string itemType)
+    {
+        var sql = @&quot;
+            SELECT TOP 50 * 
+            FROM Queue
+            WHERE Type = @itemType
+            AND Status = 'ready'&quot;;
+            
+        return tx.Connection.Execute(sql, new { itemType ) );
+    }
+}
+</code></pre>
+<p>As you can see the code is very functional in the sense that we are using a very generic name for the method of the class, and the class itself describe a verb (an action) rather than a noun (a thing). This is contrary to most OOP advice on naming classes and methods. And if you are a die-hard OOP-programmer, this style takes a little getting used to. I hope the rest of the article can convince you that there are sound reasons for this design.</p>
+<p>The key design features of the code are:</p>
+<ul>
+<li>The type describe the access we are performing against the database rather than the method name.</li>
+<li>Each implementation is accompanied with an <em>interface</em> such that the database can be mocked in tests.</li>
+<li>I'm using a micro ORM that take away the pain of writing plain ADO.Net, whilst <em>still write SQL</em>. </li>
+<li>Transaction management is <em>not</em> part of the responsibility of the code - this makes code more composable.</li>
+</ul>
+<p>Perhaps the last bullet point is the most controversial, and thus will be the only point that we discuss in detail. </p>
+<p>Do we really need a transaction for reads? Yes. There are many reasons for explicit transaction handling also for database reads. </p>
+<ol>
+<li>It is typically <em>faster</em> to create and commit a transaction for your read than not using an explicit transaction. Not specifying a transaction <em>still</em> entails using a transaction in the database. </li>
+<li>The caller may choose to perform both reads and writes in the same transaction (there are cases where this is a good idea). </li>
+<li>The caller chooses the isolation level of the query.</li>
+<li>By making transactions a part of your code, you can mock it and assert that a commit has or has not been issued.</li>
+</ol>
+<h2 id="consequences-of-usage">3. Consequences of usage</h2>
+<p>Generally, this implementation pattern bring many advantages to the table. Lets have a look.</p>
+<h3 id="explicate-global-state-access">3.1 Explicate global state access</h3>
+<p>The most important advantage, perhaps, is that it makes access to the global state of your application (the database). Since the 1970's it has been advised to be cautious with global state in the code. Avoid the global state if possible, perhaps confining it to a subset of components, or pass it around where needed to make access explicit - and restricted. </p>
+<p>A similar movement can be seen with the whole micro services theme, which is motivated by breaking down the biggest global state of them all - the database. For an inspirational read take a look at <a href="../design/ApplicationArchitecturesWithPersistentStorage.html">Application architectures with persistent storage</a>. Even in a small implementation as a micro service, I advice to separate the database access.</p>
+<h3 id="helps-keeping-the-architecture-clean">3.2 Helps keeping the architecture clean</h3>
+<p>Business code and data access code <em>need</em> to be separated. You really need good reasons NOT to separate the two disparate domains. You won't find any literature telling you to keep the two together! And I'm not going to either.</p>
+<h3 id="enhances-readability">3.3 Enhances readability</h3>
+<p>It is particularly beneficial when combining this implementation pattern with <em>dependency injection</em> and organizing object instantiation in <em>composition roots</em>. Recall, that <a href="../design/WhenIOCContainersBecomesAnAntiPattern.html">you can do dependency injection without IOC containers</a>. With this code style in place, I've noticed that I can read much of the code just by glossing. The class name combined with the dependencies taken in the constructor can reveal so much that you don't need to look through the code of the class. Let's experiment with this shall we. Keep an open mind. I'm going to show you a <strong>non trivial excerpt from some real-world code we have running in production.</strong> </p>
+<h2 id="code-readability-experiment">4. Code readability experiment</h2>
+<p>The following definitions are taken from real life production code. Let's see if we can make any sense of it. The code is handling the integration with an external 3rd party system. We will explain the classes in a top-down fashion. Essentially, the database access is the important aspect of any code. The motto for this code is <em>If it hasn't happened in the database, it did not happen!</em>. Thus we state <strong>database changes in bold</strong>.</p>
+<pre class="prettyprint"><code>class QueueItemProcessor 
+{
+    ILoggingGatewayClient mobileGateway;
+    IResponseHandler responseHandler;
+    IFatalErrorHandler sendToTaskSystem;
+    IFatalErrorHandler splitRetry;
+}
+</code></pre>
+<p>The queueitemprocessor is the implementation for handling items produced in out system that is to be transmitted to the external system. One item is handled at a time (the class name is singular). There is a &quot;queue&quot; somewhere in that name, because there are multiple simultaneous communication channels - and items are queued up in these. We can see that we are doing the communication since we depend on <code>ILoggingGatewayClient</code>. </p>
+<p>The external system may respond with either an &quot;ok&quot;, &quot;error&quot; or &quot;transient error&quot; (eg. a timeout). Depending on the kind of message and the kind of error we encounter we have different strategies. For some errors we may choose to split the message (<code>IFatalErrorHandler splitRetry</code>). Otherwise we may flat out give up and send the failing message another system for manual handling (<code>IFatalErrorHandler sendToTaskSystem</code>). </p>
+<p>The fatal handlers are passed along as arguments when calling the <code>ResponseHandler</code> that will figure out the outcome of the communication and choose what to do. This is also why we did not have any dependencies on any update-to-success code here.</p>
+<p>Then</p>
+<pre class="prettyprint"><code>class ResponseHandler 
+{
+    IEventProducer eventProducer;
+    IUpdateQueueItemToComplete queueItemCompleted;
+    IUpdateQueueItemRetry updateQueueItemRetry;
+    IWriteOnlyCustomerLogClient writeOnlyCustomerLogClient;
+    IFatalErrorHandler errorAction; 
+}
+</code></pre>
+<p>The response handler can <strong><code>IUpdateQueueItemToComplete</code></strong> in case of an &quot;OK&quot;, it can <strong><code>IUpdateQueueItemRetry</code></strong> in case of &quot;transient error&quot; and it can use a fatal handling <code>errorAction</code> in case of the error scenario. </p>
+<p>Then</p>
+<pre class="prettyprint"><code>class SendToTaskSystemAndUpdateRow : IFatalErrorHandler 
+{
+    IUpdateQueueItemToFailed updateQueueItemToFailed;
+    IEventProducer eventProducer;
+}
+</code></pre>
+<p>Sending an item to the task system entails sending an event using the micro service infrastructure (the <code>IEventProducer</code>), and updating the current item using <strong>IUpdateQueueItemToFailed</strong>.</p>
+<p>Then</p>
+<pre class="prettyprint"><code>class SplitRetryAndUpdateRow : IFatalErrorHandler 
+{
+    IUpdateQueueItemToFailed updateQueueItemToFailed;
+    IEventProducer eventProducer;
+}
+</code></pre>
+<p>Splitting an item entails sending an event using the micro service infrastructure to the some one who asked us to transmit the message. Then they, in turn, will be splitting the message and creating new queue items. We also update the current item using <strong>IUpdateQueueItemToFailed</strong>.</p>
+<h3 id="readability-experiment-summary">4.1 Readability experiment summary</h3>
+<p>We are really speed-reading here! We just covered around 500 lines of code. I hope I have shown you that for obtaining a broad understand of the code, what exactly the code is doing is <strong>unimportant</strong>. By focusing on the global state we can do a high-level <em>&quot;what goes in, what goes out&quot;</em> analysis, and base our understanding on this. Essentially this analysis boils down to identifying the global state changes (the database and the event infra structure). </p>
+<p>The reason why we can with such confidence only gloss over the code is due to the separation of database access. And simply by following the type dependencies we know who is doing what - or who is delegating what to other entities.</p>
+<p>If we had grouped several database accesses into the same class, we would need to go into much more detail of the code since we had to figure out what methods were invoked where.</p>
+<p>Notice also, that we have not dug into the implementation of the database access code either. The names themselves are enough to reveal the intention as long as we know the implementation structure is as simple as we presented in section 2.</p>
+<p>I hope this whirlwind tour of the code base was understandable. I hope that you feel confident when I say that breaking down code in smaller bits actually have an effect on the code that you may not otherwise anticipate when you only deal with 10-line hello world-like examples. </p>
+<h2 id="but-wont-i-get-swamped-in-classes">5. But won't I get swamped in classes??</h2>
+<p>Perhaps the strongest force against this coding style is how uneasy it makes some people. And to be honest, this programming style is not particularly object-oriented. Yes, you <em>will</em> see growth in class numbers. And that may take time to getting used to. But remember, feelings concerning code is often rooted in habit. Once you get into the habit of a code style with more and smaller classes, you'll soon realize the benefits already described in section 4.</p>
+<h2 id="what-about-the-repository-pattern">6. What about the &quot;repository pattern&quot;?</h2>
+<p>A well-known <em>object-oriented</em> alternative to this style of coding is the <code>repository</code> pattern. The repository pattern is characterized by abstracting away data access, typically modelling the database as an object collection much like one you would have in memory. Specifically different to is that <em>several</em> related database access methods  are grouped into one repository (a class). <a href="http://deviq.com/repository-pattern/">http://deviq.com/repository-pattern/</a> explains in finer details some of the different implementation strategies of this pattern.</p>
+<p>The repository pattern is beneficial in that it shields the application from the data storage. This make the code easier to test and easier to read. Unfortunately you will not reap the full benefits in terms of readability as we have just shown in section 4.</p>
+<h2 id="summary">7. Summary</h2>
+<ul>
+<li>First and foremost, database access <em>must</em> be separated from business logic code. This is a well-known lesson most seasoned developers have learned by now. </li>
+<li>Next, <em>the database is one big nasty collection of global state</em> - hence access to it must be as explicit as possible to keep complexity under control.</li>
+<li>We advise to completely separate one database queries from each other using types. </li>
+<li>We have shown the readability benefits of this implementation in a non-trivial real-life example </li>
+<li>We have compared our implementation to other common implementation patterns.</li>
+</ul>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html&amp;title=Optimal%20organization%20of%20database%20queries%20-%20a%20class%20per%20access"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html&amp;text=Optimal%20organization%20of%20database%20queries%20-%20a%20class%20per%20access&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html&amp;t=Optimal%20organization%20of%20database%20queries%20-%20a%20class%20per%20access"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/OptimalOrganizationOfDatabaseQueries.html&amp;t=Optimal%20organization%20of%20database%20queries%20-%20a%20class%20per%20access"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalOrganizationOfDatabaseQueries.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br>
+<br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

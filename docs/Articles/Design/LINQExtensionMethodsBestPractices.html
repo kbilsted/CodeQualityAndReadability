@@ -1,0 +1,270 @@
+﻿<html>
+<head>
+<title>The 6 best practices for writing LINQ extension methods</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="the-6-best-practices-for-writing-linq-extension-methods">The 6 best practices for writing LINQ extension methods</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/LINQExtensionMethodsBestPractices.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a>
+<br>
+<a href="http://firstclassthoughts.co.uk/Tags/LINQ.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2e09d3;    display: inline-block;">LINQ</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Extension_Methods.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #37b535;    display: inline-block;">Extension Methods</a></p>
+<p><em>LINQ extension methods are often easy to describe, and quickly you can build something that seems to work. But there are pitfalls that you must be aware of in order for your code to work in the general case. This article describes the best practices you need to follow when writing LINQ extension methods.</em> </p>
+<p>Please show your support by sharing and voting: </p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html&amp;title=The%206%20best%20practices%20for%20writing%20LINQ%20extension%20methods"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html&amp;text=The%206%20best%20practices%20for%20writing%20LINQ%20extension%20methods&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html&amp;t=The%206%20best%20practices%20for%20writing%20LINQ%20extension%20methods"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html&amp;t=The%206%20best%20practices%20for%20writing%20LINQ%20extension%20methods"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/pixabay.com_da_industry-569145_640.jpg" alt="from https://pixabay.com/da/industri-pumper-udstyr-teknologi-569145/"></p>
+<p>Table of Content</p>
+<ul>
+<li>
+<a href="#introduction">Introduction</a>
+<ul>
+<li><a href="#use-a-separate-namespace">1. Use a separate namespace</a></li>
+<li><a href="#use-descriptive-names">2. Use descriptive names</a></li>
+<li><a href="#clean-up-after-iterating">3. Clean up after iterating</a></li>
+<li>
+<a href="#dont-re-iterate-the-input">4. Don't re-iterate the input</a>
+<ul>
+<li><a href="#expensive-lazy-input">4.1 Expensive lazy input</a></li>
+<li><a href="#non-reiteratable-input">4.2 Non-reiteratable input</a></li>
+<li><a href="#solutions">4.3 Solutions</a></li>
+</ul>
+</li>
+<li><a href="#dont-assume-input-fits-ram">5. Don't assume input fits RAM</a></li>
+<li><a href="#avoid-side-effects-if-possible">6. Avoid side-effects if possible</a></li>
+<li><a href="#summary">7. Summary</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="introduction">Introduction</h1>
+<p>Extension methods and LINQ are great inventions and make it really nice writing C# code as it enables you to write more declarative and more maintainable code. We have documented this <a href="http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html">here</a> and <a href="http://firstclassthoughts.co.uk/Articles/Readability/FromImperativeTtoDeclarativeCodeUsingLINQ.html">here</a>. Unfortunately, there are  pitfalls one can easily fall into when dealing with LINQ and the <code>IEnumerable&lt;T&gt;</code> type in general. </p>
+<p>We will not go into explaining the semantics of <a href="https://msdn.microsoft.com/en-us/library/9k7k7cf0.aspx"><code>yield</code></a>, nor <a href="https://msdn.microsoft.com/en-us//library/bb383977.aspx">how to create extension methods</a>. There are plenty of resources on the internet for that.</p>
+<p>The list of advice is ordered in a &quot;top-down&quot; fashion.</p>
+<h2 id="use-a-separate-namespace">1. Use a separate namespace</h2>
+<p>Inside your IDE, it would be very annoying if every time you press <code>.</code> on an instance variable, every extension method under the sun is suggested to you. Fortunately, extension methods only become available when imported by the <code>using</code> clause. To get the standard LINQ, you must declare <code>using System.Linq</code>. </p>
+<p>It is a good idea to define your extension methods in a separate namespace, such that any usage becomes explicitly &quot;opt-in&quot; through an import clause. Of course, herein lies the danger that your collogues will be oblivious to the existence of said extensions. Especially when the code grows. </p>
+<p>To eliminate that danger, use the <em>same-ish</em> namespace for the extensions throughout the modules of an application. It would be silly to insist on using exactly the same namespace, instead we suggest keeping only the last part of the namespace static. For example <code>com.eggcorp.shared.linqextensions</code>. Here the <code>linqextensions</code> is the denominator which is unchanged across the code complex. </p>
+<p>Others prefer using the top-level name instead, so it'll almost always be imported. E.g. <code>com.eggcorp</code>. </p>
+<p>The important thing is to have a strategy that the whole team understands and honors.</p>
+<h2 id="use-descriptive-names">2. Use descriptive names</h2>
+<p>It should come as no surprise that we want  good names for our methods. Alas, this is easier said than done. And it is notoriously difficult to give advice  on naming due to the subjectivity of names. Personally, I try to strike a balance between naming and naming style. The name must tersely capture what the method does while minding the naming style of the existing LINQ methods.</p>
+<p>Hence I would typically not call my methods &quot;Get..&quot; or &quot;Calculate..&quot;. Names that might otherwise be valid for normal methods.</p>
+<h2 id="clean-up-after-iterating">3. Clean up after iterating</h2>
+<p>LINQ extension methods iterate the source elements in order to produce a result. There are two typical implementation patterns for iteration. The <code>foreach</code> and the &quot;enumerator approach&quot;. I'll show them both here with an implementation that does absolutely nothing.</p>
+<p>First the <code>foreach</code>. It is a straightforward iteration of the input returning each element in sequence.</p>
+<pre class="prettyprint"><code>public static IEnumerable&lt;T&gt; NoOperation(this IEnumerable&lt;T&gt; source)
+{
+    if (source == null) 
+        throw new ArgumentNullException(&quot;source&quot;);
+  
+    foreach(var element in source)
+    {
+        yield return element;
+    }
+}
+</code></pre>
+<p>We can achieve the same semantics with an enumeration approach. </p>
+<pre class="prettyprint"><code>public static IEnumerable&lt;T&gt; NoOperation&lt;T&gt;(this IEnumerable&lt;T&gt; source)
+{
+    if (source == null) 
+        throw new ArgumentNullException(&quot;source&quot;);
+
+    using (var enumerator = source.GetEnumerator())
+    {
+        while (enumerator.MoveNext())
+        {
+            T element = enumerator.Current;
+            yield return element;
+        }
+    }
+}
+</code></pre>
+<p>The latter example is more low-level than the first. On the other hand, it provides more freedom while iterating. Examples are provided of this later in the article. Notice that he result of <code>GetEnumerator()</code> is of type <code>IDisposable</code> and thus we have to remember to clean up. That's why we use the <code>using</code>-block. </p>
+<p>I prefer using <code>foreach</code>. It is higher level, automatically takes care of disposing the underlying enumerator.</p>
+<h2 id="dont-re-iterate-the-input">4. Don't re-iterate the input</h2>
+<p>Due to LINQ expressions being deferred in execution, it is a general rule of thumb not to re-evaluate the expression more than once. For LINQ extension methods, this is even more important not to re-iterate. You have to be diligent, as it is very to unintentionally do the wrong thing. Imagine some business logic requiring elements to be present. In the general case, it is absolutely wrong expressing this as:</p>
+<pre class="prettyprint"><code>public static IEnumerable&lt;T&gt; SomeOperation&lt;T&gt;(this IEnumerable&lt;T&gt; source)
+{
+    if (source.Any())
+    {
+        ...
+    }
+
+    foreach (var element in source)
+    {
+        ...
+    }
+}
+</code></pre>
+<p>You may test it against an array, or some other input and it may <em>seem</em> fine. But it's not. Another example. Business logic require you to inspect both the current and the next element for filtering. With LINQ this is not straight forward as you operate on one element at a time. But you can transform your input to a stream of tuples holding the 'current' and the 'next' elements, by combining the sequence (using <code>Zip</code>) with itself juxtaposed by one (using <code>Skip</code>). For example</p>
+<pre class="prettyprint"><code>public static IEnumerable&lt;T&gt; SomeOperation(IEnumerable&lt;T&gt; source)
+{
+    var onlyABs = source
+        .Zip(source.Skip(1), (current, next) =&gt; new { current, next })
+        .Where(x =&gt; x.current == &quot;a&quot; &amp;&amp; x.next == &quot;b&quot;);
+    ...
+</code></pre>
+<p>Similar to before, both <code>Zip</code> and <code>Skip</code> are causing the <code>source</code> to be evaluated and iterated over twice. And there are roughly infinitely many such examples of accidental re-iteration. We shall make no attempt going through every single one of them. </p>
+<p>There are two problems with multiple iterations over the source input </p>
+<ul>
+<li>It is unnecessarily expensive.</li>
+<li>It may be impossible</li>
+</ul>
+<p>We will deal with both problems one at a time</p>
+<h3 id="expensive-lazy-input">4.1 Expensive lazy input</h3>
+<p>When working on lists and arrays, there are no problems iterating over them again and again. But operating on <code>IEnumerable&lt;T&gt;</code> means that we don't really know what the input is. It could be a lazily evaluated LINQ expression. Evaluating it multiple times may turn into a performance bottleneck. Let's look at some silly input.</p>
+<pre class="prettyprint"><code>var newYork = cities.Where(x.City == &quot;New York&quot;);
+var newYorkerRichards = people.Where(x =&gt; x.Name(&quot;Richard&quot;) &amp;&amp; x.City = newYork);
+var billing = newYorkerRichards.SomeOperation();
+</code></pre>
+<p>Not only is this careless LINQ code with a run-time complexity of O(N^2) (quite needlessly), but by using any of the above <code>SomeOperation()</code> implementations, we incur this cost <strong>twice</strong>. Recall that <code>newYorkerRichards</code> is not a set of Richard-values. It is a lump of code that will evaluate upon iteration. And when we iterate twice, we compute the set of New York Richards twice. Code with complexity O(N^2) scales incredibly bad. Try for yourself with using some thousands of names and cities. </p>
+<p>The LINQ expression could also be a database query. I can well imagine bogged down servers due to multiple round-trips to the database. Over and over again executing the same SQL. <strong>Shivers!</strong></p>
+<h3 id="non-reiteratable-input">4.2 Non-reiteratable input</h3>
+<p>It is easy to fall into the trap of thinking that the input can be iterated multiple times. We do this because most of the time, it is possible. The are no problems re-iterating the standard collection types list, array, dictionary and so forth. But in the general case, <em>not all streams are seekable</em>. We use seeking to go back to the start of the stream and start over. That is what the <a href="https://msdn.microsoft.com/en-us/library/system.io.stream.seek(v=vs.110).aspx"><code>Seek()</code></a> and <a href="https://msdn.microsoft.com/en-us/library/system.io.stream.canseek(v=vs.110).aspx"><code>CanSeek</code></a> abstractions are for. Microsoft has envisioned a number of situations where things have gone astray, and in the documentation for <code>Seek()</code> it is mentioned that it can throw the following exceptions <code>IOException</code>,
+<code>NotSupportedException</code>, and <code>ObjectDisposedException</code>. For example, network streams (like GET and POST) are non-seekable, and certain file streams, e.g. those accessing tape hardware.</p>
+<p>Recall, that we have no ability to restrict the kind of input when we're taking <code>IEnumerable&lt;T&gt;</code> as an argument. Best practice, therefore, is to avoid reiteration.</p>
+<h3 id="solutions">4.3 Solutions</h3>
+<p>We can solve this by ensuring we only iterate once. For the first example with logic to be called if elements are present, we can easily rewrite it into:</p>
+<pre class="prettyprint"><code>public static IEnumerable&lt;T&gt; SomeOperation&lt;T&gt;(this IEnumerable&lt;T&gt; source)
+{
+    bool isFirst = true;
+    
+    foreach (var element in source)
+    {
+        if (isFirst)
+        {
+            isFirst = false;
+
+            ...
+        }
+        
+        ...
+    }
+}
+</code></pre>
+<p>The code forces a comparison against <code>isFirst</code> on each iteration. The cost of this comparison may well be negligible due to the JIT compilation and CPU branch predictions. But to show the versatility of the enumeration approach, let's look at how the comparison can be eliminated.</p>
+<pre class="prettyprint"><code>public static IEnumerable&lt;T&gt; SomeOperation&lt;T&gt;(this IEnumerable&lt;T&gt; source)
+{
+    using (var enumerator = source.GetEnumerator())
+    {
+        if (enumerator.MoveNext())
+        {
+            ...
+        
+            do 
+            {
+                T element = enumerator.Current;
+                ...
+            } while (enumerator.MoveNext())
+        }
+    }
+}
+</code></pre>
+<h2 id="dont-assume-input-fits-ram">5. Don't assume input fits RAM</h2>
+<p>A faulty reasoning is to remedy the situation above by copying the result of the source into an array, which we know is re-iteratable. What an elegant idea! In the below code we introduce <code>elements</code> for this. </p>
+<pre class="prettyprint"><code>public static IEnumerable&lt;T&gt; SomeOperation&lt;T&gt;(this IEnumerable&lt;T&gt; source)
+{
+    var elements = source.ToArray();
+    var onlyABs = elements
+        .Zip(elements.Skip(1), (current, next) =&gt; new { current, next })
+        .Where(x =&gt; x.current == &quot;a&quot; &amp;&amp; x.next == &quot;b&quot;);
+    ...
+</code></pre>
+<p>Unfortunately, this strategy carries with it problems of its own. Operating on <code>IEnumerable&lt;T&gt;</code> means that the input may be a lazily evaluated and potentially be very big. Possibly even infinite. You need not look hard to find examples. An academic example would be to pass in the set of all primes. A  business example is some business logic operating on all rows of a database table. A really big table. A few billion lines is more than enough to death grip your RAM if you try to hold it all at one time. And holding it all in RAM is exactly what we do when we issue the <code>ToArrray()</code> or similar construct.</p>
+<p>Since we can't encode a database in an article, let's continue with the primes example. First we need to define an infinite set of all primes:</p>
+<pre class="prettyprint"><code>public IEnumerable&lt;BigInteger&gt; GetAllPrimes() 
+{
+    var candidate = new BigInteger(1);
+    while (true) 
+    {
+        if (IsPrime(candidate))
+            yield return candidate;
+
+        candidate = BigInteger.Add(BigInteger.One, candidate);
+    }
+}
+</code></pre>
+<p>Calling <code>GetAllPrimes().SomeOperation()</code> quickly get you out of memory. </p>
+<p>Lazily evaluated infinite streams are not everyday food for the business programmer. But when writing general LINQ extension methods, we do not know what kind of input we are being served. Streams from databases or other combinations of large input can get you out of memory. You'd be surprised, how little RAM application servers are be armed with due to their high hosting costs. </p>
+<h2 id="avoid-side-effects-if-possible">6. Avoid side-effects if possible</h2>
+<p>Due to the lazy nature of LINQ, your code may be executed at unexpected times. The code</p>
+<pre class="prettyprint"><code>var someCities = cities
+        .SomeOperation()
+        .Where(x =&gt; x.City.Contains(&quot;Y&quot;));
+</code></pre>
+<p>Does <strong>not</strong> execute the code in <code>SomeOperation</code>! We can easily return our <code>someCities</code> variable and pass it onto a completely different method/context, in which it will be executed or may be passed on again. This can lead to difficult to trace bugs since the error is very far from the origin. And it can get especially nasty when the side-effect accesses entities using external resources such as a database connection that may well have been closed.</p>
+<p>Naturally, there will be times where side-effects is the only viable solution. So use them. Just think twice before you jump that wagon. </p>
+<h2 id="summary">7. Summary</h2>
+<p>The main takeaway from this article is a check list of things to go through each time you write a LINQ extension method.</p>
+<ol>
+<li>Use a dedicated and easy-to-find namespace for your LINQ extension methods.</li>
+<li>Invest energy into proper naming.</li>
+<li>Iteration requires disposing resources.</li>
+<li>Do not re-iterate the input stream, it may be <em>expensive</em>, and even <em>impossible</em> at times.</li>
+<li>Do not assume that the input stream <em>fits in RAM</em>.</li>
+<li>Due to the <em>deferred execution</em> of LINQ expressions, you best avoid side-effects.</li>
+</ol>
+<p>Please show your support by sharing and voting: <SocialShareButtons></SocialShareButtons> </p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/LINQExtensionMethodsBestPractices.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br>
+<br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

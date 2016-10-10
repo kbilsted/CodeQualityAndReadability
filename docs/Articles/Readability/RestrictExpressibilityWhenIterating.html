@@ -1,0 +1,472 @@
+﻿<html>
+<head>
+<title>Restrict expressibility when iterating</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="restrict-expressibility-when-iterating">Restrict expressibility when iterating</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/RestrictExpressibilityWhenIterating.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2;    display: inline-block;">Code Readability</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Coding_Guideline.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #33ad2a;    display: inline-block;">Coding Guideline</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Looping.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #497012;    display: inline-block;">Looping</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Iteration.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #df93a4;    display: inline-block;">Iteration</a>
+<a href="http://firstclassthoughts.co.uk/Tags/goto.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #29c802;    display: inline-block;">goto</a>
+<a href="http://firstclassthoughts.co.uk/Tags/foreach.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #731fa0;    display: inline-block;">foreach</a>
+<a href="http://firstclassthoughts.co.uk/Tags/while.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #6dd666;    display: inline-block;">while</a>
+<a href="http://firstclassthoughts.co.uk/Tags/for.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #8fd55c;    display: inline-block;">for</a>
+<a href="http://firstclassthoughts.co.uk/Tags/LINQ.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2e09d3;    display: inline-block;">LINQ</a></p>
+<p><em>The more restrictive the language mechanisms in use, the more readable the code tends to become. To solidify this claim, we show a number of approaches all implementing &quot;iterate-and-collect logic&quot; over a collection. We discuss each approach and its affects on readability. We then show how to express more complicated requirements when looping.</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html&amp;title=Restrict%20expressibility%20when%20iterating"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html&amp;text=Restrict%20expressibility%20when%20iterating&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html&amp;t=Restrict%20expressibility%20when%20iterating"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html&amp;t=Restrict%20expressibility%20when%20iterating"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/staircase-209914_640.jpg"></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#introduction">1. Introduction</a></li>
+<li>
+<a href="#simple-iteration-over-all-elements-of-a-collection">2. Simple iteration over all elements of a collection</a>
+<ul>
+<li><a href="#the--approach">2.1 The <code>goto</code> approach</a></li>
+<li><a href="#the-unbounded--approach">2.2 The unbounded <code>while</code> approach</a></li>
+<li><a href="#the-bounded--approach">2.3 The bounded <code>while</code> approach</a></li>
+<li>
+<a href="#the-bounded--approach">2.4 The bounded <code>for</code> approach</a>
+<ul>
+<li><a href="#the-separated-loop-body">2.4.1 The separated loop-body</a></li>
+</ul>
+</li>
+<li><a href="#the-enumerator-approach">2.5 The enumerator approach</a></li>
+<li><a href="#the--approach">2.6 The <code>foreach</code> approach</a></li>
+<li><a href="#the-linq-approach">2.7 The LINQ approach</a></li>
+</ul>
+</li>
+<li>
+<a href="#complicated-iteration-over-some-elements">3. Complicated iteration over some elements</a>
+<ul>
+<li><a href="#complex-iteration">3.1 Complex iteration</a></li>
+<li>
+<a href="#separation-of-loop-body-and-loop-logic">3.2 Separation of loop body and loop logic</a>
+<ul>
+<li><a href="#delta-or-absolute-position">3.2.1 Delta or absolute position</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#conclusions">4. Conclusions</a></li>
+</ul>
+<h2 id="introduction">1. Introduction</h2>
+<p>What makes code readable? That is a very hard question to which many answers are correct. There are many facets to code readability, and that's what makes it interesting to discuss, study and so forth. <em>One</em> perspective is enforcing a coding style <em>of the least expressibility</em>. </p>
+<p>Iteration is a very general subject, but it's something we happen to do a lot in code. And quite interestingly, iterations can be performed in a lot of ways. This means you are bound to be exposed to virtually all approaches in a larger code base. </p>
+<p>When writing a program, you want to write it in such a fashion that future readers mentally are taken in a certain direction when they read the code. Preferably, readers are taken by their hands, and shown bit by bit, a complex task broken down in smaller steps. Using construct with <em>limited  expressibility</em> naturally leads the reader down a narrower garden path. With less expressive constructs or language mechanisms, the ability to introduce complexity is reduced. Less complex code involves less possibilities/choices, and hence is easier to overview. </p>
+<p>I happen to like narrow garden paths. It takes away my worries. Just like the picture above. In order to get from A to B, simply follow the stair case (to heaven?). When I need to fix a bug and I see the code is inside a loop-construct that is so extensive that it can not fit a screen, I get a little nervous divulging into the beast. And depending on which looping mechanism is used, the more things I tend to worry about. I cannot help but get a little paranoid. The looping, how is it done? Are all elements of an array being visited? Are some visited twice (by design - or by accident?) etc. </p>
+<p>We investigate 8 different ways to iterate over, and perform, some business logic to a collection. The examples gradually <strong>decrease in expressibility</strong>, while at the same time <strong>increase in readability</strong>. </p>
+<p>Then, we turn to more complex business rules where simple iteration does not suffice and show one way I've found to combat complexity.</p>
+<h2 id="simple-iteration-over-all-elements-of-a-collection">2. Simple iteration over all elements of a collection</h2>
+<p>Our first section deals with iterating over a collection and performing an action on each element. Bear in mind, that the code examples have been distilled to their absolute minimum. Hence to understand that there really is a difference between the examples, you have to envision a code body of roughly a few pages resting inside each loop body.</p>
+<h3 id="the--approach">2.1 The <code>goto</code> approach</h3>
+<p>To make my point clearer, we start in the extreme. While I have never met code like this - thank god - it illustrates nicely the very point of this article. So now, what does this code do?</p>
+<pre class="prettyprint"><code>public string Gotos(int[] numbers)
+{
+    string res = &quot;&quot;;
+    int i = 0;
+
+    agn:
+    res += numbers[i];
+    i++;
+    if (i == numbers.Length)
+        goto stp;
+    goto agn;
+
+    stp:
+    return res;
+}
+</code></pre>
+<p>With <code>goto</code> we have the ultimate freedom. We can jump out of scopes in a completely different way than with <code>return</code> and <code>break</code>. We can skip multiple nested loops, and jump half up a method body. With <code>goto</code> we can simulate all looping constructs, and even <code>continue</code>,  <code>break</code> and <code>return</code>. Thankfully,  goto's have gotten a bad reputation and are not as common as they once were. I rarely use them, but there was a time (in the mid 1970s) where the war raged between &quot;structured programming&quot; (Dijkstra) and &quot;go to programming&quot; (where amongst others, D. E. Knuth showed situations where the use of gotos would be more advantageous). The use of `goto´'s was ingrained in developers back then. I wasn't really around in that sphere at the time, so I can only speculate. But I'll bet it having to do with performance (due to much slower hardware), and having to do with explicit memory allocation of the languages. </p>
+<p>Glancing down the code (while imagining it being several pages long), the structure does not easily reveal that we are dealing with a loop. There is no indented scope (<code>{}</code>-block). Purposely I named the labels badly to make it harder to read the small code snippet, to really make you feel the pain. You can substitute <code>agn</code> with <code>again</code> and <code>stp</code> with <code>stop</code> to make it a bit more readable.</p>
+<p>Before I reveal what the method does, lets look at a more readable version.</p>
+<h3 id="the-unbounded--approach">2.2 The unbounded <code>while</code> approach</h3>
+<p>Replacing the labels and goto with an endless loop is a step in the right direction. Certainly now the keyword <code>while</code> outright reveals that something is happening more than once. But how many times are we doing something? Well, that will depend on the number of <code>break</code>, <code>continue</code> and nested branching structures within the while-body.</p>
+<pre class="prettyprint"><code>public string While(int[] numbers)
+{
+    string res = &quot;&quot;;
+    int i = 0;
+    while (true)
+    {
+        res += numbers[i];
+        i++;
+        if (i == numbers.Length)
+           break;
+    }
+
+    return res;
+}
+</code></pre>
+<p>The structure of the code does not reveal whether we have started an endless process, for example a background worker thread, or we are performing some repetition a limited amount of times. Since we are just iterating a finite collection we are <em>misusing</em>, or the very least <em>misleading the reader</em>.  The <code>while</code>  is far more expressive a construct than what we need.</p>
+<p>There is nothing wrong with using an endless loop - if you have logic requiring a such. In the scope of code that iterates, this is rarely the case. </p>
+<h3 id="the-bounded--approach">2.3 The bounded <code>while</code> approach</h3>
+<p>This next example is also expressing our logic using a <code>while</code> statement. Contrary to the unbounded version we now clearly state we iterate a number of times equal to the length of the <code>numbers</code> array. </p>
+<pre class="prettyprint"><code>public string WhileWithBounds(int[] numbers)
+{
+    string res = &quot;&quot;;
+    int i = -1;
+    while (i &lt; numbers.Length - 1)
+    {
+        // move iteration reference(s)
+        i++;
+
+        // body
+        res += numbers[i];
+    }
+
+    return res;
+}
+</code></pre>
+<p>Notice how the <em>index reference</em> <code>i</code> starts from <code>-1</code> rather than  <code>0</code>. This is a technique to remedy the problem that arises, when a while body  contains several <code>continue</code> instructions: Each time you issue a <code>continue</code>, you must remember to first increment/decrement the iteration reference. By incrementing <code>i</code> at the top of the while-body, we ensure progress in each iteration, and thus preventing the code spiralling down into an endless loop. </p>
+<p>Another disadvantage of the while loop is that we have to define our &quot;iteration reference&quot; outside the scope of the while - and hence it can be re-used  further down the method. You should be careful with reusing variables if they serve different purpose. If for nothing else, then because it makes me uncomfortable. </p>
+<h3 id="the-bounded--approach-1">2.4 The bounded <code>for</code> approach</h3>
+<p>The <code>for</code> construct is the next example to dissect. The looping construct has a number of advantages over the <code>while</code> construct. Most importantly: <code>for</code> better describe our current situation. The intent of <code>for</code> is to express a limited iteration, whereas <code>while</code>'s intention is to express an unbound or dynamic bound iteration. Further more there are some more or less technical advantages:</p>
+<ul>
+<li>It allows us to define an iteration reference that is only visible within the scope of the loop-body</li>
+<li>It allows us to define the increment/decrement logic outside the body - no more weird indexes starting from <code>-1</code> as we saw above.</li>
+</ul>
+<pre class="prettyprint"><code>public string For(int[] numbers)
+{
+    string res = &quot;&quot;;
+    for (int i = 0; i &lt; numbers.Length; i++)
+    {
+        res += numbers[i];
+    }
+
+    return res;
+}
+</code></pre>
+<p>There are still problems with the code. There is nothing preventing the code from changing the value of <code>i</code> inside the for-body. For this short example this is not a problem, but recall our imaginary 2-page loop-body full of code! Ans what happens when we spot a change of <code>i</code> within the body? Then we have to figure out if this is intended or a bug. <em>The structure of the code does not reveal this intent</em>. A natural solution is to separate the looping logic from the looping body. We shall see that next.</p>
+<h4 id="the-separated-loop-body">2.4.1 The separated loop-body</h4>
+<p>By extracting the loop body into a separate method, it becomes vividly clear to anyone, that we are in fact processing the elements of <code>numbers</code> on element at a time, from the first to the last element.</p>
+<pre class="prettyprint"><code>public string ForWithExtractMethod(int[] numbers)
+{
+    string res = &quot;&quot;;
+    for (int i = 0; i &lt; numbers.Length; i++)
+    {
+        res = Concat(numbers[i], res);
+    }
+
+    return res;
+}
+
+string Concat(int number, string res)
+{
+    return res + number;
+}
+</code></pre>
+<p>This same technique is just as useful when more complex business logic require us to e.g. skip elements. In section 3. we deal with this situation. </p>
+<h3 id="the-enumerator-approach">2.5 The enumerator approach</h3>
+<p>Most collections in C# (and perhaps in your favourite language) has the ability to return an enumerator with which you can enumerate over the collection. Perhaps I have been sloppy with my use of words. And perhaps you have only notices just now, that I have interchanged iteration and enumeration. Just for the sake of completeness, let us explain the difference of meaning. Iteration is referred to the process of repeating a block of code, while enumeration means to go through all values in a collection of values. Enumerating, therefore, usually entail some form of iteration.</p>
+<p>In C# this looks like</p>
+<pre class="prettyprint"><code>public string Enumerator(int[] numbers)
+{
+    string res = &quot;&quot;;
+    var enumerator = numbers.GetEnumerator();
+    while (enumerator.MoveNext())
+    {
+        var elem = enumerator.Current 
+        res += elem;
+    }
+
+    return res;
+}
+</code></pre>
+<p>This approach is advantageous in that there is no longer an iteration reference (such as <code>i</code> in the above examples). Hence when we read this code, we <em>know</em> that we are going through the elements one at a time. The inner logic dictates this, so the code cannot digress. So why are enumerators so rarely used then if they are so cool. Perhaps because they are verbose compared to other language mechanisms. It takes a line of code to define the <code>while</code> and a line of code to read the currently enumerated element.</p>
+<p>Going slightly off topic, implementing an enumerator can be surprisingly difficult. This stems from several situations that has to be catered for</p>
+<ul>
+<li><code>.Current</code> may be access before <code>MoveNext()</code></li>
+<li><code>.Current</code> may be access anywhere from 0 to many times in a given enumeration step.</li>
+</ul>
+<p>Anyhow, let's move on to the more delicious coding styles.</p>
+<h3 id="the--approach-1">2.6 The <code>foreach</code> approach</h3>
+<p>The <code>foreach</code> is perhaps my favourite language construct when it comes to iteration. It is very succinct, it conveys its meaning, and like the enumeration approach it deals with elements of a collection without involving an index or iteration reference. </p>
+<pre class="prettyprint"><code>public string Foreach(int[] numbers)
+{
+    string res = &quot;&quot;;
+    foreach (var number in numbers)
+        res += number;
+
+    return res;
+}
+</code></pre>
+<p>On the other hand, the <code>foreach</code> is severely limited in what you can express with it. We cannot directly specify to only visit every other element, where with the <code>for</code> construct we can simply substitute the <code>i++</code> with <code>i+=2</code>. I take this as an <em>advantage</em>, rather than a disadvantage:</p>
+<ul>
+<li>Future readers need not spend mental energy in discovering what kind of looping that is to take place</li>
+<li>Future maintenance, or bug fixing cannot introduce mistakes in the iteration part of the logic</li>
+</ul>
+<p>When I see the use of a <code>for</code> I can only think that there is a reason why the <code>foreach</code> was not used. And this makes me search the code for that very reason.
+ If I don't see a reason why, I'll immediately refactor it to using the less expressive, but more readable <code>foreach</code>. </p>
+<h3 id="the-linq-approach">2.7 The LINQ approach</h3>
+<p>Now this final example is cheating a bit. Repeatedly, I've stated we need to imagine a lengthy loop-body in order for this discussion to carry much relevance. Of readability of really short loop bodies may be important too, since they easily see future growth.</p>
+<p>If we for a second just imagine that the is no large looping body. There is only what we have shown so far. A simple &quot;stringification&quot; of an int-array. And assume for a moment we can live with the performance overhead of this kind of string concatenation rather than using say <code>StringBuilder</code>. <em>Then</em>, we can use an even less expressive construct found in LINQ. The <code>Aggregate</code> function operates over a set of values and accumulate them. Well, this is what we have been doing all along. So we can refactor our previous code into just </p>
+<pre class="prettyprint"><code>public string Linq(int[] numbers)
+{
+    return numbers.Aggregate(&quot;&quot;, (res, number) =&gt; res + number);
+}
+</code></pre>
+<p>Is this more readable? I would tend to think so. Of course it is more abstract to the person never having seen LINQ or <code>Aggregate</code> in action. But to those who have, we have ultimately locked ourselves down in terms of expressibility. We can only aggregate now. No detours allowed. Of course, LINQ does <em>not</em> always guarantee maximum readability! You can still create some horror story LINQ expression that make your eyes bleed. Code with conscience </p>
+<p>This actually brings forth an ever existing paradox. How do we define code readability? In terms of how easy the master programmer reads code, or how easy the less experienced programmer does? It's a many-faceted discussion, one that deserves more room than would be appropriate to allocate here. I have also touched upon this paradox in http://firstclassthoughts.co.uk/TheChangingNotionOfReadability.html</p>
+<h2 id="complicated-iteration-over-some-elements">3. Complicated iteration over some elements</h2>
+<p>Now its time to look at iteration with a bit more complicated logic. Let us assume the following business rules.</p>
+<p>For a list of numbers return a string constructed from</p>
+<ul>
+<li>Of the pair-wise sum of numbers (a, b)</li>
+<li>Except for a-numbers divisible by 5, then skip this pair</li>
+<li>Except for b-numbers divisible by 2, then skip this and the next pair</li>
+</ul>
+<p>probably this formalisation makes it all the more complicated. All I want here is some business logic requiring more than one element at a time while also require that under certain conditions, not all elements of the list are partaking in the answer.</p>
+<p>The input: <code>1, 1, 2, 1, 1, 5, 1, 5</code><br />
+Yields: <code>2266</code>  </p>
+<p>Sure those business rules are weird, but having to do more complex iteration is not uncommon. I do it all the time in the <a href="https://github.com/kbilsted/StatePrinter">StatePrinter</a> project where we turn a stream of tokens into an output format (e.g. JSon, Xml or C#-like). I call these <a href="https://github.com/kbilsted/StatePrinter/tree/master/StatePrinter/OutputFormatters">output formatters</a>. </p>
+<h3 id="complex-iteration">3.1 Complex iteration</h3>
+<p>The first approach is a direct translation of the business requirements into code</p>
+<pre class="prettyprint"><code>public string IterationSkippingSome(int[] numbers)
+{
+    string res = &quot;&quot;;
+
+    for (int i = 0; i &lt; numbers.Length - 1; i++)
+    {
+        var current = numbers[i];
+        if (current % 5 == 0)
+            continue;
+
+        var next = numbers[i + 1];
+        if (next % 2 == 0)
+        {
+            i++;
+        }
+        else
+        {
+            res += current + next;
+        }
+    }
+    return res;
+}
+</code></pre>
+<p>We see that there are three different things happening. A <code>continue</code> that effectively short circuits an iteration. A <code>i++</code> that skips this and the following iteration. And finally a modification to <code>res</code>.</p>
+<p>Effectively we now have multiple places <code>i</code> changes value, and the structure of the code does little to reveal the skipping inside the body of the loop.</p>
+<h3 id="separation-of-loop-body-and-loop-logic">3.2 Separation of loop body and loop logic</h3>
+<p>As we have shown before, there are benefits to separating methods into several methods if we find that they do too much. Especially, when the method is susceptible to splitting. In the following example we split the logic of iteration with that of the business logic.</p>
+<pre class="prettyprint"><code>public string IterationSkippingSomeExtracted(int[] numbers)
+{
+    string res = &quot;&quot;;
+
+    for (uint i = 0; i &lt; numbers.Length - 1; i++)
+    {
+        uint delta = RestrictedPairwiseSum(numbers[i], numbers[i+1], ref res);
+        i += delta;
+    }
+
+    return res;
+}
+
+uint RestrictedPairwiseSum(int current, int next, ref string res)
+{
+    if (current % 5 == 0)
+        return 0;
+
+    if (next % 2 == 0)
+        return 1;
+
+    res += current + next;
+    return 0;
+}
+</code></pre>
+<p>Here we have to either turn to <code>out</code> parameters or <code>ref</code> or returning a <code>Tuple&lt;string, int&gt;</code>. I chose to use <code>ref</code> - effectively making the string reference the same in both methods. If we were collecting values in a mutable object such as a <code>StringBuilder</code> we could do without the use of <code>ref</code>.</p>
+<p>Rather than inserting a dynamic check that <code>delta</code> is non-negative, I instead used a type that cannot express negative numbers. Meet the <code>uint</code>. </p>
+<p>I see a couple of benefits here</p>
+<ul>
+<li>The looping logic is very transparent. You immediately understand why a <code>for</code> has been used rather than a <code>foreach</code>. You see that you are extracting pair-wise and that as a result of an application you may skip <em>forward</em> in the list.</li>
+<li>The <code>RestrictedPairwiseSum()</code> is expressed in terms close to the requirements. It doesn't care about the input format. Be it an array, a <code>List&lt;&gt;</code> or whatever.</li>
+<li>The <code>RestrictedPairwiseSum()</code> can easily be tested in isolation.</li>
+</ul>
+<h4 id="delta-or-absolute-position">3.2.1 Delta or absolute position</h4>
+<p>There is a design choice to be made when returning a value from the extracted method. We can choose between</p>
+<ul>
+<li>Returning a delta value</li>
+<li>Returning an absolute position</li>
+<li>Returning a <em>skip instruction</em> </li>
+</ul>
+<p>There are advantages to returning delta's in that the business logic then is independent of knowing too much about the structure of the input data. On the other hand, returning an absolute position may be required e.g. to signal a full-stop or skipping towards a new section of the data. A disadvantage of having to return an absolute position is that you need to pass into the business logic the current position, and possibly the last position.</p>
+<p>A <em>skip instruction</em> is perhaps preferable when the skipping itself requires some logic. Imagine the input data being some structured data, e.g. a book containing chapters, which contains sections, etc. Perhaps from a section you want to skip until the next chapter. Expressing that as a delta value or an absolute position requires some extra scaffolding. Instead we can express our skipping behaviour as an enum and then react to the enum in the code that handles the looping rather than in looping body.</p>
+<p>Here is how we could express the above example</p>
+<pre class="prettyprint"><code>enum SkippingBehaviour
+{
+    NoSkip, SkipNext
+}
+
+public string IterationSkippingSomeExtractedAndSkipLogic(int[] numbers)
+{
+    string res = &quot;&quot;;
+
+    for (int i = 0; i &lt; numbers.Length - 1; i++)
+    {
+        var skipping = RestrictedPairwiseSum2(numbers[i], numbers[i + 1], ref res);
+        i += GetDelta(skipping);
+    }
+
+    return res;
+}
+
+int GetDelta(SkippingBehaviour skipping)
+{
+    switch (skipping)
+    {
+        case SkippingBehaviour.NoSkip:
+            return 0;
+        case SkippingBehaviour.SkipNext:
+            return 1;
+    }
+    return 0;
+}
+
+SkippingBehaviour RestrictedPairwiseSum2(int current, int next, ref string res)
+{
+    if (current % 5 == 0)
+        return SkippingBehaviour.NoSkip;
+
+    if (next % 2 == 0)
+        return SkippingBehaviour.SkipNext;
+
+    res += current + next;
+    return SkippingBehaviour.NoSkip;
+}
+
+</code></pre>
+<p>It is a bit more verbose, but the intent of the code is very clear. It also supports complicated skipping behaviour that can now be tested in isolation.  And by making the skipping behaviour a translation from an enum value to a delta, you can even imagine this translation to be pluggable. </p>
+<h2 id="conclusions">4. Conclusions</h2>
+<p>It is easy to dismiss this article with the argument that if you are used to code using <code>goto</code> all over the place, they are not at all unreadable. In fact, not using <code>goto</code> would break the common style of the code base. Habit truly is a significant factor when discussing code. But I think that we have established, that despite being used to <code>goto</code>'s (or not), being able to replace a construct like a <code>while</code> or <code>goto</code> with a <code>foreach</code>, and often even better, a LINQ expression, reduces the possible things that can be expressed in code, thus leading the reader down the correct path - Automatically making the code easier to understand. Just by looking at the first line he can determine eg. <em>&quot;that we are just looping linearly over all elements&quot;</em>. Simply due to the fact that with the lesser expressive constructs, there is no room to wiggle in the wrong direction. By design you cut yourself off a whole range of potential bugs.</p>
+<p>We have argued for using LINQ over <code>foreach</code> where possible. We have argued for using <code>foreach</code> over <code>for</code> where possible. And we have argued for using <code>for</code> over <code>while</code> where possible and finally, only use <code>goto</code> when none of the others are suitable. </p>
+<p>To paraphrase a bit, we can boil it down to the following scale</p>
+<table>
+<thead>
+<tr>
+	<th align="center">Typically more readable</th>
+	<th></th>
+	<th></th>
+	<th></th>
+	<th></th>
+	<th align="center">Typically less readable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td align="center">LINQ</td>
+	<td><code>foreach</code></td>
+	<td>enumeration</td>
+	<td><code>for</code></td>
+	<td><code>while</code></td>
+	<td align="center"><code>goto</code></td>
+</tr>
+</tbody>
+</table>
+<p>Of course, this does not hold water when in each iteration we need several elements of the array. Then it's more like</p>
+<table>
+<thead>
+<tr>
+	<th align="center">Typically more readable</th>
+	<th></th>
+	<th align="center">Typically less readable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td align="center"><code>for</code></td>
+	<td><code>while</code></td>
+	<td align="center"><code>goto</code></td>
+</tr>
+</tbody>
+</table>
+<p>And when we are implementing an forever running background worker, we may have even further limits of choice with regards to implementation</p>
+<table>
+<thead>
+<tr>
+	<th align="center">Typically more readable</th>
+	<th align="center">Typically less readable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td align="center"><code>while</code></td>
+	<td align="center"><code>goto</code></td>
+</tr>
+</tbody>
+</table>
+<p>Finally, we have argued for using an intent-revealing structure when you are performing non-trivial iteration over a collection by separating the looping logic from the looping body.</p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html&amp;title=Restrict%20expressibility%20when%20iterating"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html&amp;text=Restrict%20expressibility%20when%20iterating&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html&amp;t=Restrict%20expressibility%20when%20iterating"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/RestrictExpressibilityWhenIterating.html&amp;t=Restrict%20expressibility%20when%20iterating"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br></p>
+<p><strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/RestrictExpressibilityWhenIterating.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br>
+<br>
+<br></p>
+<p><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

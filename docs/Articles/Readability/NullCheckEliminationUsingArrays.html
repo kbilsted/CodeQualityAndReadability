@@ -1,0 +1,193 @@
+﻿<html>
+<head>
+<title>Eliminate null-checks using arrays</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="eliminate-null-checks-using-arrays">Eliminate null-checks using arrays</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/NullCheckEliminationUsingArrays.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Null_Check_Elimination.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #6b7239;    display: inline-block;">Null Check Elimination</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2;    display: inline-block;">Code Readability</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Design_Pattern.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #9e89d7;    display: inline-block;">Design Pattern</a></p>
+<p><em>In this article, we show a coding pattern which eliminate the need for null-checking. since <code>null</code> typically is used to indicate that &quot;nothing is here&quot; - this is essentially the semantics of an empty array. The result is shorter and easier to read code.</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html&amp;title=Eliminate%20null-checks%20using%20arrays"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html&amp;text=Eliminate%20null-checks%20using%20arrays&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html&amp;t=Eliminate%20null-checks%20using%20arrays"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html&amp;t=Eliminate%20null-checks%20using%20arrays"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/pixapay-819587_640_nullcheckeliminationusingarrays.jpg"><br><em>(from https://pixabay.com/en/pay-digits-number-fill-series-819587/)</em></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#introduction">1. Introduction</a></li>
+<li>
+<a href="#null-checks-elimination">2. Null-checks elimination</a>
+<ul>
+<li><a href="#code-before-null-checks-elimination">2.1 Code before null-checks elimination</a></li>
+<li><a href="#code-after-null-checks-elimination">2.1 Code after null-checks elimination</a></li>
+</ul>
+</li>
+<li><a href="#discussion">3. Discussion</a></li>
+<li><a href="#overhead">4. Overhead</a></li>
+<li><a href="#conclusions">5. Conclusions</a></li>
+</ul>
+<h2 id="introduction">1. Introduction</h2>
+<p>One of the major problems with API's and business code alike, is the fact that methods can return <code>null</code>. This is problematic for a number of reasons.</p>
+<ul>
+<li>It requires the caller to remember to check the result against null or things blow up</li>
+<li>It makes the code more convoluted and is a factor in hiding the intent of the code</li>
+<li>The null-checking leads to more branching of the code - in turn requiring more test cases to maintain test coverage numbers</li>
+</ul>
+<p>In this article, I'll show [one of many techniques of eliminating the need for null-checks](&lt;BaseUrl/Tags/Null_Check_Elimination.html). The main observation is that <code>null</code> is often returned from a method to denote that there is no result. This is equivalent to returning an empty array. Since the array is never null, there is no need to check against <code>null</code>.</p>
+<p>Let's go through some production code that use this pattern and discuss the pro's and con's.</p>
+<h2 id="null-checks-elimination">2. Null-checks elimination</h2>
+<h3 id="code-before-null-checks-elimination">2.1 Code before null-checks elimination</h3>
+<p>Consider the following code, an excerpt from some production code I once wrote. Based on an incoming event, it fetches a row from the database and updates it based on the event. Finally, the row is stored in the database again.</p>
+<pre class="prettyprint"><code>void Execute(Event event)
+{
+    var relation = FetchDbRelation(event);
+    var modification = AdjustRelationToEvent(relation, event);
+    if(modification != null)
+        UpdateDbTable(modification);
+}
+
+Relation AdjustRelationToEvent(Relation relation, Event event);
+{
+    if(relation == null)
+        return null;
+        
+    if(relation.Status != event.Status)
+    {
+        relation.Status = event.Status;
+        return relation;
+    }
+    return null;
+}
+
+void UpdateDbTable(Relation modification)
+{
+    if(modification == null)
+        return;
+        
+    sql = &quot;Update ....&quot;;
+    Dapper.Execute(sql, modification);
+}
+</code></pre>
+<p>Notice the prominent place the null-checking has in the code. </p>
+<h3 id="code-after-null-checks-elimination">2.1 Code after null-checks elimination</h3>
+<p>When we utilize the empty array to denote &quot;no work&quot;. Thus, for every null-check if determine if the semantics of the empty array is equivalent with the null. The value <code>null</code>can have many meanings, so it is not an entirely mechanical process. we can simplify the code to:</p>
+<pre class="prettyprint"><code>void Execute(Event event)
+{
+    var relations = FetchDbRelations(event);
+    var modifications = AdjustRelationsToEvent(relations, event);
+    UpdateDbTable(modifications);
+}
+
+Relation[] AdjustRelationsToEvent(Relation[] relations, Event event);
+{
+    var modification = new List&lt;Modification&gt;();
+    foreach(var relation in relations)
+    {
+        relation.Status = event.Status;
+        relation.Modified = true;
+    }
+    
+    return relations.Where(x =&gt; Modified).ToArray();
+}
+
+void UpdateDbTable(Relation[] modifications)
+{
+    sql = &quot;Update ....&quot;;
+    Dapper.Execute(sql, modifications);
+}
+</code></pre>
+<p>... and all the null-checks <strong>are gone</strong>.</p>
+<h2 id="discussion">3. Discussion</h2>
+<p>Let's reflect for a minute over the changes we've made.</p>
+<p><strong>Smoothness</strong>
+Spend a minute or two re-reading the two examples. I hope you have come to appreciate how much smoother the flow of the code is. To be honest, I find the lack of null-checking quite liberating.</p>
+<p><strong>Accustomation</strong>
+Naturally, this style of coding takes a bit of getting used to. You may find yourself and colleagues having reservations to wards this way of programming. I'm sure I wouldn't apply this pattern everywhere a variable may be null. But I've found that in code without side effects and code that &quot;processes&quot; data such as validation or mutation of input A to output B, the model fits well.</p>
+<p><strong>Readability</strong>
+When employing this pattern you may find some code becomes more readable, while other code does not. For instance, <code>AdjustRelationToEvent()</code> become <code>AdjustRelationsToEvent()</code> and is specified to be able to return several instances where only a maximum of one instance is ever returned. <a href="http://firstclassthoughts.co.uk//Tags/Null_Check_Elimination.html">Other strategies exists</a> whose strategies better cater for revealing the intent of the method, for example the use of an &quot;option/maybe type&quot;.</p>
+<p>In terms of semantics of the code, though, the code semantically work equally well for single instances and collections of relation objects. </p>
+<p><strong>Reusability</strong>
+The fact that you choose to operate on arrays, lists or sets, may open the door for reusability. For my example code (an extract of production code), 
+it turned out that part of the code (the <code>FetchDbRelations()</code> and <code>UpdateDbTable()</code>) <em>was reused</em> for handling a related event. This event could potentially update several relations. </p>
+<h2 id="overhead">4. Overhead</h2>
+<p>There is some overhead associated with the pattern.</p>
+<ul>
+<li>We instantiate the empty array every time we want to return a null. In many languages arrays are immutable, and thus there is ample opportunity for caching and reusing such instances by the run-time. If the run-time does not provide such caching you can turn to an object-pool of your own.</li>
+<li>We iterate arrays which is significantly slower than directly accessing a reference. For most of the business code that I've touched, this really isn't the performance issue. Typically, time is spent waiting for user input and reading/writing to databases/network.</li>
+</ul>
+<p>Perhaps I've overlooked something essential. In that case, please let me know.</p>
+<h2 id="conclusions">5. Conclusions</h2>
+<p>Using the semantics of an empty array to denote &quot;there is no result&quot; we have effectively eliminated all null-checking code of the example code.</p>
+<p>The result is shorter and easier to read code, which may even be more reusable.</p>
+<p>The strategy is <a href="http://firstclassthoughts.co.uk//Tags/Null_Check_Elimination.html">one of many existing strategies</a> (link is work in progress) </p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html&amp;title=Eliminate%20null-checks%20using%20arrays"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html&amp;text=Eliminate%20null-checks%20using%20arrays&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html&amp;t=Eliminate%20null-checks%20using%20arrays"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/NullCheckEliminationUsingArrays.html&amp;t=Eliminate%20null-checks%20using%20arrays"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/NullCheckEliminationUsingArrays.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

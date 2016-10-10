@@ -1,0 +1,322 @@
+﻿<html>
+<head>
+<title>Malleable code by using decorators</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="malleable-code-by-using-decorators">Malleable code by using decorators</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br>
+<a href="http://firstclassthoughts.co.uk/Tags/Design.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #eee6bb;    display: inline-block;">Design</a>
+<a href="http://firstclassthoughts.co.uk/Tags/SOLID.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #815bee;    display: inline-block;">SOLID</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Single_Responsibility_Principle.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #27d630;    display: inline-block;">Single Responsibility Principle</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Design_Pattern.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #9e89d7;    display: inline-block;">Design Pattern</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Decorator.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #1549c6;    display: inline-block;">Decorator</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Wrapper.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #7d8750;    display: inline-block;">Wrapper</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Cache.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #3dda0b;    display: inline-block;">Cache</a></p>
+<p><em>Using the decorator design pattern, we get an exquisite separation of concern, while at the same time make the code more malleable.</em></p>
+<p>Please show your support by sharing and voting: </p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html&amp;title=Malleable%20code%20by%20using%20decorators"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html&amp;text=Malleable%20code%20by%20using%20decorators&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html&amp;t=Malleable%20code%20by%20using%20decorators"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html&amp;t=Malleable%20code%20by%20using%20decorators"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/httpspixabay.comdavand-anlæg-grøn-bøde-lag-abstrakt-821293.jpg" alt="from https://pixabay.com/da/vand-anl%C3%A6g-gr%C3%B8n-b%C3%B8de-lag-abstrakt-821293/" ></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#introduction">1. Introduction</a></li>
+<li>
+<a href="#the-all-in-one-class-implementation">2. The all-in-one-class implementation</a>
+<ul>
+<li><a href="#extracting-methods-for-clarity">2.1 Extracting methods for clarity</a></li>
+<li><a href="#the-need-for-further-separation">2.2 The need for further separation</a></li>
+</ul>
+</li>
+<li><a href="#cache-as-a-wrapper-object">3. Cache as a wrapper object</a></li>
+<li>
+<a href="#improving-the-design-with-decorators">4. Improving the design with decorators</a>
+<ul>
+<li><a href="#the-decorator-implementation">4.1 The decorator implementation</a></li>
+</ul>
+</li>
+<li><a href="#performance">5. Performance</a></li>
+</ul>
+<h2 id="introduction">1. Introduction</h2>
+<p>Recently with the v2.2.x versions of Stateprinter, we replaced the use of reflection (The <code>GetValue()</code> of <code>FieldInfo</code> and <code>MemberInfo</code>) with run-time code generation. It was a delirious moment, to see the overall run-time reduced by as much as 50%-75%. However, the joy was short, as new performance tests revealed crippling speeds for certain use scenarios. When instantiating a Stateprinter each time an object needed printing, insurmountable time was spent on run-time code-generation. Since there are very few types in a running program compared to the number of objects that may be printer, a cache holding the generated code, was an obvious choice.</p>
+<p>To readers new to the Stateprinter paradigm, suffice to say, that Stateprinter is a simple framework for turning an object graph into a string representation. Such functionality can be used to generate <code>ToString()</code>-methods, for automating aspects of unit testing and updating existing unit tests, and finally work is currently in progress to greatly enhance the debugging experience. In other words, Stateprinter is envisaged to be a productivity booster. See more at https://github.com/kbilsted/StatePrinter</p>
+<blockquote>
+<p>&quot; <a href="http://spredd.it/F24SW2r6">The decorator pattern help separate concerns and make code more... <img src="https://raw.githubusercontent.com/kbilsted/CodeQualityAndReadability/master/img/twitter-logo.png" alt="Tweet this" width="40">  </a></p>
+</blockquote>
+<h2 id="the-all-in-one-class-implementation">2. The all-in-one-class implementation</h2>
+<p>Let's look at the cache implementation as probably a lot of people would write it. Particularly when under pressure. In such times, focus is on getting things done rather than getting them perfect. Nothing wrong with that. But with the deadline behind us, a bit of self-reflection told us to revise the code. The code was conceived in a slight state of panic since the awful performance was discovered <em>after</em> a beta release of the code promising to the user, the aforementioned speed boost. </p>
+<p>Fear not, if you have no experience with run-time code generation. Just think of it as a way to dynamically create a lambda or delegate for later invocation.</p>
+<pre class="prettyprint"><code>public class RunTimeCodeGenerator
+{
+    static readonly Dictionary&lt;MemberInfo, Func&lt;object, object&gt;&gt; cache = new Dictionary&lt;MemberInfo, Func&lt;object, object&gt;&gt;();
+
+    public Func&lt;object, object&gt; CreateGetter(MemberInfo memberInfo)
+    {
+        // argument checking
+        if (!(memberInfo is FieldInfo) &amp;&amp; !(memberInfo is PropertyInfo))
+            throw new ArgumentException(&quot;Parameter memberInfo must be of type FieldInfo or PropertyInfo.&quot;);
+        if (memberInfo.DeclaringType == null)
+            throw new ArgumentException(&quot;MemberInfo cannot be a global member.&quot;);
+
+        // cache look up
+        Func&lt;object, object&gt; getter;
+        lock (cache)
+        {
+            if (cache.TryGetValue(memberInfo, out getter))
+                return getter;
+        }
+        
+        // run-time code generating
+        var p = Expression.Parameter(typeof(object), &quot;p&quot;);
+        var castparam = Expression.Convert(p, memberInfo.DeclaringType);
+        var field = Expression.PropertyOrField(castparam, memberInfo.Name);
+        var castRes = Expression.Convert(field, typeof(object));
+        var generatedGetter = Expression.Lambda&lt;Func&lt;object, object&gt;&gt;(castRes, p).Compile();
+
+        // add or get value
+        lock (cache)
+        {
+            if (cache.TryGetValue(memberInfo, out getter))
+                return getter;
+            cache.Add(memberInfo, generatedGetter);
+        }
+        return generatedGetter;
+    }
+}
+</code></pre>
+<p>You may frown at the use of <code>Dictionary</code> over say <code>ConcurrentDictionary</code>. That is a fair remark. However, since we try to stay compatible with  .Net 3.5 we really didn't have a choice. In fact, for this article, it only makes the caching more convoluted, and hence better underlines the point I want to convey in the end. </p>
+<p>The construction with locking twice is to reduce the time of each lock. This is important in situations where there is concurrency, say two request to a server. Recall, that <code>lock</code> is excluding all other access to the cache. By locking twice the total time we are locking the cache is reduced significantly, since we code generate outside a <em>critical region</em>. </p>
+<p>From a readability and a malleability perspective this code is a bit of a  mess. Parameter validation, cache lookups and run-time code generation all in one method. Blurred vision, purple haze. Not only that, but we are tightly coupling how we code generate with how we cache. We cannot easily use the same code generator with a different caching strategy, e.g. a <em>LRU</em> (Least Recently Used).</p>
+<h3 id="extracting-methods-for-clarity">2.1 Extracting methods for clarity</h3>
+<p>In order to increase readability, let's extract the run-time code generation into a separate method. This separates functionality, and allows us to read and understand the code generation separately from the caching. We are not afraid of the extra method call this refactoring causes, it is easily in-lined by the JIT'er. Unfortunately, we are still tighly coupling the two concerns.</p>
+<pre class="prettyprint"><code>public class RunTimeCodeGenerator
+{
+    ...
+    public Func&lt;object, object&gt; CreateGetter(MemberInfo memberInfo)
+    {
+        if (!(memberInfo is FieldInfo) &amp;&amp; !(memberInfo is PropertyInfo))
+            throw new ArgumentException(&quot;Parameter memberInfo must be of type FieldInfo or PropertyInfo.&quot;);
+        ...
+        lock (cache)
+        {
+            if (cache.TryGetValue(memberInfo, out getter))
+                return getter;
+        }
+
+        var generatedGetter = GenerateGetter(memberInfo);
+
+        lock (cache)
+        {
+            if (cache.TryGetValue(memberInfo, out getter))
+                return getter;
+            cache.Add(memberInfo, generatedGetter);
+        }
+        ...
+    }
+
+    Func&lt;object, object&gt; GenerateGetter(MemberInfo memberInfo)
+    {
+        var p = Expression.Parameter(typeof(object), &quot;p&quot;);
+        ...
+        var getter = Expression.Lambda&lt;Func&lt;object, object&gt;&gt;(castRes, p).Compile();
+        return getter;
+    }
+}
+</code></pre>
+<h3 id="the-need-for-further-separation">2.2 The need for further separation</h3>
+<p>Certainly, this makes the code clearer. But this technique only takes us so far. What we need  is a better separation between caching and code generation. This proves advantageous for a number of reasons:</p>
+<ol>
+<li>We may re-use the code-generation code with a different caching strategy elsewhere in the code base. </li>
+<li>It is easier to test and understand two smaller classes rather than one big.</li>
+<li>It makes it easier to performance test when the cache is completely under control. Notice how the cached data is stored in a <code>static</code>. Static is almost always evil. In our case, it makes it <em>very</em> difficult to performance test, the impact of a cold cache vs. a hot cache, since other test may have populated the cache. We could add functionality for clearing the cache, but for the current requirements that would only be needed for testing purposes. This is beginning to smell like a code smell...</li>
+<li>The separation of an isolated cache class, making it an entity of its own, may enable you to think of caching in a bigger picture. Suddenly new ideas are born. You can envision different caching strategies, or maybe ways to binary externalize the state of the cache such that application reboot is not penalizing performance on the first few uses. A scholarly term for this is <em>emergent behaviour</em>.</li>
+</ol>
+<h2 id="cache-as-a-wrapper-object">3. Cache as a wrapper object</h2>
+<p>The first attempt at prying apart the two concerns, is by means of wrapping. We Create a cache-class which in turn calls the code generator. Users will always be using the cache class not the code generator.</p>
+<pre class="prettyprint"><code>public class RunTimeCodeGeneratorCache
+{
+    static readonly Dictionary&lt;MemberInfo, Func&lt;object, object&gt;&gt; cache = new Dictionary&lt;MemberInfo, Func&lt;object, object&gt;&gt;();
+    static readonly RunTimeCodeGenerator generator = new RunTimeCodeGenerator();
+    
+    public Func&lt;object, object&gt; CreateGetter(MemberInfo memberInfo)
+    {
+        Func&lt;object, object&gt; getter;
+        lock (cache)
+        {
+            if (cache.TryGetValue(memberInfo, out getter))
+                return getter;
+        }
+
+        var generatedGetter = generator.CreateGetter(memberInfo);
+
+        lock (cache)
+        {
+            if (cache.TryGetValue(memberInfo, out getter))
+                return getter;
+            cache.Add(memberInfo, generatedGetter);
+        }
+        return generatedGetter;
+    }
+}   
+</code></pre>
+<p>Notice how we are down a road of more elegant implementations. The class is solely focusing on getting the correct locks and returning cached values if any exist, or asking some one else for data to populate the cache.</p>
+<p>Similarly trivial is the run-time code generating bit. Basically, it is the extracted method that has now found a new home in a separate class along with the parameter checking.</p>
+<pre class="prettyprint"><code>internal class RunTimeCodeGenerator
+{
+    public Func&lt;object, object&gt; CreateGetter(MemberInfo memberInfo)
+    {
+        if (!(memberInfo is FieldInfo) &amp;&amp; !(memberInfo is PropertyInfo))
+            throw new ArgumentException(&quot;Parameter memberInfo must be of type FieldInfo or PropertyInfo.&quot;);
+        ...
+        var p = Expression.Parameter(typeof(object), &quot;p&quot;);
+        ...
+        var getter = Expression.Lambda&lt;Func&lt;object, object&gt;&gt;(castRes, p).Compile();
+        return getter;
+    }
+}
+</code></pre>
+<p>To stress the point that the generator is being wrapped, it has been made <code>internal</code>. Alternatively, and to further stress the point of the wrapper, we could nested it inside of <code>RunTimeCodeGeneratorCache</code> and make it <code>private</code>.</p>
+<p>The important thing here is that the users of the class will use references of type <code>RunTimeCodeGeneratorCache</code>. This has both a positive and negative impact. From a readability perspective, it becomes clearer that we are communicating with a cache and thus performance has been thought of by the author. But the very fact that the details of caching is pervading the code can be perceived to be a bad design. Certainly, the code is less malleable. The code using the cache cannot use a different cache or cache strategy without modification. From the perspective of <em>dependency inversion</em> (the D in SOLID), would instruct that the user code take <em>any</em> code generator, and <em>IOC</em> evangelists exclaim that the fact that we are using a cache around the generator should only be know at the composition root, which then is the go-to reference to understand the static structure of the code.</p>
+<h2 id="improving-the-design-with-decorators">4. Improving the design with decorators</h2>
+<p><img src="img/decorator_uml.png" align="right">
+The <em>decorator</em> design pattern is similar to the wrapper object approach, but with the twist that both the wrapper and the wrappee share a common type, typically in the form of an interface. This enables multiple decorators to decorate the same object without changing any of the caller code. This allows us to apply multiple decorators without changing the caller code. As the code is split into smaller and independent units, we may find it easier to reuse the code. In other words, the code is more malleable.</p>
+<p>Usually malleability is an attribute of code that come for free when we strive to write code according to the <em>Single responsibility principle</em> (S in SOLID), Check out chapter 7 of 
+ Gary McLean Hall's book <a href="http://www.amazon.co.uk/gp/product/0735683204/ref=as_li_tl?ie=UTF8&amp;camp=1634&amp;creative=6738&amp;creativeASIN=0735683204&amp;linkCode=as2&amp;tag=linkedin_kbg-21&amp;linkId=YAXKJGZZ6UKZQHPM">Adaptive Code via C#: Class and Interface Design, Design Patterns, and SOLID Principles</a> for an indepth discussion and with rich examples on the use of decorators. If you prefer to read up on the SOLID principles from its origin, look at <a href="http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">The Principles of OOD</a>.</p>
+<h3 id="the-decorator-implementation">4.1 The decorator implementation</h3>
+<p>First we define a common type.</p>
+<pre class="prettyprint"><code>public interface IRunTimeCodeGenerator
+{
+    Func&lt;object, object&gt; CreateGetter(MemberInfo memberInfo);
+}
+</code></pre>
+<p>The cache is now slightly modified compared to the previous version. The decorator should not hard-code what it is wrapping, so a constructor takes a <code>IRunTimeCodeGenerator</code> as an argument. Potentially the code generator, but it could be another decorator. The implementation cares not - and shouldn't.</p>
+<pre class="prettyprint"><code>public class RunTimeCodeGeneratorCache : IRunTimeCodeGenerator
+{
+    static readonly Dictionary&lt;MemberInfo, Func&lt;object, object&gt;&gt; cache = new Dictionary&lt;MemberInfo, Func&lt;object, object&gt;&gt;();
+    readonly IRunTimeCodeGenerator generator;
+
+    public RunTimeCodeGeneratorCache(IRunTimeCodeGenerator generator)
+    {
+        this.generator = generator;
+    }
+    
+    public Func&lt;object, object&gt; CreateGetter(MemberInfo memberInfo)
+    {
+        ...
+    }
+}
+</code></pre>
+<p>Finally, the code generator, now made <code>public</code> and implementing <code>IRunTimeCodeGenerator</code> so we can pass it to the constructor of <code>RunTimeCodeGeneratorCache</code>.</p>
+<pre class="prettyprint"><code>public class RunTimeCodeGenerator : IRunTimeCodeGenerator
+{
+    public Func&lt;object, object&gt; CreateGetter(MemberInfo memberInfo)
+    {
+        var p = Expression.Parameter(typeof(object), &quot;p&quot;);
+        ...
+        var getter = Expression.Lambda&lt;Func&lt;object, object&gt;&gt;(castRes, p).Compile();
+        return getter;
+    }
+}
+</code></pre>
+<h2 id="performance">5. Performance</h2>
+<p>An interesting aspect of all this design mumbo-jumbo, is the potential speed penalties of the different strategies.  Measurements are made using Stateprinter with 200.000 objects to print. Several measurements have been carried out in release mode and run-times averaged. </p>
+<p>Before doing the measurements I was expecting the first, and ugliest, solution to be the better performer. Splitting code into classes potentially introduces method invocations (unless in-lined). But also using the interface type as the reference is commonly known also to incur significant overhead.</p>
+<p>To my surprise there were bigger variation from execution to execution than between the three implementation strategies. For completeness here are the numbers:</p>
+<table>
+<thead>
+<tr>
+	<th>Strategy</th>
+	<th>Milliseconds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>One class</td>
+	<td>3403</td>
+	<td></td>
+</tr>
+<tr>
+	<td>Wrapper</td>
+	<td>3466</td>
+</tr>
+<tr>
+	<td>Decorator</td>
+	<td>3409</td>
+</tr>
+</tbody>
+</table>
+<p>Essentially, these figures are identical. But can we explain why this is the case. I have a few theories of mine</p>
+<ul>
+<li>We are implementing a cache mapping types to code generation. While we are processing many thousands of objects, they originate from the same class definition - thus the number of types exercised is countable on one hand. Our cache thus has a minimum of calls to the code generator</li>
+<li>Maybe since we are referring to the cached code generator from only one place in the code, which is a <code>readonly</code> variable, the JIT'er is quick to discover that the interface type and the indirection it causes, can be optimized away.</li>
+</ul>
+<p>Please show your support by sharing and voting: </p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html&amp;title=Malleable%20code%20by%20using%20decorators"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html&amp;text=Malleable%20code%20by%20using%20decorators&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html&amp;t=Malleable%20code%20by%20using%20decorators"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/MalleableCodeUsingDecorators.html&amp;t=Malleable%20code%20by%20using%20decorators"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

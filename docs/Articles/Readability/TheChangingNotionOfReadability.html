@@ -1,0 +1,331 @@
+﻿<html>
+<head>
+<title>On the changing notion of code readability</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="on-the-changing-notion-of-code-readability">On the changing notion of code readability</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2;    display: inline-block;">Code Readability</a></p>
+<p><em>We investigate the divide of opinion regarding what constitutes readable code -
+experience (or lack thereof) and understanding of code (and lack thereof). 
+We show that there are multiple layers of complexity when it comes to issues of readability.</em> </p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html&amp;title=On%20the%20changing%20notion%20of%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html&amp;text=On%20the%20changing%20notion%20of%20code%20readability&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html&amp;t=On%20the%20changing%20notion%20of%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html&amp;t=On%20the%20changing%20notion%20of%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/http_uxmastery.com_wp-content_uploads_2013_09_readability-tests.png" width="90%"></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#introduction">1. Introduction</a></li>
+<li><a href="#the-psychology-of-less-experienced-developers">2. The psychology of less experienced developers</a></li>
+<li>
+<a href="#investigating-surface-complexity">3. Investigating &quot;surface complexity&quot;</a>
+<ul>
+<li>
+<a href="#the-notion-of-readability-changes-with-growing-experience">3.1 The notion of readability changes with growing experience</a>
+<ul>
+<li><a href="#version-a">Version A</a></li>
+<li><a href="#version-b">Version B</a></li>
+<li><a href="#version-c">Version C</a></li>
+<li><a href="#version-d">Version D</a></li>
+<li><a href="#version-e">Version E</a></li>
+<li><a href="#version-f">Version F</a></li>
+<li><a href="#final-version">Final version</a></li>
+<li><a href="#conclusions">Conclusions</a></li>
+</ul>
+</li>
+<li><a href="#the-veterans-perspective">3.2 The veterans perspective</a></li>
+</ul>
+</li>
+<li><a href="#investigating-underlying-complexity">4. Investigating &quot;underlying complexity&quot;</a></li>
+<li><a href="#the-architectural-simplification-that-never-became">4.1 The architectural simplification that never became</a></li>
+<li><a href="#conclusions">5. Conclusions</a></li>
+</ul>
+<h2 id="introduction">1. Introduction</h2>
+<p>As made painfully evident by the show &quot;X-factor&quot;, the less you know about a subject, the smarter you think you are on that subject. Likewise, discussions on program readability and best practices easily descents into a discussion on personal preferences and habits. Of particular difficulty is the problem that the notion of what is readable code changes with the experience you have with programming. Complexity comes in many forms. Inspired by KhyronVorrac comments on Reddit, perhaps it is helpful to differentiate between <em>surface complexity</em> and <em>underlying complexity</em> when discussing the readability of code. </p>
+<p><strong>Surface complexity:</strong> The complexity you immediately see when reading code. It is hard to exactly pin point, but includes code formatting, language features, and certain form of documentation.</p>
+<p><strong>Underlying complexity:</strong> The complexity you face <em>after</em> you have penetrated, or overcome (possibly come to accept) the <em>surface complexities</em>. It is the complexities concerning implementation idioms such as design patterns and best practices. </p>
+<p>This is not a complete definition; but it will serve for my current purposes.</p>
+<p>Often people focus a lot on the surface complexity. Possibly this is because it is the first obstacle when having to read. In similar vein to how wrong it feels when a scientific paper is typeset  using the <a href="http://cdncms.fonts.net/images/288c15a0ce30b89f/AComicSans.jpg">Comic sans font</a>. But most of the surface complexity can be eradicated with knowing the language you are reading, and by being forgiving towards e.g. a different indent size than what you are used to. Or the fact that method names are always in lower case (Java) or Upper case (C#).</p>
+<p>In this article we will look into how a beginners mindset changes with experience, and elaborate on the two kinds of complexities revolving readability issues.</p>
+<h2 id="the-psychology-of-less-experienced-developers">2. The psychology of less experienced developers</h2>
+<p>Programming is a craft just as carpentry or alchemy. It requires a mixture of precision and good ideas. As with any craft, programming needs be taught as a combination of theory and field work. Inexperienced programmers have a tendency to use a programming style that is not well suited for larger software projects, and, at times, make the more experienced programmers spend wasteful time going through the code. </p>
+<p>Not surprisingly, this is part of learning any craft and if I were to do all the plumbing helping out a plumber, I'm sure he would tear his hair out in frustration over my approach.</p>
+<p><em>Unfortunately, inexperienced programmers easily fail to understand good code when they face it</em>. A novice or otherwise incompetent programmer, will look at perfectly good code and cry out in animated vociferation &quot;This code is impenetrable! Who wrote this sh!!t&quot;.</p>
+<p><strong>You can not throw good code at them and expect it to rub of.</strong></p>
+<p>Recently, I overheard a conversation between technical inept people on the subject of code readability. I cringed so hard, my toe nails made bleeding wounds under my feet. I was wearing crutches for a week. Mentally, I was scarred for life.</p>
+<p>They discussed a technical presentation where a piece of code, best described as &quot;old legacy code&quot;, was undergoing a series of refactorings: A long method was made more readable and testable by separating it into several methods and classes. But to these people, it was utter hell. Even years after the presentation, they laugh in bemusement, ridiculing how the guy presenting &quot;progress&quot; was in fact, to them, making the code harder to understand. To them the initial code was like an open book; a continuous stream of code, that could be read in sequence. The refactored version, on the other hand, was a mess of isolated islands, sprinkled with method calls disrupting the flow of reading, requiring to &quot;jump to definition&quot; to continue on.</p>
+<p>With university degrees in mathematics and economics, these people are not dumb. They're just not skilled programmers. That being said, if you have a small program (say below 1000 lines) it may be so small, that you are finding no difference in readability between a bite-sized separated version and one written as one long method. From a testability perspective, however, having to test the 1000 line method I am sure, will prove challenging.</p>
+<h2 id="investigating-surface-complexity">3. Investigating &quot;surface complexity&quot;</h2>
+<p>Just to repeat. With <strong>surface complexity</strong> we mean the complexity you immediately see when reading code. It is hard to exactly pin point, but includes code formatting, language features, and certain form of documentation.</p>
+<h3 id="the-notion-of-readability-changes-with-growing-experience">3.1 The notion of readability changes with growing experience</h3>
+<p>As previously stated, programming is a craft and mastery of which, is achieved through reading and writing programs. In my teaching career both at university teaching programming courses, and in industry, again and again I've made the same observation: When students' experience grow, their notion of readability changes. <em>Through a series of examples, we show how the transition in thinking shifts when programmers become more and more experienced</em>.</p>
+<p>Given some field <code>txtName</code> on a Gui we have to figure out if anything has been entered. Having learned to extract into separate methods, lines that relate to the same thing, the less experienced programmer may develop &quot;version A&quot; to perform said check.</p>
+<p><strong>Here we look at surface complexity</strong></p>
+<h4 id="version-a">Version A</h4>
+<pre class="prettyprint"><code>bool CheckName()
+{
+    string text;
+    bool returnValue;
+
+    text = txtName.getText();
+
+    if (text.equals(&quot;&quot;) == true) 
+    {
+        returnValue = true;
+    }
+    else 
+    {
+        returnValue = false;
+    }
+    return returnValue;
+}
+</code></pre>
+<p>With a bit of experience you can tell that this code is <em>too verbose</em>. It actually hurt readability as the intent of the code is blurred by the trivial assignments. The fact that it has been extracted out, though makes it bearable. This is with the caveat that if all code is as verbose as this, no amount of &quot;extract method&quot; can save you. Finally, you would probably register <code>CheckName()</code> as really undescriptive. More on this later.</p>
+<h4 id="version-b">Version B</h4>
+<p>Students are quick to realize that we don't need the variable <code>text</code>, and they learn we never write <code>== true</code></p>
+<pre class="prettyprint"><code>bool CheckName()
+{
+    bool returnValue;
+    returnValue = txtName.getText().equals(&quot;&quot;);
+    if (returnValue) 
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+}
+</code></pre>
+<p>A much shorter version, the <code>returnValue</code> variable is still a thorn in the eye and is reminiscent of the single-entry-single-return structure.</p>
+<h4 id="version-c">Version C</h4>
+<pre class="prettyprint"><code>bool CheckName()
+{
+    if (txtName.getText().equals(&quot;&quot;)) 
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+}
+</code></pre>
+<p>Now we are getting somewhere. The intent of the code is prevailing.</p>
+<h4 id="version-d">Version D</h4>
+<p>Now is the time to start dusting off the final trivialities. We don't need <code>else</code> since <code>return false</code> can only be reached if <code>return true</code> hasn't been executed.</p>
+<pre class="prettyprint"><code>bool CheckName() 
+{
+    if (txtName.getText().equals(&quot;&quot;)) 
+    {
+        return true;
+    }
+    return false;
+}
+</code></pre>
+<h4 id="version-e">Version E</h4>
+<p>An alternative implementation can be achieved using the ternary operator.</p>
+<pre class="prettyprint"><code>bool CheckName() 
+{
+    return (txtName.getText().equals(&quot;&quot;) ? true : false);
+}
+</code></pre>
+<h4 id="version-f">Version F</h4>
+<p>We now realize that, when the expression is true we return true, otherwise false. We can thus in-line this directly in by simply returning the result of the expression.</p>
+<pre class="prettyprint"><code>bool CheckName() 
+{
+    return txtName.getText() == &quot;&quot;;
+}
+</code></pre>
+<h4 id="final-version">Final version</h4>
+<p>At this stage, we must ponder whether we need this code to reside inside a methods at all. There are good arguments for concealing code, even tiny chunks of code inside a method, but alternatively we can just use the code as:</p>
+<pre class="prettyprint"><code>if (txtName.getText() == &quot;&quot;)
+    ... 
+</code></pre>
+<p>It is hard define <em>when</em>, a method containing one line of code is good practice. Often I do it when the line I am extracting is not readily understandable, or maybe it is a central business requirement. When I feel the need to document a line of code in a method, I consider if I instead should extract it into a method and have the method name serve as documentation. Assume a business requirement that all SKU (Stock keeping unit number) is to start with <code>1</code>. Rather than in-line checking this in the code, I could be tempted to extracting this into a <code>IsValidSKU()</code> method. It is a much more compelling thought, than using the the totally generic <code>CheckName()</code> naming. </p>
+<h4 id="conclusions">Conclusions</h4>
+<p>Up until version E of the code, we find typical beginners code. <em>Beginners do not write verbose code out of malice. They do it to help themselves. To make the code readable to them.</em></p>
+<p>Sure the seasoned programmer can read the code in the version A form. But as shown, it is utterly verbose and would end up choking the overall readability of any larger code base.</p>
+<h3 id="the-veterans-perspective">3.2 The veterans perspective</h3>
+<p>Certainly, it is not easy to be a novice programmer. There are so much to learn. object-oriented programming, parameter propagation, IOC, error handling, databases, layered architecture, unit testing. I could go on. I sometimes lose my breath thinking about it. </p>
+<p>But as a veteran coder, life is not always easy either. <strong>Sometimes you just look at code and immediately hate it.</strong> There are many factors in making code unbearable. Here is a short list that popped into my mind as I typed away. The list is by no means closed. With enough time we could write a 100-page list I am sure. Feel free to edit and extend. </p>
+<ul>
+<li>[ ] Verbose ornamented code </li>
+<li>[ ] Over commenting the obvious, leaving the relevant stuff undocumented</li>
+<li>[ ] Absence of obvious language features (e.g. <code>catch</code> or <code>finally</code>)</li>
+<li>[ ] Misuse of language features such as <code>ref</code> or inheritance </li>
+<li>[ ] Inconsistent formatting of code</li>
+<li>[ ] Long methods, doing too many things</li>
+<li>[ ] Untested or untestable code</li>
+<li>[ ] Bad naming of variables, or worse, reuse of badly named variables</li>
+<li>[ ] Leaving TODO's in the code when you say you are done</li>
+<li>[ ] Printing to the console (both business- and test-code)</li>
+<li>[ ] Erroneous error handling</li>
+<li>[ ] Moderate to heavy code duplication</li>
+</ul>
+<p>Looking at this list in retrospective, it is clear that it revolves around <em>surface complexities</em>.</p>
+<p>The other day I was visiting a cemetery for code. http://codebituary.com/  which is a resting place for start-up code that never made it. Through there, I clicked a random project which led to Github, and from there I clicked the first file name I found to be interesting. Take my check list and see how well I would score the below code.</p>
+<pre class="prettyprint"><code>//offline crawl
+public static void crawl(){
+    //0) download main page
+    String html;
+    try {
+        html = URLConnectionReader.getSecureText(&quot;https://www......&quot;);
+    } catch (Exception e){
+        e.printStackTrace();
+        return;
+    }
+    //1) define categories
+    int num_categories = 0;
+    String[] categories = new String[1000];
+    int i = html.indexOf(&quot;itemMenuName level2&quot;);
+    while(i&gt;0){
+        html = html.substring(i+19,html.length());
+        //find category urls
+        i = html.indexOf(&quot;href=\&quot;&quot;);
+        html = html.substring(i+6,html.length());
+        categories[num_categories] = html.substring(0,html.indexOf(&quot;\&quot;&quot;));
+        System.out.println(categories[num_categories]);
+        //find next category
+        num_categories++;
+        i = html.indexOf(&quot;itemMenuName level2&quot;);;
+    }
+    //write to file
+    PrintWriter pw = null;
+    try {
+        pw = new PrintWriter(new File(&quot;Bestbuy_products.txt&quot;));
+    } catch(Exception e){
+        e.printStackTrace();
+    }
+    //2) for each category page
+    for(i=0; i&lt;num_categories; i++){
+        try {
+            //download page
+            html = URLConnectionReader.getSecureText(categories[i]);
+            //process
+            Product[] temp = process(html);
+            //detect num of pages
+            //TODO
+            //write to file
+            for(Product product : temp){
+                pw.print(product.name);
+                pw.print(&quot;@@@@&quot;);
+                pw.print(product.store);
+                pw.print(&quot;@@@@&quot;);
+                pw.print(product.price);
+                pw.print(&quot;@@@@&quot;);
+                pw.print(product.productlink);
+                pw.println(&quot;&quot;);
+                pw.flush();
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+            pw.close();
+            return;
+        }
+    }
+    //close file
+    pw.close();
+}
+</code></pre>
+<p>Clearly there is a problem between my understanding of readable code and the above snippet. My intentions with posting this code, is of course not to hang the authors to dry. I find it more relevant to delve into real-life code, than making up examples on my own. But I'm digressing here. The point is that judging the code against my list, there are people out there that are programming in a vastly different manner than I! And eventually this creates tension if such different coding styles are to co-exist in the same project. Presumably both of us think that <em>our</em> code is &quot;readable&quot;.</p>
+<p>Assume that I and those authors were on the same project. Should it be I or them that should define the conduct of the company/project? I don't know the authors of the above code. Possibly the authors were in a hurry, or maybe this is how they prefer their code. Just to make sure, I went back and checked another file on the project. It was almost an exact copy of the above. Clearly code duplication was not an issue to them.</p>
+<h2 id="investigating-underlying-complexity">4. Investigating &quot;underlying complexity&quot;</h2>
+<p>As previously stated. <strong>underlying complexity</strong> means the complexity you face <em>after</em> you have penetrated, or, come to accept the <em>surface complexities</em>. It is the complexities concerning implementation idioms such as design patterns and best practices. </p>
+<p>For example, it is damn hard to grasp a given piece of code utilizing &quot;template methods&quot;, &quot;strategy&quot;, &quot;composite&quot;, &quot;decorators&quot; or &quot;bridge&quot; when you are unaware of such said patterns.</p>
+<p>As shown in <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/MalleableCodeUsingDecorators.md">Malleable code by using decorators</a> programming with decorators is a very different style than not using them. Both in terms of readability where the implementation tends to get more spread out. But also more fundamentally, how features are to be made up when future extensions are made.</p>
+<p>Another programming idiom foreign to the less experienced programmer is that of separation of concerns, and the SOLID principles. If you blindly follow Uncle Bob, a method may be no longer than 10 lines of code, preferably less. Eg. the <a href="https://sites.google.com/site/unclebobconsultingllc/one-thing-extract-till-you-drop">Extract till you drop</a></p>
+<p>So readability is not only reading the code line by line, but also, understanding the implementation strategies and architecture.</p>
+<p>Part of being a professional programmer, is to know his trade. There are many design patterns around, but chances are, that the application you are working on is only using a handful. Spend time asking colleagues and reading up on the patterns and abstractions you do not know.</p>
+<h2 id="the-architectural-simplification-that-never-became">4.1 The architectural simplification that never became</h2>
+<p>Once in a multi-layered EJB application, I found a layer that was complete boiler code. For every entity in the system, a glue class had to be constructed in this layer. Anyone familiar with layered architecture knows how too many layers can lead to frustrations. This is not to say that I hate layered architecture. In fact I would not hesitate to recommending using it. At time though, you feel very unproductive when you want to add some functionality and find yourself spending a full afternoon implementing glue-boiler plate code in numerous layers. Then making a simple change, and having to go over one layer after another performing the same trivial changes - e.g. adding a parameter to a method. </p>
+<p><em>So simplifying away a layer means making the whole team more productive, and less chances of making simple mistakes that may  precious time to debug and locate.</em></p>
+<p>Quickly through the use of reflection, I replaced all the implementations of the layer with <em>one</em> class. A whole layer was eradicated. Every one were happy. Or so I thought. At that particular shop, there was a very high density of less experienced programmers. They had domain knowledge, sure. But they did not know the reflection capabilities of the language they were using.  With little incentive to learn and grow, instead they were red alert. And so the reflection-implementation had to die. The argument was, that if the least experienced programmer had to fix a bug, was having difficulties reading and understanding what was going on, the bug might not get fixed. Notice how this wrongly became a discussion on whether some code was readable/understandable. When clearly it was a matter of certain team members not knowing (and not wanting to know) the full spectre of features of the programming language.</p>
+<p>So is this a clear cut case of underlying complexity. Yes. Is it a case of surface complexity too? Indeed. Here we have a people having readability problems due to lack of understanding the programming language the software is developed in. The use of said features led to an implementation patter that likewise caused readability problems. </p>
+<p>And it reminds me of a quote</p>
+<blockquote>
+<p>&quot;Never underestimate the power of stupid people in large groups.&quot;<br />
+- George Carlin</p>
+</blockquote>
+<p>I can understand that people never having been exposed to reflection need to look twice or possibly trice at the code. Code using reflection <em>is</em> different. Very different in the fact that it is a solution that involves a number of types rather than operating on a specific type. Rather than invoking a method with <code>.</code> it may require searching for methods and dynamically bind arguments to said call. But this is difficult in the same sense that domain applications are difficult to grasp at first when you don't know the domain or the <em>ubiquitous language</em> used in modelling the domain. Heck, it is difficult the same way that you for the first time get exposed to the concepts of <code>ref</code>, <code>finally</code>-blocks or lambda's! And surely we wouldn't want those to get squeezed out of the code-base simply because some less experienced team member thinks its &quot;unreadable&quot;. </p>
+<h2 id="conclusions-1">5. Conclusions</h2>
+<p>Novice and veterans prefer code in different forms. The inexperienced programmer have so many things in his head, remembering the syntax of the language, understanding coding constructs etc. that he is satisfied delivering when it works. He also prefer comments explaining the code in human language. </p>
+<p>But as the inexperienced gain more experience he changes his preferences. Suddenly, things needs be broken down, suddenly certain comments are superfluous - in the way - of the code to be read.Rather than reading a 1000-lines long method like a book, he wants the code split into many distinct entities to quickly get an overview of what the software does and digs into the entities, if needed.</p>
+<p>Be wary when some one claims that a piece of code is impenetrable. Probe a bit. </p>
+<ul>
+<li>Is it an issue with surface complexity or with underlying complexity? Code readability is hard to quantify and is inherently highly subjective. </li>
+<li>Is the programmer experienced? </li>
+<li>Does he know the business domain of the code? </li>
+<li>Does he know the semantics of that part of the programming language or API that was used? </li>
+<li>If all of those check out right, maybe you are the one doing things the wrong way :-)</li>
+</ul>
+<p>Be cautious when requiring dumbing down the code base. It may seem to be resulting in more readable, but in fact may carry with it tons of code duplication and cruft. Things that are instinctively avoided by more experienced programmers. Rather than digress, one should embrace and seize the opportunity to grow and learn. Computer science is very much different to most other fields of profession. It is constantly moving and evolving. Every second year you'll find a major language releases or 3rd party API releases. You cannot fight this. Either you go with the flow, our you are quickly turning your application into a fossil site.</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html&amp;title=On%20the%20changing%20notion%20of%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html&amp;text=On%20the%20changing%20notion%20of%20code%20readability&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html&amp;t=On%20the%20changing%20notion%20of%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/TheChangingNotionOfReadability.html&amp;t=On%20the%20changing%20notion%20of%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br></p>
+<p><strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/TheChangingNotionOfReadability.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

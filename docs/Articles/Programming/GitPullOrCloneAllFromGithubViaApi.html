@@ -1,0 +1,228 @@
+﻿<html>
+<head>
+<title>`PullOrCloneAll` - cloning  and updating Git repositories through the GitHub Api</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="cloning--and-updating-git-repositories-through-the-github-api"><code>PullOrCloneAll</code> - cloning  and updating Git repositories through the GitHub Api</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br>
+<a href="http://firstclassthoughts.co.uk/Tags/Git.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #40efe6;    display: inline-block;">Git</a>
+<a href="http://firstclassthoughts.co.uk/Tags/GitHub.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #5c2536;    display: inline-block;">GitHub</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Powershell.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2d7f54;    display: inline-block;">Powershell</a></p>
+<p><em>When the number of your GitHub repositories grow beyond a handful, you need to automate a workflow for keeping them all in sync. 
+In this article we show how to easily clone and pull all your GitHub repositories.</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html&amp;title=`PullOrCloneAll`%20-%20cloning%20%20and%20updating%20Git%20repositories%20through%20the%20GitHub%20Api"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html&amp;text=`PullOrCloneAll`%20-%20cloning%20%20and%20updating%20Git%20repositories%20through%20the%20GitHub%20Api&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html&amp;t=`PullOrCloneAll`%20-%20cloning%20%20and%20updating%20Git%20repositories%20through%20the%20GitHub%20Api"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html&amp;t=`PullOrCloneAll`%20-%20cloning%20%20and%20updating%20Git%20repositories%20through%20the%20GitHub%20Api"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#introduction">1. Introduction</a></li>
+<li><a href="#setup-access-to-private-repositories">2. Setup access to private repositories</a></li>
+<li><a href="#the-script">3. The script</a></li>
+<li><a href="#dealing-with-submodules">4. Dealing with submodules</a></li>
+</ul>
+<h2 id="introduction">1. Introduction</h2>
+<p>We want to automate the cloning and pulling of GitHub repositories. This is particularly welcomming when the number of repositories grow beyond a handful. Rather than maintaining a list of repositories in a text file manually, we can utilize the GitHub Api and fetch the list of repos.</p>
+<p>The flow of the script works as follows</p>
+<ul>
+<li>Fetch the list of repositories from Github</li>
+<li>
+For each repository
+<ul>
+<li>
+If no local folder is found of the repository 
+<ul>
+<li>Create folder and clone</li>
+</ul>
+</li>
+<li>
+If local folder is found
+<ul>
+<li>Ensure we are in a situation where we can fetch</li>
+<li><code>git pull</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>A complication in using the Github api is that the result is paginated. If you have more than 100 repositories (which is my current situation) - we have to fetch all pages one before we have full list of repositories.</p>
+<p>For my current work situation, all work is done on feature branches - hence I know that a repository is on the <code>master</code> branch, the coast is clear for pulling new change sets. Am I on a feature branch, I don't want to be disturbed by potential merge conflicts. </p>
+<p>It is tempt to support pulling while having local changes and/or not be on <code>master</code>. For example by the stashing the local changes, switch to <code>master</code>, pull, and then return to the working branch and pop the stash. I've been reluctant to taking this step mostly due to error situations where the flow is stopped halfway through. What is the state of the repo if  the network connection suddenly drops, how do I detect the various errors? If my repo is in a semi-bad state, do we need to pop the stash? etc. </p>
+<p>Maybe it's straight forward, but I'm no powershell wizard - <em>improvement suggestions are welcommed.</em></p>
+<h2 id="setup-access-to-private-repositories">2. Setup access to private repositories</h2>
+<p>In order to run the script, you must first create a <em>Personal access token</em>. You need to have special rights if you have private repositories. I've found it sufficient to provide the &quot;repo&quot; rights as shown below.</p>
+<p><img src="img/pullorcloneall-github-rights.png"></p>
+<p>Of course storing the api key inside your script is a security concern. So if you have the time I suggest using a credentials manager.</p>
+<h2 id="the-script">3. The script</h2>
+<pre class="prettyprint"><code>$git=&quot;C:\Program Files\Git\bin\git.exe&quot;
+$gitHubApiKey = &quot;babe165ebef6025ae9e5e2...&quot;
+
+function PullOrCloneAll($path=&quot;c:\src&quot;)
+{
+    cd $path
+    
+    $repositories = FetchRepoList
+    
+    $i = 0
+    Foreach($repo IN $repositories)
+    { 
+        $i += 1
+        Write-Host(&quot;{0,3} {1,-40} {2,-40}&quot; -f ` $i, $repo.Name, $repo.Clone_Url)
+        
+        if(test-path $repo.Name)
+        {
+            Pull($repo);
+        }
+        else
+        {
+            Clone($repo);
+        }       
+    }
+}
+</code></pre>
+<pre class="prettyprint"><code>function FetchRepoList()
+{
+    $uri = &quot;https://api.github.com:443/orgs/MYNAMEORORGANIZATION/repos?page=&amp;per_page=100&amp;access_token=&quot;+$gitHubApiKey
+    
+    $all = @()
+    $page = 0
+    
+    $any = $TRUE
+    while($any)
+    {
+        $any = $FALSE
+
+        $page += 1      
+        $urin = $uri.replace(&quot;?page=&quot;,&quot;?page=&quot;+$page)
+
+        $repositories = (Invoke-RestMethod -Uri $urin) 
+
+        Foreach($repo IN $repositories)
+        {
+            $all += $repo
+            $any = $TRUE
+        }
+    }
+    
+    Write-Host(&quot;Found &quot; + $All.Count + &quot; repositories&quot;)
+    
+    return $all | Sort-Object -property Name
+}
+
+function MayPullFromRepo()
+{
+    $status = &amp; $git status --porcelain
+    if($status.Length -gt 0)
+    {
+        Write-Host -ForegroundColor red &quot;!! LOCAL CHANGES - giving up&quot;
+        Write-Host(&quot;'&quot;+$status+&quot;'&quot; + $status.Length)
+        return $FALSE
+    }
+    
+    $branch = &amp; $git rev-parse --abbrev-ref HEAD
+    if($branch -ne &quot;master&quot;)
+    {
+        Write-Host -ForegroundColor red &quot;!! NOT ON MASTER - giving up&quot;      
+        return $FALSE
+    }
+    
+    return $TRUE
+}
+
+function Pull($repo)
+{   
+    cd $repo.Name
+    
+    if(MayPullFromRepo)
+    {
+        $pullresult = &amp; $git pull --ff-only --no-stat
+        if($pullresult -ne &quot;Already up-to-date.&quot;)
+        {
+            Write-Host -ForegroundColor green &quot;&quot; + $pullresult
+        }
+    }
+    
+    cd $path
+}
+
+function Clone($repo)
+{
+    Write-Host(&quot;Clonning...&quot;);
+    &amp; $git clone -v --recurse-submodules --progress $repo.Clone_Url $repo.Name # alternatively replace &quot;Clone_Url&quot; with &quot;ssh_url&quot; 
+}
+</code></pre>
+<p>Notice that I've inlined my personal access token directly in the script. While this is not best practice, it is sufficiently simple to show what I wanted to show here. </p>
+<p>I'd very much like hear your opinion and improvement ideas.</p>
+<h2 id="dealing-with-submodules">4. Dealing with submodules</h2>
+<p>You may experience that submodules are not properly fetched. It may help to use an SSH key and using the <code>ssh_url</code> property rather than <code>Clone_Url</code> inside function <code>CLone()</code></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html&amp;title=`PullOrCloneAll`%20-%20cloning%20%20and%20updating%20Git%20repositories%20through%20the%20GitHub%20Api"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html&amp;text=`PullOrCloneAll`%20-%20cloning%20%20and%20updating%20Git%20repositories%20through%20the%20GitHub%20Api&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html&amp;t=`PullOrCloneAll`%20-%20cloning%20%20and%20updating%20Git%20repositories%20through%20the%20GitHub%20Api"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.html&amp;t=`PullOrCloneAll`%20-%20cloning%20%20and%20updating%20Git%20repositories%20through%20the%20GitHub%20Api"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/GitPullOrCloneAllFromGithubViaApi.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br>
+<br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

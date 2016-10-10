@@ -1,0 +1,215 @@
+﻿<html>
+<head>
+<title>The event queue design pattern</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="the-event-queue-design-pattern">The event queue design pattern</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/RefactoringToMicroServicesTheEventQueue.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Micro_Service.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #61bfd3;    display: inline-block;">Micro Service</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Monolith.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #f56600;    display: inline-block;">Monolith</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Refactoring.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #c6dc6b;    display: inline-block;">Refactoring</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Architecture.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #21689d;    display: inline-block;">Architecture</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Refactor_to_Micro_Services.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #438d05;    display: inline-block;">Refactor to Micro Services</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Design_Pattern.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #9e89d7;    display: inline-block;">Design Pattern</a></p>
+<p><em>The event queue is an important design pattern to help prying apart a monolith application. It delays the sending of events to a point in the execution flow where it is safe to publish them.</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html&amp;title=The%20event%20queue%20design%20pattern"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html&amp;text=The%20event%20queue%20design%20pattern&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html&amp;t=The%20event%20queue%20design%20pattern"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html&amp;t=The%20event%20queue%20design%20pattern"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/https_pixabay.comen_blackberries-bramble-berries-bush-1539540blackberries-1539540_640.jpg">
+<br>Image from <a href="https://pixabay.com/en/blackberries-bramble-berries-bush-1539540/">https://pixabay.com/en/blackberries-bramble-berries-bush-1539540/</a></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#context">1. Context</a></li>
+<li><a href="#problem-when-to-publish-events">2. Problem: When to publish events</a></li>
+<li>
+<a href="#solution-the-event-queue">3. Solution: The event queue</a>
+<ul>
+<li><a href="#implementation">3.1 Implementation</a></li>
+<li><a href="#alternative-implementation">3.2 Alternative implementation</a></li>
+</ul>
+</li>
+<li>
+<a href="#discussion">4. Discussion</a>
+<ul>
+<li><a href="#the-event-queue-wont-solve-everything">4.1 The event queue won't solve everything</a></li>
+<li><a href="#dont-put-business-logic-in-the-queue">4.2 Don't put business logic in the queue</a></li>
+<li><a href="#avoid-vendor-lock-in">4.3 Avoid vendor lock-in</a></li>
+<li><a href="#transactional-event-publishing">4.4 Transactional event publishing</a></li>
+<li><a href="#roll-out-strategies">4.5 Roll-out strategies</a></li>
+</ul>
+</li>
+<li><a href="#summary">5. Summary</a></li>
+</ul>
+<h2 id="context">1. Context</h2>
+<p>The many benefits to be reaped by using a <em>Micro service architecture</em> naturally make a lot of people are eager to jump on the wagon, and get micro servicin'. But how do you transcend from a monolithic architecture to a micro service oriented architecture?</p>
+<p>Before we can start extracting code into a service (or write new code as a service) we need a mechanism through which we can publish events from within our monolith. One pattern we have used at MVNO in our transitioning is the event queue pattern.</p>
+<h2 id="problem-when-to-publish-events">2. Problem: When to publish events</h2>
+<p>During the execution of business logic, we need to substitute method calls with publishing events (in order to initiate other business processes). However, <em>If an error occur later in the same execution flow, we do not want to publish the events</em>. Much like using a database with the ability to roll back a transaction upon error.</p>
+<p>So miles deep into the execution, how can we determine whether or not to publish an event then? How do we know whether the rest of the code in the flow will succeed? It is close to impossible in the general case. So let's find alternatives.</p>
+<h2 id="solution-the-event-queue">3. Solution: The event queue</h2>
+<p>The concept is simple. Throughout the execution of our business code, we maintain a queue of events to be published. Upon the end of the execution flow, when we persist state, we publish all events in the queue.</p>
+<p>If during the execution of the business logic an error occur, all we have to do is throw away the queue instance and we are done. There is no need for a roll-back of the events. Finally, we must ensure at each composition root (entry of the system), we instantiate a fresh instance of the queue.</p>
+<p>Essentially, this is the <a href="http://martinfowler.com/eaaCatalog/unitOfWork.html">unit of work</a> pattern presented in &quot;patterns of enterprise application architecture&quot;  (Fowler;2003). We just call it an even queue instead.  </p>
+<h3 id="implementation">3.1 Implementation</h3>
+<p>The implementation of the queue is fairly simple. It is a list with a wrapper exposing an <code>Add()</code> and a <code>PublishEvents()</code>. The later is used at the end of the execution flow. Notice the queue is &quot;insert only&quot;, you can't query its content. Why that is important is elaborated in section 4.2</p>
+<p>Now for the implementation:</p>
+<pre class="prettyprint"><code>class EventQueue
+{
+    private readonly List&lt;Event&gt; Events = new List&lt;Event&gt;();
+    private IEventSender sender;
+
+    public EventQueue(IEventSender sender)
+    {
+        this.sender = sender;
+    }
+
+    public void Add(Event e)
+    {
+        events.Add(e);
+    }
+
+    public PublishEvents()
+    {
+        sender.SendEvents(events):
+    }
+}
+</code></pre>
+<p>Notice that there is no interface <code>IEventQueue</code>. I'm not convinced we need one. There is no need for mocking out the implementation, you can freely use the real implementation in your tests. Instead during testing you need to mock out the event sender.</p>
+<p>If you are using an ORM, you may be able to hook into it and automatically call <code>PublishEvents()</code> on successful transactions. We do that with NHibernate at MVNO using the <code>RegisterSynchronization(AfterTransactionCompletes)</code> hook.</p>
+<h3 id="alternative-implementation">3.2 Alternative implementation</h3>
+<p>Using the event queue means that you need to pass it around to every method call or constructor. If you think such a roll-out is going to be too laborious, you can consider using an alternative implementation. Using a static implementation all the code can reach it without an object is passed around. This implementation holds a queue either pr. thread/session (eg. Http, ORM or whatever you can grasp onto).</p>
+<p>For this article I store queues pr. thread. It is far from the best &quot;session&quot; to hook into, but I want the example code to be as technology-agnostic possible. I suggest you use this code for inspirational purposes only. Some of the problems with this implementation is that a piece of code can be executed by a number of threads - e.g. when using parallel-LINQ or <code>async</code>-<code>await</code>. You must step carefully, for no warnings are given if (perhaps unknowingly) use multiple threads.</p>
+<pre class="prettyprint"><code>static class StaticEventQueue
+{
+    private static ConcurrentDictionary&lt;Thread, List&lt;Event&gt;&gt; queues =
+        new ConcurrentDictionary&lt;Thread, List&lt;Event&gt;&gt;();
+
+    public static IEventSender sender = new MegaCorpEventsSender();
+
+    public static void Add(Event e)
+    {
+        queues.AddOrUpdate(
+            Thread.CurrentThread,
+            new List&lt;Event&gt; { e },
+            (key, l) =&gt; { l.Add(e); return old;}
+        );
+    }
+
+    public static void PublishEvents()
+    {
+        List&lt;Event&gt; events;
+        queues.TryRemove(Thread.CurrentThread, out events);
+
+        sender.SendEvents(events);
+    }
+
+    public static void AbortEvents()
+    {
+        List&lt;Event&gt; events;
+        queues.TryRemove(Thread.CurrentThread, out events);
+    }
+}
+</code></pre>
+<p>Notice that this implementation needs an explicit abort method for the case that an error has occurred. Needles to say, it is dangerous to forget to call this. If you are hooking into an ORM, you may be called whenever a transaction ends, and given information on whether or not the transaction succeeded.</p>
+<p>Alternatively, as discussed in 4.4 you can store events in the db using the same transaction, such that when it rolls back, so does your event queue items.</p>
+<h2 id="discussion">4. Discussion</h2>
+<p>I think there are a number of issues worth discussing.</p>
+<h3 id="the-event-queue-wont-solve-everything">4.1 The event queue won't solve everything</h3>
+<p>The event queue enables your monolithic code to publish events at safe points in the execution flow. And that's a good starting point. However, it is important to understand the implications of substituting a method call with sending an event.</p>
+<p>First, a method call is a synchronous action. Sending an event which is then processed by some receiver(s) is an asynchronous action. Hence there won't be a &quot;return value&quot; to use in the rest of the execution flow. This will of course limit its use since your entire code base most likely has been written around a &quot;synchronous&quot; design. Hence many places you need to rewrite in order to utilize the queue.</p>
+<p>Secondly, and in a similar vein, substituting method calls with event sending effectively means breaking a transaction into many transactions: A transaction where you are sending the event, and a transaction for each of the receivers of the event. A lot of code assume it is executed within the same transaction (think data consistency) cannot be teased apart solely with the use of event queue. It requires restructuring such as changing the ordering of instructions. More on this in a later article.</p>
+<p>In essence, you will need to restructure your code whether you use this pattern or not.</p>
+<h3 id="dont-put-business-logic-in-the-queue">4.2 Don't put business logic in the queue</h3>
+<p>The event queue is essentially a global state in the application. Behold the poor souls who travel the path of global state, for it is truly the path of your demise. We can mitigate the problems by promising to be hands of doing anything but inserting into the queue. Treat it like your boss' big chested wife at the cocktail party  who got a little too drunk and a little too flirtatious - don't look, don't touch.</p>
+<p>There <strong>will</strong> come a time where you find yourself wanting to implement logic in the event queue. For example logic that removes event <em>A</em> when event <em>B</em> is added, or add event <em>C</em> automatically when event <em>A</em> is added. It is equally bad practice to query the content of the queue and react to that. Try to solve such problems by other means.</p>
+<p>Here is why its dangerous. The second you start extending the queue or query its content, you are putting business logic where it doesn't belong. One important lesson learned by the SOA community, is to keep business rules outside the enterprise service bus. In other words, keep the middle ware stupid!</p>
+<h3 id="avoid-vendor-lock-in">4.3 Avoid vendor lock-in</h3>
+<p>An alternative to using the event queue is to use the Api of your event-infrastructure supplier. Be aware, this a serious buy-in on that particular platform. Using the event queue shields you a bit from vendor lock-in - also sometimes referred to as <em>an anti-corruption layer</em> or a <em>channel adapter</em>.</p>
+<h3 id="transactional-event-publishing">4.4 Transactional event publishing</h3>
+<p>If your event-infrastructure does not support publishing events within a DB transaction, you may consider writing the content of the event-queue into a db-table instead. This way, its &quot;business as usual&quot; and your events will follow the same path all your other data changes follow.</p>
+<p>Then have a separate worker (thread/service) whose only job is to read from the events DB table, publish the events and delete the rows from DB.</p>
+<h3 id="roll-out-strategies">4.5 Roll-out strategies</h3>
+<p>When rolling out this pattern, prepare yourself for touching a large part of the code base. Literally all constructors needs to take the queue as an argument. Alternatively, just roll out the queue enough places to cover the business logic needing to publish events.</p>
+<p>You also need to ensure that every composition root (entry point of your application) gets to instantiate a fresh copy and and the end of execution flows, you call <code>PublishEvents()</code>.</p>
+<p>I suggest passing around the queue only and get that merged onto the master branch before using it. That way, the majority of changes are simple risk-free. Still for larger projects, the roll out may cause some initial pain.</p>
+<h2 id="summary">5. Summary</h2>
+<ul>
+<li>Delay publishing event until the end of the code flow</li>
+<li>The event queue pattern help the transition</li>
+<li>Inevitably going micro services require non-trivial changes to your code</li>
+</ul>
+<p>For more articles in this series, see <a href="http://firstclassthoughts.co.uk/Tags/Refactor_to_Micro_Services.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #438d05;    display: inline-block;">Refactor to Micro Services</a></p>
+<p>Please show your support by sharing and voting: 
+<a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html&amp;title=The%20event%20queue%20design%20pattern"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html&amp;text=The%20event%20queue%20design%20pattern&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html&amp;t=The%20event%20queue%20design%20pattern"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesTheEventQueue.html&amp;t=The%20event%20queue%20design%20pattern"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><strong>August 2016 NOTICE: MVNO IS HIRING</strong> <em>MVNO at Telenor is looking for talented developers.  MVNO is the infrastructure that keep mobile companies running. Our clients include CBB and OK Mobil.
+Do you want to expand or further grow your skills within the realm of Micro services, IOC containers, NHibernate, Kafka, C#, F#, Javascript, Angular, ASP.NET MVC, Command-Query-Separation, DBA skills, Git, Github, Appveyor, Octopus, look no further. 
+<br>MVNO offers a unique culture where a big part of the working life if about optimizing for happiness. Your happiness! We have 20% of our time allocated for innovation or fixing stuff that bothers us. Great work place with 37h work week, six weeks vacation and highly skilled friendly colleagues.
+<br> If you are interested please contact mokc@telenor.dk for further details. The office is situated at Telenor Copenhagen.</em></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/RefactoringToMicroServicesTheEventQueue.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

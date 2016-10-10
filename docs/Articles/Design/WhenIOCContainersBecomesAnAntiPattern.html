@@ -1,0 +1,126 @@
+﻿<html>
+<head>
+<title>When IOC containers become an anti-pattern</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="when-ioc-containers-become-an-anti-pattern">When IOC containers become an anti-pattern</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Architecture.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #21689d;    display: inline-block;">Architecture</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Micro_Service.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #61bfd3;    display: inline-block;">Micro Service</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Refactor_to_Micro_Services.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #438d05;    display: inline-block;">Refactor to Micro Services</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Dependency_Injection.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2d7da0;    display: inline-block;">Dependency Injection</a>
+<a href="http://firstclassthoughts.co.uk/Tags/IOC.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #a14685;    display: inline-block;">IOC</a>
+<a href="http://firstclassthoughts.co.uk/Tags/IOC_Container.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #c1b671;    display: inline-block;">IOC Container</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Service_Locator.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #54b55b;    display: inline-block;">Service Locator</a></p>
+<p><em>For many years IOC containers have been touted the tool that ensure testable and reusable software. Any large enterprise project with self respect uses one. Interestingly, when refactoring to micro services, IOC frameworks play less of a role - To the extend, that their use may be regarded an anti-pattern.</em></p>
+<p>Please show your support by sharing and voting: </p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html&amp;title=When%20IOC%20containers%20become%20an%20anti-pattern"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html&amp;text=When%20IOC%20containers%20become%20an%20anti-pattern&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html&amp;t=When%20IOC%20containers%20become%20an%20anti-pattern"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html&amp;t=When%20IOC%20containers%20become%20an%20anti-pattern"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/pixabay_com_greater-roadrunner-854405_640.jpg"></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#historical-background">1. Historical background</a></li>
+<li><a href="#ioc-containers-as-an-anti-pattern">2. IOC containers as an anti-pattern</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<h2 id="historical-background">1. Historical background</h2>
+<p>First at bit of history to set the scene. Around 2005-2006 people started writing about dependency injection in MSDN Magazine and Dr. Dobbs. With the popularization of dependency injection techniques, the ecosystem of IOC container frameworks proliferated, giving further momentum to the movement. Inevitably, IOC containers became modern. There was excitement. Finally, we had the technique, and tool support, for creating testable code. Heck, I was excited too. Enterprise software, unit testing, maybe even a bit of TDD - combined!</p>
+<p>In any modern larger software project with self respect, you will find the use of an IOC framework. If you're not using IOC containers, you'll hear experienced programmers complain your ears off about it. Nothing wrong with that. Their benefits generally out-weigh the introduced complexity. At least so long as they are not used as service locators. Personally. I've done magic with IOC containers! Test-enabling a behemoth of an application framework that otherwise was not impenetrable to testing. But more on that another time.</p>
+<p>Before we continue, it is important to the terminology straight. There are two closely related concepts that are easily mixed up on the Internet. These are;</p>
+<ul>
+<li><strong>Dependency injection</strong> is a programming practice of passing into an object it’s collaborators, rather the object itself creating them. For example, &quot;constructor injection&quot; is the technique of taking all &quot;static dependencies&quot; as constructor arguments.</li>
+<li>An <strong>IOC Container/Dependency injection frameworks</strong> is a framework, that can create instances of object graphs and their dependencies. Typically through some explicit configuration or implicitly by scanning assemblies combined with conventions of naming or use of attributes. </li>
+</ul>
+<p>So you can do dependency injection perfectly fine without an IOC container if you so choose.</p>
+<h2 id="ioc-containers-as-an-anti-pattern">2. IOC containers as an anti-pattern</h2>
+<p>Part of my job at MVNO, is to tease apart functionality of a large monolith, and placing it in independent micro services. Independent of each other, we made an interesting observation. </p>
+<blockquote>
+<p>The first thing we do after moving the code to the micro service, <br>
+almost as a knee-jerk reflex, <br>
+is to remove the dependency to the IOC framework. </p>
+</blockquote>
+<p>It's not that we don't like IOC frameworks, they're great! But in the context of micro services, IOC containers often do not have a role to play. Part of what defines a micro service, is that it is small. Hence the number of composition roots are limited. It may therefore be just as easy to instantiate the object graph by hand. In a micro service implementation, using an IOC framework may be regarded an anti-pattern - if you have a need for an IOC framework, it may be an indicator, that your service is too big.</p>
+<p>Cutting the ties to the IOC container dependency yields the following advantages</p>
+<ul>
+<li>No registering of interfaces to types.</li>
+<li>No life-time management.</li>
+<li>One less dependency to manage when building and deploying.</li>
+</ul>
+<p>Make no mistake. We do a whole lot of dependency injection - we just don't employ an IOC framework.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In terms of testable code, it is the practice of using dependency injection that enables testability, not the IOC framework. </p>
+<p>In a micro service implementation, using an IOC framework may be regarded an anti-pattern - if you have a need for an IOC framework, it may be an indicator, that your service is too big.</p>
+<p>Please show your support by sharing and voting: 
+<a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html&amp;title=When%20IOC%20containers%20become%20an%20anti-pattern"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html&amp;text=When%20IOC%20containers%20become%20an%20anti-pattern&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html&amp;t=When%20IOC%20containers%20become%20an%20anti-pattern"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.html&amp;t=When%20IOC%20containers%20become%20an%20anti-pattern"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><strong>August 2016 NOTICE: MVNO IS HIRING</strong> <em>MVNO at Telenor is looking for talented developers.  MVNO is the infrastructure that keep mobile companies running. Our clients include CBB, Bibob, and OK Mobil.
+Do you want to expand or further grow your skills within the realm of Micro services, IOC containers, NHibernate, Kafka, C#, F#, Javascript, Angular, ASP.NET MVC, Command-Query-Separation, DBA skills, Git, Github, Appveyor, Octopus, look no further. 
+<br>MVNO offers a unique culture where a big part of the working life if about optimizing for happiness. Your happiness! We have 20% of our time allocated for innovation or fixing stuff that bothers us. Great work place with 37h work week, six weeks vacation and highly skilled friendly colleagues.
+<br> If you are interested please contact mokc@telenor.dk for further details. The office is situated at Telenor Copenhagen.</em></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/WhenIOCContainersBecomesAnAntiPattern.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

@@ -1,0 +1,166 @@
+﻿<html>
+<head>
+<title>The importance of fake microservices</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="the-importance-of-fake-microservices">The importance of fake microservices</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/RefactoringToMicroServicesFakeMicroServices.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Micro_Service.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #61bfd3;    display: inline-block;">Micro Service</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Monolith.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #f56600;    display: inline-block;">Monolith</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Refactoring.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #c6dc6b;    display: inline-block;">Refactoring</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Architecture.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #21689d;    display: inline-block;">Architecture</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Refactor_to_Micro_Services.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #438d05;    display: inline-block;">Refactor to Micro Services</a></p>
+<p><em>We introduce the notion of a fake microservice. Fake microservices may be instrumental in your journey from a monolithic architecture to microservices. In this article we  reveal how we got a kick-start towards a microservice architecture by means of fake microservices.</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html&amp;title=The%20importance%20of%20fake%20microservices"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html&amp;text=The%20importance%20of%20fake%20microservices&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html&amp;t=The%20importance%20of%20fake%20microservices"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html&amp;t=The%20importance%20of%20fake%20microservices"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/https_pixabay_com_tableware-1571068_640.jpg">
+<br>Image from <a href="https://pixabay.com/en/tableware-plate-porcelain-stack-1571068/">https://pixabay.com/en/tableware-plate-porcelain-stack-1571068/</a></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#problem">1. Problem</a></li>
+<li><a href="#fake-it-till-you-make-it">2. Fake it 'till you make it</a></li>
+<li>
+<a href="#real-life-scenarios">3. Real-life scenarios</a>
+<ul>
+<li><a href="#example-1-the-customer-log">3.1 Example 1. The customer log</a></li>
+<li><a href="#example-2-sending-emails">3.2 Example 2. Sending emails</a></li>
+<li><a href="#discussion">3.3 Discussion</a></li>
+</ul>
+</li>
+<li><a href="#from-fake-to-fabulous">4. From fake to fabulous</a></li>
+<li><a href="#conclusions">5. Conclusions</a></li>
+</ul>
+<h2 id="problem">1. Problem</h2>
+<p>Having taken the decision to depart from a monolith architecture, one of the first questions to arise is &quot;how to get there?&quot; <em>Fake microservices may be the answer you are looking for</em>. In order to understand how to get from a monolith to microservices, we must understand what a microservice is. For this article the following simple definition applies.</p>
+<blockquote>
+<p>A microservice is unit of software that is independently upgradeable and replaceable.
+It autonomously deals with a subset of the business and is full control of its data. </p>
+</blockquote>
+<p>When reading on the Internet, you will find advice in abundance. Most of this advice is in the form of &quot;identify seams of your system and separate there&quot; or &quot;if your team is about to implement feature Y, consider implementing that as a service instead&quot;. In practice, however, things are not always that simple. <em>You quickly find yourself in a catch-22. You want to write a new service independent of the monolith, yet the service must depend on a lot of functionality found within the monolith.</em></p>
+<p>There a several ways to deal with this situation:</p>
+<ol>
+<li>You can split the monolith into services and only depend on loosely coupled services.</li>
+<li>You can duplicate reams of code from the monolith to the new service so it is independent.</li>
+<li>You can create a number of fake services which the new service depends on.</li>
+</ol>
+<p>Let's deal with each of the three possibilities. Clearly <strong>(1)</strong> is a bit of a recursive joke. We are in the midst of extracting the monolith into services, so the answer to our problems can hardly be to just do more of that. </p>
+<p>While <strong>(2)</strong> is a viable option, it carries with it a lot of overhead. With code duplication, code changes require manually searching all other code repositories to ensure alignment of the new logic. At MVNO some scornfully sneered at the warning signs and embraced code duplication. But when code changed, we often forgot to re-implement the changes in all the duplicated places. While a part of the microservices paradigm is to trade DRY for flexibility, code duplication is now a path we thread more cautiously. </p>
+<p><strong>(3)</strong> is the focus of this article. It is what has worked best for us.</p>
+<h2 id="fake-it-till-you-make-it">2. Fake it 'till you make it</h2>
+<p>When you start off with building your first services, you quickly find yourself missing out on a lot of the monolithic infrastructure. To a large extend we have dealt with this issue in MVNO by means of <strong>fake microservices</strong>. What is a fake service? It's sort of the opposite of a microservice. </p>
+<blockquote>
+<p>A <em>fake microservice</em> is a unit of software that highly depends on functionality of the monolith. 
+It cannot be independently upgraded and it shares data with the monolith and other fake services.</p>
+</blockquote>
+<p>A fake microservice is like a wart on your girlfriend's nose. It's ugly and is not intended to stay there for long. Still, while there, it serves the practical purpose of scaring away other romantic interest. Regard fake services as stepping stones, helping you to reaching you goals faster. Separating out and building a service is far more time consuming that building a fake service.  A fake microservice may live within the code repository and the same execution environment as the monolith or it may be separated out. </p>
+<p>What are the kinds of services you want to fake? At first, it is the infrastructure needed in your soon-to-be-written-services. Later you may find that obstacles for taking apart the monolithic can be solved by breaking a part of the logic into one or more fake services. </p>
+<h2 id="real-life-scenarios">3. Real-life scenarios</h2>
+<p>The success and speed with which you can transition from monolithic code to fake microservices to real services highly depends on the code base and the code extracted from the monolith. I'll showcase two pieces of important infrastructure whose success in this regard are very different.</p>
+<h3 id="example-1.-the-customer-log">3.1 Example 1. The customer log</h3>
+<p>Many enterprise systems have the notion of a log of business events, essentially what has happened to the customer and when. At MVNO we term such a log a &quot;Customer log&quot;, and it holds all of the important information for the administrative staff to understand the customer (when did they pay their bill, late payment thresholds crossed, changes in the subscription, the status of important third party integration calls, etc.). It also holds an entry for each time a staff member performed a lookup the customer. If you don't have a customer log in your system, consider getting one. </p>
+<p>Needless to say, we can't do much in a service without writing to the customer log. </p>
+<p>Now in our monolith the customer log is a database table and the last thing we want to do is to have our microservices write directly into tables of the monolith. It defeats the whole purpose of the microservice architecture. </p>
+<p>Here is what we did:</p>
+<ul>
+<li>Left the database untouched</li>
+<li>Created a fake microservice that listens on a new event <code>LogCustomerLog</code> taking as payload the message, the customer id, the administrative user id, etc.</li>
+<li>The fake microservice saves the received data into customer log entries corresponding to each event instance.</li>
+<li>Done ...</li>
+</ul>
+<p>You can well imagine the speed with which such a service could be established. It makes our services decoupled from the problem of &quot;customer logging&quot;, and we can at any time upgrade our fake microservice <em>without having to do any changes to our microservices</em>. Of course, now we have two ways of writing to the customer log. Sending events and writing directly into the table. We address this in section 4.</p>
+<h3 id="example-2.-sending-emails">3.2 Example 2. Sending emails</h3>
+<p>Many services need to send emails such as a welcome letter, a change of subscription, notice that a payment running late, or indicators of other activity. Very similar to the customer logging, we can introduce a fake service and an event <code>SendEmail</code>. </p>
+<p>The way email and phone texts are generated is by means of a very generic templating system. Each message is defined in a separate part of the application. Messages may use tags which at the rendering time replaces e.g. <code>[firstname]</code> with the customer's name. A message may be associated defines as any of our message types in our system, e.g. &quot;welcome letter&quot; or &quot;change of phone number&quot;. Each of message types support a set of tags.</p>
+<h3 id="discussion">3.3 Discussion</h3>
+<p>From a conceptual perspective, the two services are identical: They receive an event and generate a message in the form of an email or an entry in a customer log. From a data perspective, however, they are very different. The customer log messages are entirely defined by the payload of the event, not so for emails. Recall, emails may contain tags. And a tag corresponds to data virtually from any corner of the monolith. </p>
+<p>Thus, while it is fairly straight forward to upgrade the fake customer log service, upgrading the email service may either require a lot of data pumps to feed the service with all kinds of information, or alternatively, a number of services must exhibit the data needed for the email generation. Reading between the lines: The email service is serving the purpose of decoupling just fine, and we'd rather focus our energy elsewhere.</p>
+<h2 id="from-fake-to-fabulous">4. From fake to fabulous</h2>
+<p>Getting rid of a fake service is a two-step process. </p>
+<p>First we must change the monolith so it uses events rather than writing directly to the database. For this we leverage upon the <a href="RefactoringToMicroServicesTheEventQueue.html">event queue design pattern</a> to ensure our event publishing is aligned with our database transactions. <strong>Conceptually, this is an interesting step: We are reducing the coupling of the code without separating code into services</strong>. </p>
+<p>Second, we must upgrade our fake service to a real service. We do this by cutting ties to our dependencies in the monolith - perhaps by moving the code to the service. This is possible now that the monolith is publishing events rather than calling said code. Also, we need to migrate data either to some other schema or another database entirely.</p>
+<h2 id="conclusions">5. Conclusions</h2>
+<p>By using fake microservices, we can quickly make the platform understand events (or other means of requests). This makes it easier and quicker to expose infrastructure needed in the microservices we want to write. This has several advantages:</p>
+<ul>
+<li>We save time turning all of the infrastructure code into services, as this requires changing the whole monolith, the database etc.</li>
+<li>We do it without code duplication.</li>
+<li>We can steadily migrate the monolith code to using the fake services.</li>
+<li>Finally, we can turn the fake service into a real service when all dependencies have been resolved.</li>
+</ul>
+<p>Each of these steps are incremental, and low-risk.</p>
+<p>For more articles in this series, see <a href="http://firstclassthoughts.co.uk/Tags/Refactor_to_Micro_Services.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #438d05;    display: inline-block;">Refactor to Micro Services</a></p>
+<p>Please show your support by sharing and voting: 
+<a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html&amp;title=The%20importance%20of%20fake%20microservices"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html&amp;text=The%20importance%20of%20fake%20microservices&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html&amp;t=The%20importance%20of%20fake%20microservices"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/RefactoringToMicroServicesFakeMicroServices.html&amp;t=The%20importance%20of%20fake%20microservices"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><strong>August 2016 NOTICE: MVNO IS HIRING</strong> <em>MVNO at Telenor is looking for talented developers.  MVNO is the infrastructure that keep mobile companies running. Our clients include CBB and OK Mobil.
+Do you want to expand or further grow your skills within the realm of Micro services, IOC containers, Kafka, C#, F#, Javascript, Angular, ASP.NET MVC, Command-Query-Separation, DBA skills, Git, Github, Appveyor, Octopus, look no further. 
+<br>MVNO offers a unique culture where a big part of the working life if about optimizing for happiness. Your happiness! We have 20% of our time allocated for innovation or fixing stuff that bothers us. Great work place with 37h work week, six weeks vacation and highly skilled friendly colleagues.
+<br> If you are interested please contact mokc@telenor.dk for further details. The office is situated at Telenor Copenhagen.</em></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/RefactoringToMicroServicesFakeMicroServices.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br>
+<br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

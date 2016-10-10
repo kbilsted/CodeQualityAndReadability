@@ -1,0 +1,407 @@
+﻿<html>
+<head>
+<title>Optimal indent size for code readability</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="optimal-indent-size-for-code-readability">Optimal indent size for code readability</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Code_Layout.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #e41098;    display: inline-block;">Code Layout</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2;    display: inline-block;">Code Readability</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Design_Pattern.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #9e89d7;    display: inline-block;">Design Pattern</a></p>
+<p><em>In this article, we investigate the effects on source code, when using small or large indentation size. Small idention sizes seems to have a negative effect on code readability. Larger ones, the opposite.</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;title=Optimal%20indent%20size%20for%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;text=Optimal%20indent%20size%20for%20code%20readability&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;t=Optimal%20indent%20size%20for%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;t=Optimal%20indent%20size%20for%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/i.imgur.com_BtjZedW.jpg"></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#introduction">1. Introduction</a></li>
+<li>
+<a href="#background-information">2. Background information</a>
+<ul>
+<li><a href="#code-consistency">2.1 Code consistency</a></li>
+<li><a href="#indention-based-languages">2.2 Indention-based languages</a></li>
+<li><a href="#research">2.3 Research</a></li>
+<li><a href="#tabs-or-spaces">2.4 Tabs or spaces</a></li>
+<li><a href="#the-linux-kernel-coding-guidelines">2.5 The linux kernel coding guidelines</a></li>
+</ul>
+</li>
+<li>
+<a href="#investigating-the-primary-effect">3. Investigating the primary effect</a>
+<ul>
+<li><a href="#indent-size-0">3.1 Indent size: 0</a></li>
+<li><a href="#indent-size-18">3.2 Indent size: 18</a></li>
+<li><a href="#indent-size-4">3.3 Indent size: 4</a></li>
+</ul>
+</li>
+<li>
+<a href="#recommendations">4. Recommendations</a>
+<ul>
+<li><a href="#recommendation-use-4-space-indent">4.1 Recommendation: Use 4 space indent</a></li>
+<li><a href="#recommendation-a-single-statement-pr-line">4.2. Recommendation: A single statement pr. line</a></li>
+</ul>
+</li>
+<li>
+<a href="#the-secondary-effect-of-code-indention">5. The secondary effect of code indention</a>
+<ul>
+<li><a href="#technique-quick-bailout">5.1 Technique: Quick bailout</a></li>
+<li><a href="#technique-early-return--fail-fast">5.2 Technique: Early return / Fail fast</a></li>
+<li><a href="#technique-separate-iteration-from-processing">5.3 Technique: Separate iteration from processing</a></li>
+<li>
+<a href="#design-patterns">5.4 Design patterns</a>
+<ul>
+<li><a href="#the-strategy-design-pattern">5.4.1 The strategy design pattern</a></li>
+<li><a href="#the-decorator-design-pattern">5.4.2 The decorator design pattern</a></li>
+</ul>
+</li>
+<li><a href="#summary">5.5 Summary</a></li>
+</ul>
+</li>
+<li><a href="#conclusions">6. Conclusions</a></li>
+</ul>
+<h2 id="introduction">1. Introduction</h2>
+<p>The indent size you use has two significant effects on your source code. A <strong>primary effect</strong> is immediately evident - the ease with which you quickly scan down through code. A <strong>secondary effect</strong>, and perhaps the most important, an effect which subtly shape how the source code  is structured. </p>
+<p>Like the gravitational force, we tend to forget its existence and focus solely on the immediately observable. Ultimately, choosing an indent size for your project is, therefore, about conscientiously selecting properties of the source code you find desirable. </p>
+<h2 id="background-information">2. Background information</h2>
+<p>One of the great debates on code formatting, is what indent size to use. You will find different advice and a lot of options and very little fact. The advice I've come across mentions indent size of either 2, 3, 4, or 8. So which is the superior? And why are no one recommending 1, 5, 6 or 18 as the indent size?</p>
+<h3 id="code-consistency">2.1 Code consistency</h3>
+<p>While most cannot agree on a fixed number, most can agree to consistency being of significant importance. Prefer a project-wide style over individual preference. Consistency within a project is important. Consistency within one module or package is most important.</p>
+<h3 id="indention-based-languages">2.2 Indention-based languages</h3>
+<p>What about indention-based languages? Since they use indention to demarcate scope as opposed to <code>{ }</code>,  their best practices carry weight. The following table shows the official coding guideline recommended indent size for each language:</p>
+<table>
+<thead>
+<tr>
+	<th>Language</th>
+	<th>Indent size</th>
+	<th>Tabs allowed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td><a href="https://www.python.org/dev/peps/pep-0008/">Python</a></td>
+	<td>4</td>
+	<td>(Yes)</td>
+</tr>
+<tr>
+	<td><a href="https://github.com/styleguide/ruby">Ruby</a></td>
+	<td>2</td>
+	<td>Yes</td>
+</tr>
+<tr>
+	<td><a href="https://msdn.microsoft.com/en-us/library/dd233191.aspx">F#</a></td>
+	<td>3-4</td>
+	<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>Evidently, they cannot agree on anything either.</p>
+<h3 id="research">2.3 Research</h3>
+<p>Little research has been carried out in terms of readability and indent size. The only I've come across carried out in &quot;recent times&quot; is 
+ <a href="https://www.cs.umd.edu/~ben/papers/Miara1983Program.pdf"><em>&quot;Program Indentation and Comprehensibility&quot;</em> by Miaria et. al, Communications of the ACM 26, (Nov. 1983) p.861-867</a></p>
+<p>They investigate novice programmers (2 years) reading a Pascal program. They found 2, 4 spaces to be optimal and that there is no measurable difference between the two. 6 is measurably worse and code without indentation is measurably awful. You probably could have guessed that.</p>
+<p>Are these results the final truth? I doubt it. Ultimately, research in this area, measure with great bias the disposition of the subject more than anything else.</p>
+<h3 id="tabs-or-spaces">2.4 Tabs or spaces</h3>
+<p>No one seem to be able to agree on this either. It seems that tabs are becomming less popular, e.g. forbidden in F# and tolerated in Python 3 (Python 2 didn't mind tabs).  Nowadays most people seem to agree, that tabs causes too many problems with inconsistent formatting when sharing code between developers. </p>
+<p>Historically, tabs have played an important role since they significantly reduced the source code size, and possibly were more convenient in a time where there was no IDE to continually format your code.</p>
+<p>Others prefer tabs over spaces, since then the indentation on the screen is configurable to each programmer without disturbing colleagues preferences.  In practice, many have mixed experiences with this.</p>
+<p>Also some put great emphasis on the semantic differences between tabs and spaces. They believe that tabs carry the meaning &quot;indent one level&quot;, whereas a space carries the meaning of fine-tuning some visual layout.</p>
+<h3 id="the-linux-kernel-coding-guidelines">2.5 The linux kernel coding guidelines</h3>
+<p>Possibly the greatest source of inspiration for my thinking on indent size is the <a href="https://www.kernel.org/doc/Documentation/CodingStyle">Linux kernel coding style</a>. Excuse my long quote, I have not been able to reduce it further without loss of meaning:</p>
+<blockquote>
+<p>... indentations 8 characters. There are heretic movements that try to make indentations 4 (or even 2!) characters deep, and that is akin to trying to define the value of PI to be 3.</p>
+<p>Rationale: The whole idea behind indentation is to clearly define where a block of control starts and ends.  Especially when you've been looking at your screen for 20 straight hours...</p>
+<p>Now, some people will claim that having 8-character indentations makes the code move too far to the right, and makes it hard to read on a 80-character terminal screen ... if you need more than 3 levels of indentation, you're screwed anyway, and should fix your program.</p>
+</blockquote>
+<h2 id="investigating-the-primary-effect">3. Investigating the primary effect</h2>
+<p>To better understand the rationale for using indent size <em>x</em>, let us experiment first with extreme values, then hone in on a tolerable value. We continually reformat the same code snippet using different indention sizes. This experiment serves to reveal the <em>primary effect</em> indention size has on our source code.</p>
+<h3 id="indent-size-0">3.1 Indent size: 0</h3>
+<pre class="prettyprint"><code>void Test()
+{
+int x = 23;
+for (i=0; i&lt;=5; i++)
+{
+if (i*i == x)
+{
+continue;
+}
+DoSomething();
+}
+}
+</code></pre>
+<p>Rating: <em>Bad</em>. With too little indention the structure of the code diminishes. You can't tell where anything begins or ends.</p>
+<h3 id="indent-size-18">3.2 Indent size: 18</h3>
+<pre class="prettyprint"><code>void Test() {
+                  int x = 23;
+                  for (i = 0; i &lt;= 6; i++) {
+                                  if (i*i == x) {
+                                                  continue;
+                                  }
+                                  DoSomething();
+                  }
+}
+</code></pre>
+<p>Rating: <em>Bad</em>. Loads of indentation is obviously bad too. It becomes very difficult to visually link code to its parent   code block (method, branch, or loop). Your peripheral vision doesn't extend that far. Your eyes have to flick too far back and forth to facilitate reading, effectively making you loose track of where you are reading vertically, when the eyes move horizontally.</p>
+<h3 id="indent-size-4">3.3 Indent size: 4</h3>
+<pre class="prettyprint"><code>void Test() {
+    int x = 23;
+    for (i = 0; i &lt;= 6; i++) {
+        if (i*i == x) {
+            continue;
+        }
+        DoSomething();
+    }
+}
+</code></pre>
+<p>Rating: <em>Good</em>. Here we see a nice trade-of between indention to clearly demarcate a new scope, while at the same time keeping things within the peripheral vision. I can't miss the start of a new block of code if I'm quickly scanning while things are not crammed together either. </p>
+<h2 id="recommendations">4. Recommendations</h2>
+<h3 id="recommendation-use-4-space-indent">4.1 Recommendation: Use 4 space indent</h3>
+<p>My recommendation: <strong>Use 4 space indention for modern OOP languages</strong>. Now, why on earth do I prefer an indent size of 4 when having just wholeheartedly given my blessing to the Linux style guide line advocating indention of 8? </p>
+<p>I has to do with the programming language. Linux is programmed in C, my recommendation targets languages like C<sup>#</sup> and Java. In those languages, you have a significant &quot;horizontal overhead&quot; of having to wrap methods inside a name space <em>and</em> a class. That is not the case for C. Let us compare a &quot;hello world&quot; program in the two languages.</p>
+<p><strong>C:</strong> (indent size = 8)</p>
+<pre class="prettyprint"><code>main()
+{
+________printf(&quot;Hello World&quot;);
+}
+</code></pre>
+<p><br></p>
+<p><strong>C<sup>#</sup>:</strong> (indent size = 8)</p>
+<pre class="prettyprint"><code>namespace com.indentsize.example
+{
+         class Greeter
+         {
+                 public static void Main(string[] args)
+                 {
+__________________________Console.WriteLine(&quot;Hello World&quot;);
+                 }
+         }
+}
+</code></pre>
+<p>For the C program, the code starts at column <strong>8</strong>, while for the C# program, code starts at column <strong>24</strong>. With 80-character limit pr. line you are spending <em>30%</em> of your screen real estate on blanks. That is insane.</p>
+<p>The indent size of 4 is a good trade of between making it &quot;hurt&quot; to indent, and giving enough space to enable easily scanning down the code. If you need more than around three levels of indention - you are most probably going to regret it if you don't fix your code immediately. </p>
+<p>Ok, so if 4 is better than 8, why not use an indent size of 2?</p>
+<p><strong>C<sup>#</sup>:</strong> (indent size = 2)</p>
+<pre class="prettyprint"><code>namespace com.indentsize.example
+{
+  class Greeter
+  {
+    public static void Main(string[] args)
+    {
+______Console.WriteLine(&quot;Hello World&quot;);
+    }
+  }
+}
+</code></pre>
+<p>With smaller indention sizes, you don't have that &quot;horizontal pain&quot; when making a new scope. This subtly encourage the developer to just indent another level. It may be so subtle that the developer doesn't even notice. And the code may look fine and nicely within the boundaries of the monitor standing a meter away from the screen. </p>
+<p>Typically, we don't like over-nested methods - they tend to grow in complexity. Section 4 addresses mechanisms to employ when using larger indention sizes.</p>
+<p>Probably the only time I would ever use an indention of 2 is when doing power point slides. But that is a different environment. Here you cannot scroll, and moving from one slide to another effectively wipes everything from the first slide. Hence you typically feel the need to cramp as much code as possible onto each slide in order to give overview and tell a coherent story while pointing to various elements on the screen.</p>
+<h3 id="recommendation-a-single-statement-pr.-line">4.2. Recommendation: A single statement pr. line</h3>
+<p>Another way of making it hard to scan down code is to have two statements on one line. This is often done when the &quot;if&quot; and the &quot;then&quot; part takes up less space than the max. line length. Like the Linux coding guideline says: <em>&quot;Don't put multiple statements on a single line unless you have something to hide&quot;</em>. That is, <strong>avoid</strong> coding style like</p>
+<pre class="prettyprint"><code>if (a &gt; 10 &amp;&amp; b &gt; 5) doSomethingA();
+if (c &lt; 5 || c+3+b == 6) doSomeB();
+</code></pre>
+<p>In effect we are dealing with an indention size of 1. And as pr. our previous recommendation to use indent size of 4, we are breaking that rule.</p>
+<p>The code is much easier to scan if it looks like</p>
+<pre class="prettyprint"><code>if (a &gt; 10 &amp;&amp; b &gt; 5) 
+    doSomethingA();
+    
+if (c &lt; 5 || c+3+b == 6) 
+    doSomeB();
+</code></pre>
+<p>If you find you have to in-line the &quot;then-part&quot; of your &quot;if&quot; in order to save vertical space (for example to fit your method to the screen's real estate), you are likely to get more readability from extracting part(s) of that method into separate method(s) instead.</p>
+<h2 id="the-secondary-effect-of-code-indention">5. The secondary effect of code indention</h2>
+<p>Interestingly, the indent size has an indirect affect on how code is structured. It is rather subtle until you realize it. Then it becomes abundantly clear. Unfortunately. The secondary effect is  rarely brought up when the subject of indention size is discussed. </p>
+<p><strong>The secondary effect:</strong> <em>With greater indention size, you have to structurally change your code in order to stay within reasonable line widths</em>. </p>
+<p>So how do we reduce the number of scopes in a method? After all, business logic may dictate the need for a lot of branching. We dedicate the rest of this section to showing some of the techniques people use. The list is by no means exhaustive. Have I forgotten a vital pattern, please let me know or make edits to this document accordingly.</p>
+<p>A mutual trait between these techniques are that they make the code readable, they tend to break up the code into smaller units, some of which may easier be extracted into separate methods.</p>
+<p>Notice, that many of these techniques goes against the principle of &quot;Single Entry, Single Exit&quot; essentially stating to only  use one return pr. method. But that principle is only relevant to languages with manual memory allocation. I find it useless in modern languages with automatic resource management and garbage collection. We simply do not need to worry about this stuff anymore. That is why we have patterns such as <code>Disposable</code>, <code>finally</code>-blocks, destructors, soft references and garbage collection.</p>
+<h3 id="technique-quick-bailout">5.1 Technique: Quick bailout</h3>
+<p>This technique is about substituting if-branching with <code>continue</code> in loops.</p>
+<pre class="prettyprint"><code>for (int i = 0; i &lt; 5; i++)
+{
+    if(IsOfInterest(i))
+    {
+        DoStuff(i);
+    }
+} 
+</code></pre>
+<p>becomes</p>
+<pre class="prettyprint"><code>for (int i = 0; i &lt; 5; i++)
+{
+    if(!IsOfInterest(i))
+        continue;
+        
+    DoStuff(i);
+} 
+</code></pre>
+<h3 id="technique-early-return--fail-fast">5.2 Technique: Early return / Fail fast</h3>
+<p>This technique is about substituting if-branching with <code>return</code> in method bodies. Typically this is happening at the beginning of the method body. Sometimes this technique is also referred to as <a href="http://martinfowler.com/ieeeSoftware/failFast.pdf">&quot;fail fast&quot;</a>.</p>
+<pre class="prettyprint"><code>void DoThing()
+{
+    if(user.HasAccess(&quot;Print&quot;))
+    {
+        if(DateTime.Now.Hours &gt; 12)
+        {
+            connection = PrinterConnection.Connect();
+            if(connection != null)
+            {
+                print(&quot;message&quot;);
+            }
+        }
+    }
+}
+</code></pre>
+<p>becomes</p>
+<pre class="prettyprint"><code>private void PrintMessage()
+{
+    if(!user.HasAccess(&quot;Print&quot;))
+        return;
+    if(DateTime.Now.Hours &lt;= 12)
+        return;
+            
+    connection = PrinterConnection.Connect();
+    if(connection == null)
+        return;
+ 
+    print(&quot;message&quot;);
+}
+</code></pre>
+<p>I find the second easier to read, modify, maintain and debug.</p>
+<h3 id="technique-separate-iteration-from-processing">5.3 Technique: Separate iteration from processing</h3>
+<p>In an effort to generally reduce nesting and method body length, the body of looping constructs are separated into a method.  This technique is often advocated by &quot;uncle Bob&quot;.</p>
+<pre class="prettyprint"><code>void ProcessElements(Person[] elements)
+{
+    int accumulated = 0;
+    foreach(var element in elements)
+    {
+        var tmp = element.Age + DateTime.Now.Year;
+        accumulated += tmp / 2;
+        Print(element);
+    }
+}    
+</code></pre>
+<pre class="prettyprint"><code>void ProcessElements(Person[] elements)
+{
+    int accumulated = 0;
+    foreach(var element in elements)
+    {
+        accumulated += ProcessElement(element);
+    }
+}
+
+int ProcessElement(Person p)
+{
+    var tmp = element.Age + DateTime.Now.Year;
+    Print(element);
+    return tmp / 2;
+}
+</code></pre>
+<p>I found this technique to take a little getting used to. But it actually makes a lot of sense, once you have it in your fingers. What we are doing is to separate the logic for the iteration with that of processing. </p>
+<p>For traditional looping using a variable such as the <code>for(int i = 0, ...)</code>, the benefits are even greater.</p>
+<pre class="prettyprint"><code>    for (int i = 0; i &lt; elements.Length; i++)
+    {
+        var tmp = elements[i].Age + DateTime.Now.Year;
+        ...
+        i++ ??
+    }
+</code></pre>
+<p>The longer the loop-body becomes, the more you have to scan, and worry whether the value of  <code>i</code> is changed somewhere in that loop. What seems to be a straight forward iteration of the <code>Elements</code> array may in fact not be a such.  By extracting out the processing, <code>i</code>is only changed in the iteration-logic and hence, it becomes clear that we are in fact just traversing.</p>
+<h3 id="design-patterns">5.4 Design patterns</h3>
+<p>There are many design patterns to help change the structure of your code. I can not go through them all here. The selected patterns are selected just to wet your appetite and to inspire you to at least evaluate whether some of your code could benefit from restructuring.</p>
+<p>Generally, there are many benefits to using design patterns (and pitfalls!), but to describe these is outside the scope of this article.</p>
+<h4 id="the-strategy-design-pattern">5.4.1 The strategy design pattern</h4>
+<p>When you identify having the same if-else structure in multiple methods, perhaps a price calculation based on the type of user or his memberships, you can separate the content of each if or else-block into a separate strategy. Effectively you are defining a family of algorithms, encapsulating each one, and making them
+interchangeable to the client.</p>
+<p><img src="img/strategy_design_pattern.png"></p>
+<p>Rather than trawling through endless if-else statements, you have separate strategy implementations, from which you select one - or you are given one by the caller, and then simply invoking it.</p>
+<h4 id="the-decorator-design-pattern">5.4.2 The decorator design pattern</h4>
+<p>The decorator design pattern is another pattern that enable you to separate your logic into smaller interchangeable bits. Different to the strategy pattern, decorators are meant to be added to some base structure and enhance it. Eg. a decorator for implementing <code>3ItemsFor2</code> which you could combine with a <code>PayWithUserCredits</code> decorator. As shown in the UML for the strategy pattern, strategies are typically not combined.</p>
+<p>See also <a href="http://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/MalleableCodeUsingDecorators.html">Malleable code by using decorators</a> describing some of the additional benefits to be reaped from using this pattern.</p>
+<h3 id="summary">5.5 Summary</h3>
+<p>The techniques shown all reduces indentation of code. Additionally, they have the following very nice properties concerning code readability in general:</p>
+<ul>
+<li>More but smaller methods</li>
+<li>Less convoluted code</li>
+<li>Easier to debug</li>
+</ul>
+<h2 id="conclusions">6. Conclusions</h2>
+<p>I cannot tell you what indent size is the right one for you. You should pick the one that moves the code in the direction you desire. We have presented the fundamental properties of code indentation and shown:</p>
+<blockquote>
+<p>Larger indention reduces the number of scopes in a method,<br />
+while smaller indention sizes encourages more scopes within a method.</p>
+</blockquote>
+<p>We recommend using an indentation size of 4 for modern OOP languages, but feel free to make up your own mind.</p>
+<p>Further reading</p>
+<ul>
+<li><a href="http://www.perforce.com/resources/white-papers/seven-pillars-pretty-code">Seven Pillars of Pretty Code</a> is a short article on seven easy to follow rules for code readability.</li>
+</ul>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;title=Optimal%20indent%20size%20for%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;text=Optimal%20indent%20size%20for%20code%20readability&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;t=Optimal%20indent%20size%20for%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;t=Optimal%20indent%20size%20for%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br>
+<br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

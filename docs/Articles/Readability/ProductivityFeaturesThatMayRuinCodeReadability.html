@@ -1,0 +1,202 @@
+﻿<html>
+<head>
+<title>Productivity features that may ruin code readability</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="productivity-features-that-may-ruin-code-readability">Productivity features that may ruin code readability</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2;    display: inline-block;">Code Readability</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Tools.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #5d59a2;    display: inline-block;">Tools</a></p>
+<p><em>It is the programmers that builds software, not the tools. Are glossy so-called productivity boosters beneficial or leading to sub-optimal code?</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html&amp;title=Productivity%20features%20that%20may%20ruin%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html&amp;text=Productivity%20features%20that%20may%20ruin%20code%20readability&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html&amp;t=Productivity%20features%20that%20may%20ruin%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html&amp;t=Productivity%20features%20that%20may%20ruin%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/peacock-536478_640.jpg"></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#introduction">1. Introduction</a></li>
+<li>
+<a href="#folding">2. Folding</a>
+<ul>
+<li><a href="#code-folding">2.1 Code folding</a></li>
+<li><a href="#region-folding">2.2 Region folding</a></li>
+</ul>
+</li>
+<li>
+<a href="#outlining">3. Outlining</a>
+<ul>
+<li><a href="#code-scrollbar">3.1 Code scrollbar</a></li>
+<li><a href="#vertical-indentation-guides">3.2 Vertical indentation guides</a></li>
+<li><a href="#scope-outlining">3.3 Scope outlining</a></li>
+</ul>
+</li>
+<li><a href="#syntax-highlighting">4. Syntax highlighting</a></li>
+<li><a href="#conclusions">5. Conclusions</a></li>
+<li><a href="#quotes">6. Quotes...</a></li>
+</ul>
+<h2 id="introduction">1. Introduction</h2>
+<p>The other day I was reading the book &quot;Object thinking&quot;, while <a href="http://kbilsted.github.io/CodeQualityAndReadability/Articles/BookReviews/ObjectThinking.html">I have my reservations about some of its content</a> I found the following quote striking. </p>
+<blockquote>
+<p>&quot;Better people&quot; has been recognized as the most promising silver bullet for addressing<br />
+the software crisis, and yet almost all of our energy has been spent on creating better <br />
+tools, methods, and processes instead of better people?<br />
+-David West, <em>&quot;Object thinking&quot;</em>, 2004</p>
+</blockquote>
+<p>This is by no means new knowledge, already in <strong>1968</strong> people were making noise about it: Sackman, Erikson, and Grant <em>&quot;Exploratory Experimental Studies Comparing Online and Offline Programming Performances.&quot;</em>, Communications of the ACM  1968. </p>
+<p>Ever so often, at conferences, at product release parties, and so forth, tools are promoted as breakthroughs in our ability
+to create software. The mantra always being &quot;productivity&quot;. And every new feature seems to be addressing just that. </p>
+<p>I couldn't help but reflect upon some of the features in my IDE that over the passed years have surfaced, and which seem cool. But are these features simply masquerading bad code? As counter intuitively as it may sound, perhaps all those glossy features and eye candy may be leading us <strong>in the wrong direction</strong>. Towards worse code, with worse readability. Don't get me wrong, I'm not here to preach the use of Notepad or - god forbid - Edlin. I love and enjoy my development environment, but hear me out.</p>
+<p>I've assembled a list of features we may or may not really want in our IDE's. I have no delusions as to whether this trend can be stopped adding nice looking features. My mission is simply for you to gulp the list, reflect for a moment, maybe your favourite features of the editor are in fact making the code worse in the long run.</p>
+<h2 id="folding">2. Folding</h2>
+<h3 id="code-folding">2.1 Code folding</h3>
+<p>Take the automatic semantic folding features found in most editors and IDE's today. The only time I've ever really appreciated that feature is when I had to make changes to certain configuration files. Now these configuration files are not for kids! The nicer ones were about 1000 lines (and growing), while the more mature were around 6000 lines. Now that is a whole lot of configuration! I guess the XML format did not help compress the size either. Here, being able to fold everything up and expand only the sections of interest was a great deal! And of course you'd meet the average Joe-blow who did not know that the IDE could fold all levels in one key-stroke, and bewildered himself with trying to search and match indentions. While you always feel good about yourself helping a colleague out, showing him a great productivity boost such as &quot;fold all levels&quot;, allow me to speculate for a moment. Perhaps, just perhaps, we were better of had each of the major parts of the configuration file been separated into distinct files. </p>
+<p>Most of the time, those expander-buttons in the side of the screen is a distraction more than anything.</p>
+<h3 id="region-folding">2.2 Region folding</h3>
+<p>Search and you will find plenty of people who <a href="http://mikehadlow.blogspot.dk/2006/10/no-to-region.html">detest</a> <a href="http://blog.codinghorror.com/the-problem-with-code-folding/">region folding</a>. With &quot;region folding&quot;, I'm referring to the visual studio feature where by inserting a special kind of comment, it becomes a foldable block like shown below</p>
+<p><img src="img/code_folding_codinghorror.com_6a0120a85dcdae970b012877705fd7970c-pi.png"></p>
+<p>Why do we dislike regions? <strong>Because they hide code, and force the developer to perceive the code from a particular angle</strong>. The screen shot taken from codinghorror.com is particularly good at showing what looks like &quot;a well-organized code file&quot;. In fact it's not. The regions doesn't clearly convey what to expand, when I'm looking for a particular method or property. We all have seen the effects of overused regions in the code bases we maintain. Particularly painful is when <em>new code is littered with these beasts</em>. The automatic use of regions in every code file is a <em>code smell</em> and must be avoided.</p>
+<p>There are circumstances where regions have its merits. Particularly when working with very big files. A first step towards splitting up such files is to annotate them with regions. It can change your life from miserable to just bearable. It enables you to compress the file to a screen-full from which you may expand the appropriate region. But often times, since we have the code folding we are not allowed the time to enable multiple configuration files, that are merged in memory when the application starts.</p>
+<p>Another occasional usage that is when grouping the methods and properties implementing a specific interface. Especially when the class implements many interfaces. In these situations, however, one can also consider using C#'s &quot;explicit interface implementation feature&quot; - be wary, as it requires a different way of accessing your objects.</p>
+<p><strong>Rather than using regions in your code, you should break larger classes into smaller classes and break larger methods into smaller methods. As with comments, if you feel the need to introduce it, re-think if you can express the same with code the compiler doesn't ignore</strong>.</p>
+<h2 id="outlining">3. Outlining</h2>
+<h3 id="code-scrollbar">3.1 Code scrollbar</h3>
+<p>The code scrollbar is according to <a href="https://msdn.microsoft.com/en-us/library/dn237345.aspx">Microsoft</a> <em>&quot;When you are working with long code files, it can be hard to keep everything in mind. You can customize the scroll bar of the code window to give you a bird's eye view of what's happening in your code.&quot;</em></p>
+<p><img src="img/code_scrollbar.png"></p>
+<p>This is all backwards. Why are the files so long, that you have no overview without this feature? And frankly, how often have you really saved any time using this feature? I have a nagging feeling this feature is all about looking smart and needlessly burning CPU cycles.</p>
+<p><strong>Rather than having to rely on code scrollbar, you should break larger classes into smaller classes and break larger methods into smaller methods. This will greatly improve the code and its reusability</strong>. This is in line with Uncle Bob who on NDC 2009 - Norwegian developers Conference said:</p>
+<blockquote>
+<p>How many of you have dealt with functions thousands of lines long.. <br />
+and you find your way around it by the number of indents..<br />
+oh yeah, now we're at the third indent down..<br />
+its the third-if-statement.. now we are navigating the code geographically ..by landmarks.<br />
+We should navigate the code by name instead of geography.<br />
+Those landmarks should be method calls.  
+</p>
+</blockquote>
+<p>Many years ago I started the project <a href="http://euphoria.sourceforge.net/">Euphoria</a>, an attempt at creating an editor for the LaTeX language. One of its features was a graphical outlining as can be seen to the right hand of the below picture</p>
+<p><img src="http://sourceforge.net/dbimage.php?id=74829"></p>
+<p>This is a graphical representation of your document. But unlike the code scrollbar, its focus is to show the main structure by making thick lines the chapters, thinner lines the sections, etc. and most importantly, <a href="http://sourceforge.net/p/euphoria/code/HEAD/tree/csharp-v1/Eupho1/Eupho1/PluginGFXOverview.cs">colourizing the lines in terms of their relative size in relation to the rest of the document</a>. This means, that if you have an exceedingly long chapter, it will be shown as red, if the document contains chapters of more or less the same length. Wouldn't it be cool if the scroll bar of the IDE would highlight in red long methods, or long files instead? Possibly, <em>that</em> would be a useful feature :-)  </p>
+<h3 id="vertical-indentation-guides">3.2 Vertical indentation guides</h3>
+<p>The popular <a href="https://visualstudiogallery.msdn.microsoft.com/d0d33361-18e2-46c0-8ff2-4adea1e34fef">Productivity Power Tools</a> for visual studio offer
+ a feature where by each column matching the indentation size is highlighted with a vertical line. This enables the developer to better see the span of a scope. And it looks cool, just look below. </p>
+<p><img src="img/code_indent_guides.png"></p>
+<p>Unfortunately, and as the image shows, it may lead to over nested code &quot;looking just fine&quot; when in fact it isn't. Those fancy guides are an open invitation to just do one more indentation (if you want to know more about the effect of code indentation please read <a href="http://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html">Optimal indent size for code readability</a>). *If you really appreciate this feature you may need to ask yourself whether your indentation size is too small and/or whether your methods are too long. *</p>
+<p>There are fewer problems with many scopes as long as the method is fully visible on the screen. But when code grows, scopes, especially scopes for conditions and loops are heart of code complexity.</p>
+<h3 id="scope-outlining">3.3 Scope outlining</h3>
+<p>On a similar vein as &quot;vertical indentation guides&quot;, ReSharper has a feature called scope outlining, where you get to see the outlining of the current scope.</p>
+<p><img src="img/scope_highlight.png"></p>
+<p>Compared to &quot;vertical indentation guides&quot;, the code is less cluttered with all the vertical lines, only showing you the scope from the position of the cursor.</p>
+<h2 id="syntax-highlighting">4. Syntax highlighting</h2>
+<p>Now this is most certainly going out on a limb. But I cannot help but having mixed feelings about syntax highlighting. All that splash of colour can take away focus from the code. Take for instance the &quot;desert nights&quot; colour theme</p>
+<p><img src="img/desertnights_vs_theme.png"></p>
+<p>If you are used to coding on a white background this looks insane. Like the code has passed one of those make-up stands in larger malls where your face gets painted in the colours of the Peacock. All those colours makes words stick out left, right and center.</p>
+<p><img src="img/peacock-536478_640.jpg" align="right"></p>
+<p>Conversely, I do love <em>my own</em> colouring scheme. I have spent some time tuning my colouring scheme and I like it. It's when having to do code reviews on other peoples screens that I at times have to squint my eyes and point with a finger when reading. Or when having to see large code chunks in a diff-tool for that matter.</p>
+<p>Some of the things I have experimented with regarding syntax highlighting</p>
+<ul>
+<li>Black vs. white background. I've come to the conclusion that black is easier on the eyes on longer streaks of coding. Admittedly, and oddly, the black theme does take a little getting used to.</li>
+<li>Comments in a dimmer colour to make the code stand out.</li>
+<li>Highlighting the current line, and matching parenthesis/scopes in &quot;aggressive&quot; colours help.</li>
+<li>Colouring <code>struct</code>'s in a red warning-ish colour was a good idea, but confusing as you would think it was a compile error</li>
+<li>Colouring operator overloads is a good idea, it's nice to get warned that e.g. <code>==</code> in the code may have an entirely different meaning.</li>
+<li>Different colours for different operators such as <code>+</code>, <code>-</code>, <code>*</code> is a bad idea, but that operators in a different colour than number and variables help make them stand out.</li>
+<li>Tools such as ReSharper offer a lot of colouring  tuning. I've found that you can tweak all you want, but in the end, with too many different colours on the screen it gets too funky to look at, and you can't remember the semantics behind the colouring any ways. E.g. reference types can be coloured differently that structs, inheriting an interface can be coloured differently than inheriting from a class. </li>
+</ul>
+<h2 id="conclusions">5. Conclusions</h2>
+<p>By now a common theme has emerged. We have seen examples of features that help in situations where code is gnarly:  Long, and perhaps deeply nested. Of course we should embrace these new features and reap their benefits when we can. But it wouldn't hurt to stop and reflect for a moment that despite all these shiny fancy new features, we may be better of if we change our code such that it is more readable and manageable in an environment <strong>where such features are not present</strong>.</p>
+<blockquote>
+<p>Nearly everyone agrees, at a superficial level, that people trump<br />
+tools, techniques, and process. And yet we keep behaving as if it<br />
+were not true. Perhaps it's because people are a harder problem<br />
+to address than tools, techniques, and process.<br />
+-Robert L. Glass, <em>&quot;Fact and fallacies of software development&quot;</em>, 2002</p>
+</blockquote>
+<h2 id="quotes...">6. Quotes...</h2>
+<p>I'll leave you with some food for thought quotes:</p>
+<blockquote>
+<p>The most important factor in software work is not the tools and techniques<br />
+used by the programmers, but rather the quality of the programmers<br />
+themselves. <br />
+-Robert L. Glass, <em>&quot;Fact and fallacies of software development&quot;</em>, 2002</p>
+</blockquote>
+<p>and</p>
+<blockquote>
+<p>We in the software field, all of us technologists at heart, would<br />
+prefer to invent new technologies to make our jobs easier. Even<br />
+if we know, deep down inside, that the people issue is a more<br />
+important one to work.<br />
+-Robert L. Glass, <em>&quot;Fact and fallacies of software development&quot;</em>, 2002</p>
+</blockquote>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html&amp;title=Productivity%20features%20that%20may%20ruin%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html&amp;text=Productivity%20features%20that%20may%20ruin%20code%20readability&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html&amp;t=Productivity%20features%20that%20may%20ruin%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html&amp;t=Productivity%20features%20that%20may%20ruin%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br></p>
+<p><strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br>
+<br>
+<br></p>
+<p><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>

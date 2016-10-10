@@ -1,0 +1,251 @@
+﻿<html>
+<head>
+<title>.Net `lock` is really fast!</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="net--is-really-fast">.Net <code>lock</code> is really fast!</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/DotNetLocksAreReallyFast.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br>
+<a href="http://firstclassthoughts.co.uk/Tags/.Net.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #df139e;    display: inline-block;">.Net</a>
+<a href="http://firstclassthoughts.co.uk/Tags/lock.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #740b08;    display: inline-block;">lock</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Threads.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #b5738f;    display: inline-block;">Threads</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Multi threaded programming.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #44bc06;    display: inline-block;">Multi threaded programming</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Semaphore.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #861313;    display: inline-block;">Semaphore</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Interlocked.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #888ec0;    display: inline-block;">Interlocked</a></p>
+<p><strong>The lock() construct in .Net is surprisingly fast. We will cover just how fast it is and show an easy approach to testing a simple scenario.</strong></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html&amp;title=.Net%20`lock`%20is%20really%20fast!"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html&amp;text=.Net%20`lock`%20is%20really%20fast!&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html&amp;t=.Net%20`lock`%20is%20really%20fast!"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html&amp;t=.Net%20`lock`%20is%20really%20fast!"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#the-unsafe-approach">1. The unsafe approach</a></li>
+<li><a href="#thread-safe-version-using">2. Thread safe version using <code>lock()</code></a></li>
+<li><a href="#building-a-low-level-lock-using">3. Building a low-level lock using <code>Interlocked</code></a></li>
+<li><a href="#performance-measurements---wow-lock-is-fast">4. Performance measurements - wow lock is fast!</a></li>
+<li><a href="#testing-multi-threaded-code">5. Testing multi-threaded code</a></li>
+<li><a href="#conclusion">6. Conclusion</a></li>
+</ul>
+<p>At MVNO I was doing multi-threaded programming for an integrations project with a third party application. At some point we wondered what the speed of the <code>lock()</code> construct was. Was it a slow operation to be used with care? Rather than relying on Internet hear-say I measured the situation for my use case. </p>
+<p>The third party system required for each call a sequence number to be supplied with calls. Since we do communication through multiple threads, we need a <code>Sequence</code> abstraction that is shared among the threads. Let's give this a first stab.</p>
+<p>Notice, this is a two-part article, part two <a href="StrategiesForFastThreadSafeCode.html">is found here</a></p>
+<h2 id="the-unsafe-approach">1. The unsafe approach</h2>
+<pre class="prettyprint"><code>public class Sequence 
+{
+    long count;
+    readonly long start;
+    const long Max = 9999999999L;
+
+    public Sequence(long seed)
+    {
+        start = seed;
+        this.count = seed;
+    }
+
+    public string Next()
+    {
+        count = count == Max
+            ? start
+            : count + 1;
+
+        return string.Format(&quot;{0:D10}&quot;, count).Substring(0, 10);
+    }
+}
+</code></pre>
+<p>This implementation clearly is <strong>not thread safe</strong>, two threads calling <code>Next()</code> can get the same same sequence number. </p>
+<h2 id="thread-safe-version-using-">2. Thread safe version using <code>lock()</code></h2>
+<p>To ensure thread safety, we draw upon the oldest trick in the book, protect the critical regions. We use C#'s <code>lock()</code>. Notice how the scope of the lock covers the whole method. If we only lock the code that changes <code>count</code> we may return duplicate values. For an example as simple as this, there are opportunities for reducing the running time. But more on that later.</p>
+<pre class="prettyprint"><code>public class Sequence 
+{
+    ....
+    readonly Object lockObject = new Object();
+    
+    public string Next()
+    {
+        lock(lockObject)
+        {
+            count = count == Max
+                ? start
+                : count + 1;
+
+            return string.Format(&quot;{0:D10}&quot;, count).Substring(0, 10);
+        }
+    }
+}
+</code></pre>
+<p>Also notice that we are using an explicit object <code>lockObject</code> for the lock. This is a better practice than using <code>this</code> as the lock object. Locking on <code>this</code> <em>may</em> be dangerous. Nothing prevents other parts of the system to also use the <code>Sequence</code> instance for their locking - in turn potentially creating non-trivial deadlocks. By using a private object we shield ourselves from such  a predicament.</p>
+<h2 id="building-a-low-level-lock-using-">3. Building a low-level lock using <code>Interlocked</code></h2>
+<p>So locks are fairly advanced in concept. They involve some registration-notification mechanism by which to waking up waiting threads upon the release of a lock. All such registration and notification surely <em>must incur a cost</em>. Now that we have a version without locking and one with locking, it is pretty easy to measure the difference. That will tell us the overhead, and there is one, but the difference may be difficult to fully appreciate. The reason being that the more we stuff into the locked region the slower the <code>lock</code> construct will seem to be. Thus I'm interested in measuring differently.</p>
+<p>Instead we implement a low-level locking mechanism ourselves. We busy wait for the ressource rather than all those fancy-pancy notifications. By using the <code>Interlocked</code> Api, we can implement a semaphore. The semaphore will only have the values 0 and 1 and act as the lock. The semaphore is our guard. Each thread will attempt to change the semaphore from 0 to 1. The lucky thread who succeed has effectively entered the lock, while remaining threads will forever attempt at assigning. To exit the lock we change the semaphore from 1 to 0. Of course we use the constants <code>Free</code> and <code>Locked</code> for the numerical values.</p>
+<pre class="prettyprint"><code>public class Sequence 
+{
+    ....
+    const int Free = 0, Locked = 1;
+    int semaphore = Free;
+    
+    public string Next()
+    {
+        while (Interlocked.Exchange(ref semaphore, Locked) == Locked)
+        { }
+
+        count = count == Max
+            ? start
+            : count + 1;
+
+        var result = string.Format(&quot;{0:D10}&quot;, count).Substring(0, 10);
+
+        if (Interlocked.Exchange(ref semaphore, Free) == Free)
+            throw new Exception(&quot;Programmer error!&quot;);
+
+        return result;
+    }
+}
+</code></pre>
+<p>The <code>Interlocked</code> Api reads a little strange at first sight. <code>Interlocked.Exchange(ref semaphore, Locked)</code> means setting the variable <code>semaphore</code> to the value <code>Locked</code> and return the previous value of <code>semaphore</code>. So as long as we set <code>semaphore</code> to <code>Locked</code> when it is already locked, we know that some other thread has acquired the lock. Similarly, when we free the lock (setting <code>semaphore</code> to <code>Free</code>) we expect that the value of <code>semaphore</code> is not already free. If it is, we throw an exception since something has gone completely wrong.</p>
+<h2 id="performance-measurements---wow-lock-is-fast">4. Performance measurements - wow lock is fast!</h2>
+<p>I'm not really interested in a complete micro performance benchmark, only look at the overall trends. Thus we perform only a single test case of 800.000 numbers to be drawn pr. worker, and 13 workers in total at play. We resume the testing details in the next section.</p>
+<p>The measurements are as follows on a quad core 3.5 Ghz machine</p>
+<table>
+<thead>
+<tr>
+	<th>Approach</th>
+	<th align="right">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>Thread unsafe</td>
+	<td align="right">1.7 seconds</td>
+</tr>
+<tr>
+	<td>using <code>lock</code></td>
+	<td align="right">6.7 seconds</td>
+</tr>
+<tr>
+	<td>using <code>Interlocked</code></td>
+	<td align="right">6.5 seconds</td>
+</tr>
+</tbody>
+</table>
+<p>Conclusion. When workers perform very little work, <strong><code>lock</code> is as fast as a low-level busy wait!</strong></p>
+<p>Just how they're achieving this speed I have not dug into. My gut tells me, that they choose to busy wait like I do, and then after a while, shift over to  a more &quot;heavy weight&quot; registration-notification mechanism.</p>
+<p>We can <em>attemp</em>t at calculating the overhead of the <code>lock</code>. The overhead is around 5 seconds, compared to the thread unsafe version. This means we are doing 800.000 * 13 / 5 = <em>2 million</em> locks a second! Recall due to the work inside the <code>lock</code> the actual overhead of the lock is far less!</p>
+<p><em>In a soon to come article, I'll show how we can improve the performance to be close to that of the thread unsafe version.</em></p>
+<h2 id="testing-multi-threaded-code">5. Testing multi-threaded code</h2>
+<p>It is fairly easy test our implementations to see that they are in fact thread-safe. </p>
+<p>First we need to define a worker. A worker represents each thread in our system. In our implementation all it does is to draw a sequence number and convert it to an int. We do this to simulate a bit of work, and because <code>int</code> has a significantly smaller memory footprint than <code>String</code>. I assume that the implementation is somewhat close to the workload of my production code.</p>
+<pre class="prettyprint"><code>public class Worker
+{
+    public List&lt;int&gt; NumbersDrawn = new List&lt;int&gt;();
+
+    public void Execute(Sequence sequence, int iterations)
+    {
+        for (int i = 0; i &lt; iterations; i++)
+            NumbersDrawn.Add(int.Parse(sequence.Next()));
+    }
+}
+</code></pre>
+<p>We reuse this worker throughout all our testing. We'll create 13 workers and for each of them let them work in their separate thread.</p>
+<pre class="prettyprint"><code>public class SequenceTest
+{
+    int Max = 800000;
+
+    [Test]
+    public void TestNoDuplicatesInSequence()
+    {
+        var sequence = new Sequence();
+
+        var workers = new[]
+        {
+            new Worker(),new Worker(),new Worker(),new Worker(),new Worker(),new Worker(),
+            new Worker(),new Worker(),new Worker(),new Worker(),new Worker(),new Worker(),new Worker(),
+        };
+        
+        var tasks = workers
+            .Select(x =&gt; Task.Factory.StartNew(() =&gt; x.Execute(sequence, Max), TaskCreationOptions.LongRunning))
+            .ToArray();
+        Task.WaitAll(tasks);
+
+        var distinctSerialsDrawn = workers
+            .SelectMany(x =&gt; x.NumbersDrawn)
+            .Distinct()
+            .Count();
+
+        Assert.Equals(N * workers.Length, distinctSerialsDrawn);
+    }
+}
+</code></pre>
+<p>The trick to testing this is to ensure that by merging all numbers from all workers, there must not be any duplicate entries. If each worker must draw 800.000 number and we have 13 workers, we know the list of all messages should be 800.000 * 13. If we have duplicates the <code>Distinct()</code> call removes these and the total messages is below the expected number.</p>
+<h2 id="conclusion">6. Conclusion</h2>
+<p>For workers doing very little work, the <code>lock()</code> construct is amazingly fast. Very close to a low-level busy-wait strategy.</p>
+<p><a href="StrategiesForFastThreadSafeCode.html">In the next installment</a>, I'll show using other features of the <code>Interlocked</code> Api, that achieves speed close to the thread-unsafe implementation!</p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html&amp;title=.Net%20`lock`%20is%20really%20fast!"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html&amp;text=.Net%20`lock`%20is%20really%20fast!&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html&amp;t=.Net%20`lock`%20is%20really%20fast!"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Programming/DotNetLocksAreReallyFast.html&amp;t=.Net%20`lock`%20is%20really%20fast!"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/DotNetLocksAreReallyFast.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br></p>
+<p><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br>
+<img src="http://c.statcounter.com/10899964/0/1394c4a0/0/" alt="web analytics"></p>
+
+
+
+</article>
+</body>
+</html>
