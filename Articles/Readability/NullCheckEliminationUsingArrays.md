@@ -118,17 +118,16 @@ Let's reflect for a minute over the changes we've made.
 
 
 **Smoothness**
-Spend a minute or two re-reading the two examples. I hope you have come to appreciate how much smoother the flow of the code is. To be honest, I find the lack of null-checking quite liberating.
+Spend a minute or two re-reading the two examples of section 2. I hope you have come to appreciate how much smoother the flow of the code is. To be honest, I find the lack of null-checking quite liberating.
 
 
 **Accustomation**
-Naturally, this style of coding takes a bit of getting used to. You may find yourself and colleagues having reservations to wards this way of programming. I'm sure I wouldn't apply this pattern everywhere a variable may be null. But I've found that in code without side effects and code that "processes" data such as validation or mutation of input A to output B, the model fits well.
+Naturally, this style of coding takes a bit of getting used to. You may find yourself and colleagues having reservations to wards this way of programming. I'm sure I wouldn't apply this pattern everywhere a variable may be null. But I've found that in code without side effects and code that "processes" data such as validation or mutation of input A to output B, the model fits well. Perhaps because in terms of semantics, there is little difference between processing one element and processing many elements one by one. 
 
 
 **Readability**
 When employing this pattern you may find some code becomes more readable, while other code does not. For instance, `AdjustRelationToEvent()` become `AdjustRelationsToEvent()` and is specified to be able to return several instances where only a maximum of one instance is ever returned. [Other strategies exists](<BaseUrl/>/Tags/Null_Check_Elimination.html) whose strategies better cater for revealing the intent of the method, for example the use of an "option/maybe type".
 
-In terms of semantics of the code, though, the code semantically work equally well for single instances and collections of relation objects. 
 
 
 **Reusability**

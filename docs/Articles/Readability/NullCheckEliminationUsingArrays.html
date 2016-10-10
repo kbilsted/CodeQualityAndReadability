@@ -135,12 +135,11 @@ void UpdateDbTable(Relation[] modifications)
 <h2 id="discussion">3. Discussion</h2>
 <p>Let's reflect for a minute over the changes we've made.</p>
 <p><strong>Smoothness</strong>
-Spend a minute or two re-reading the two examples. I hope you have come to appreciate how much smoother the flow of the code is. To be honest, I find the lack of null-checking quite liberating.</p>
+Spend a minute or two re-reading the two examples of section 2. I hope you have come to appreciate how much smoother the flow of the code is. To be honest, I find the lack of null-checking quite liberating.</p>
 <p><strong>Accustomation</strong>
-Naturally, this style of coding takes a bit of getting used to. You may find yourself and colleagues having reservations to wards this way of programming. I'm sure I wouldn't apply this pattern everywhere a variable may be null. But I've found that in code without side effects and code that &quot;processes&quot; data such as validation or mutation of input A to output B, the model fits well.</p>
+Naturally, this style of coding takes a bit of getting used to. You may find yourself and colleagues having reservations to wards this way of programming. I'm sure I wouldn't apply this pattern everywhere a variable may be null. But I've found that in code without side effects and code that &quot;processes&quot; data such as validation or mutation of input A to output B, the model fits well. Perhaps because in terms of semantics, there is little difference between processing one element and processing many elements one by one. </p>
 <p><strong>Readability</strong>
 When employing this pattern you may find some code becomes more readable, while other code does not. For instance, <code>AdjustRelationToEvent()</code> become <code>AdjustRelationsToEvent()</code> and is specified to be able to return several instances where only a maximum of one instance is ever returned. <a href="http://firstclassthoughts.co.uk//Tags/Null_Check_Elimination.html">Other strategies exists</a> whose strategies better cater for revealing the intent of the method, for example the use of an &quot;option/maybe type&quot;.</p>
-<p>In terms of semantics of the code, though, the code semantically work equally well for single instances and collections of relation objects. </p>
 <p><strong>Reusability</strong>
 The fact that you choose to operate on arrays, lists or sets, may open the door for reusability. For my example code (an extract of production code), 
 it turned out that part of the code (the <code>FetchDbRelations()</code> and <code>UpdateDbTable()</code>) <em>was reused</em> for handling a related event. This event could potentially update several relations. </p>
