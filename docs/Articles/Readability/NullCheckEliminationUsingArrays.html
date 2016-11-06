@@ -105,7 +105,7 @@ void UpdateDbTable(Relation modification)
 </code></pre>
 <p>Notice the prominent place the null-checking has in the code. </p>
 <h3 id="code-after-null-checks-elimination">2.1 Code after null-checks elimination</h3>
-<p>When we utilize the empty array to denote &quot;no work&quot;. Thus, for every null-check if determine if the semantics of the empty array is equivalent with the null. The value <code>null</code>can have many meanings, so it is not an entirely mechanical process. we can simplify the code to:</p>
+<p>When we utilize the empty array to denote &quot;no work&quot;. Thus, for every null-check if determine if the semantics of the empty array is equivalent with the null. The value <code>null</code> can have many meanings, so it is not an entirely mechanical process. we can simplify the code to:</p>
 <pre class="prettyprint"><code>void Execute(Event event)
 {
     var relations = FetchDbRelations(event);

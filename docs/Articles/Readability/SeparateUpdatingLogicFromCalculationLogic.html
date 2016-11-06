@@ -1,0 +1,261 @@
+﻿<html>
+<head>
+<title>Separate updating logic from calculations</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="separate-updating-logic-from-calculations">Separate updating logic from calculations</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2;    display: inline-block;">Code Readability</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Coding_Guideline.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #33ad2a;    display: inline-block;">Coding Guideline</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Refactoring.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #c6dc6b;    display: inline-block;">Refactoring</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Functional_core_Imperative_shell.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #49d0f0;    display: inline-block;">Functional core Imperative shell</a></p>
+<p><em>The readability of code dramatically improves, when the logic for updating state is separated from the calculations that provide the state changes. We show how both the updating and the calculation code is simplified when. While the principles of separation are generally applicable, we focus on methods updating state.</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html&amp;title=Separate%20updating%20logic%20from%20calculations"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html&amp;text=Separate%20updating%20logic%20from%20calculations&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html&amp;t=Separate%20updating%20logic%20from%20calculations"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html&amp;t=Separate%20updating%20logic%20from%20calculations"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/chameleon-885595_640.jpg"></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#introduction">1. Introduction</a></li>
+<li><a href="#a-typical-updating-method">2. A typical updating method</a></li>
+<li><a href="#the-updating-method-after-refactoring">3. The updating method after refactoring</a></li>
+<li>
+<a href="#the-extracted-calculations">4. The extracted calculations</a>
+<ul>
+<li><a href="#the-benefits-class">4.1 The Benefits class</a></li>
+<li><a href="#the-extracted-calculatebenefits">4.2 The extracted CalculateBenefits</a></li>
+</ul>
+</li>
+<li><a href="#perspective">5. Perspective</a></li>
+<li><a href="#summary">6. Summary</a></li>
+</ul>
+<h2 id="introduction">1. Introduction</h2>
+<p>Generally, methods with many responsibilities benefit from being split up in smaller parts. For this article, though, we focus on methods that update state. Update state? Yes. In methods that update state, I often see a mixture of simple assignments and computation whose results are used in assignments. It is very easy to persuade oneself, that a bit of computation does not hurt. In programming books, classes and flow is always made to look easy. Small examples that caters for easy overview. In the real world, we operate with classes containing many fields. 20 or 30 are not uncommon. And when updating fields in that number, we surpass the 5-9 number of things that our minds are capable of holding focus on concurrently. <em>Needles to say, we are loading work onto the brain and we easily loose overview.</em></p>
+<h2 id="a-typical-updating-method">2. A typical updating method</h2>
+<p>Let's have a look at an example from real life. Although the code is in English, it seems more like Chinese if you don't have business knowledge! <strong>Don't get bogged down on the details of the code, just glance over it</strong>. A concrete understanding matters not for our discussion. <strong>The main take-away of the code is that state is updated based on some values.</strong> </p>
+<p>The code in all its glory.</p>
+<pre class="prettyprint"><code>public void Replace(Product productData, ProductReplacementInfo replacement)
+{
+    var target = replacement.Product;
+    var replacer = replacement.ReplacedByProduct;
+    target.ReplacedCoverage = target.Coverage;
+    target.ReplacedIsAdditionalPremium = target.IsAdditionalPremium;
+    target.ReplacedBenefitCalculationMethod = target.BenefitCalculationMethod;
+    target.ReplacedExternalPolicyNumber = null;
+
+    decimal benefitFixed = replacer.Benefit.FixedAmount.IsDefined
+        ? replacer.Benefit.FixedAmount.Value
+        : 0;
+    decimal benefitPct = replacer.Benefit.PercentOfSalary.IsDefined
+        ? replacer.Benefit.PercentOfSalary.Value
+        : 0;
+
+    if (target.ReplacedBenefitCalculationMethod == replacer.Benefit.CalculationMethod)
+    {
+        target.TargetBenefitFixedAmount = benefitFixed;
+        target.TargetBenefitPercentOfSalary = benefitPct;
+    }
+    else
+    {
+        // from fixed to %
+        if (target.ReplacedBenefitCalculationMethod == BenefitCalculationMethod.FixedAmount
+            &amp;&amp; target.BenefitCalculationMethod == BenefitCalculationMethod.PercentageOfSalary)
+        {
+            target.TargetBenefitFixedAmount = 0;
+            target.TargetBenefitPercentOfSalary =
+                (int)(100 * target.TargetBenefitFixedAmount / productData.BeneficialSalary);
+        }
+        else
+        {
+            // from % to fixed
+            if (target.ReplacedBenefitCalculationMethod == BenefitCalculationMethod.PercentageOfSalary
+                &amp;&amp; target.BenefitCalculationMethod == BenefitCalculationMethod.FixedAmount)
+            {
+                target.TargetBenefitFixedAmount = (int)(productData.BeneficialSalary * (benefitPct / 100));
+                target.TargetBenefitPercentOfSalary = 0;
+            }
+            else
+            {
+                throw new Exception($&quot;Cannot convert {target.BenefitCalculationMethod} -&gt; {target.ReplacedBenefitCalculationMethod}&quot;));
+            }
+        }
+    }
+    
+    reasonRepository.AddChangeReason(RiskCoverageChangeReason.PensionSchemeChange);
+    target.Coverage = replacer.Info.CoverageId;
+    target.IsAdditionalPremium = replacer.Info.IsAdditionalPremium;
+    replacement.Product.ExtraInfo.PresenceInPensionScheme = CoveragePresenceInPensionScheme.Replaced;
+}
+</code></pre>
+<p>Here are the problems I have with the code</p>
+<ul>
+<li>Assignment of state is a mix of values and complex calculations. </li>
+<li>It is not clear that all fields are set, e.g. <code>TargetBenefitFixedAmount</code> and <code>TargetBenefitPercentOfSalary</code> </li>
+<li>The many if-else branching inhibits readability to the extend that comments were used as a separator.</li>
+<li>Some values must be rounded to whole numbers (they are stored in <code>int</code>'s). This rounding logic is intermixed with the assignments.</li>
+<li>The helper variables <code>benefitFixed</code> and <code>benefitPct</code> are unnecessarily visible.</li>
+</ul>
+<h2 id="the-updating-method-after-refactoring">3. The updating method after refactoring</h2>
+<p>Let's have a look at the code after having extracted away the calculation bits into a separate method.</p>
+<p>Notice the overview of the code that was achieved. We can easily follow which fields are updated, and all the clutter with regards to rounding etc. is hidden away. </p>
+<pre class="prettyprint"><code>public void Replace(Product productData, ProductReplacementInfo replacement)
+{
+    var target = replacement.Product;
+    var replacer = replacement.ReplacedByProduct;
+    target.ReplacedCoverage = target.Coverage;
+    target.ReplacedIsAdditionalPremium = target.IsAdditionalPremium;
+    target.ReplacedBenefitCalculationMethod = target.BenefitCalculationMethod;
+    target.ReplacedExternalPolicyNumber = null;
+
+    var benefits = CalculateBenefits(target, productData, replacer.Benefit.Value);
+    target.TargetBenefitFixedAmount = benefits.FixedAmount;
+    target.TargetBenefitPercentOfSalary = benefits.PercentOfSalary;
+
+    reasonRepository.AddChangeReason(RiskCoverageChangeReasonEnum.PensionSchemeChange);
+    target.Coverage = replacer.Info.CoverageId;
+    target.IsAdditionalPremium = replacer.Info.IsAdditionalPremium;
+    replacement.Product.ExtraInfo.PresenceInPensionScheme = CoveragePresenceInPensionScheme.Replaced;
+}
+</code></pre>
+<p>The &quot;magic&quot; lies in the introduction of the <code>CalculateBenefits()</code>, which is a simple &quot;extract method&quot; refactoring. I'm not sure I'd leave the helper method inside the <code>Replace()</code> for long. In a future iteration of the code, I'd move it out and add a <code>benefits</code> parameter instead. That way <code>Replace()</code> has one less  responsibility.</p>
+<h2 id="the-extracted-calculations">4. The extracted calculations</h2>
+<p>Now that was a very happy story. But how about the extracted bits? How ugly are they? That is a good question. Let's have a look.</p>
+<h3 id="the-benefits-class">4.1 The Benefits class</h3>
+<p>Our <code>CalculateBenefits()</code> returns two results, which we wrap in a class of its own. We could have used a tuple instead, but I feel it quickly gets confusing due to the anonymous field names. A third approach is to use <code>out</code> parameters, but they often have a clumsy feel to them, especially if when the number of <code>out</code> parameters exceeds 2 or 3.</p>
+<pre class="prettyprint"><code>class Benefits
+{
+    public readonly decimal FixedAmount, PercentOfSalary;
+
+    public Benefits(decimal fixedAmount, decimal percentOfSalary)
+    {
+        FixedAmount = fixedAmount;
+        PercentOfSalary = percentOfSalary;
+    }
+}
+</code></pre>
+<p>It can be tempting to place the rounding logic inside this class. For now it is a simple cast to <code>int</code>, but in the future it could get more involved. Personally, though, I think I prefer placing the rounding logic with the calculation logic. This way the data class acts as a simple vessel for values. It also does not require any testing. </p>
+<p>I've also made the class immutable. Perhaps its a bit overkill compared to the use cases of the class, but it was easy to do.</p>
+<h3 id="the-extracted-calculatebenefits">4.2 The extracted CalculateBenefits</h3>
+<p>Here is the extracted code for the calculation. </p>
+<pre class="prettyprint"><code>public Benefits CalculateBenefits(
+    RiskCoverageInfo origin,
+    Product productData
+    IRiskCoverageBenefitAggregator replacer)
+{
+    decimal benefitFixed = replacer.FixedAmount.IsDefined
+        ? replacer.FixedAmount.Value
+        : 0;
+    decimal benefitPct = replacer.PercentOfSalary.IsDefined
+        ? replacer.PercentOfSalary.Value
+        : 0;
+
+    if (origin.BenefitCalculationMethod == replacer.CalculationMethod)
+        return new Benefits((int) benefitFixed, (int) benefitPct);
+
+    if (origin.BenefitCalculationMethod == BenefitCalculationMethod.FixedAmount
+        &amp;&amp; replacer.CalculationMethod == BenefitCalculationMethod.PercentageOfSalary)
+    {
+        return new Benefits(0, (int) 100 * origin.TargetBenefitFixedAmount/productData.BeneficialSalary);
+    }
+
+    if (origin.BenefitCalculationMethod == BenefitCalculationMethod.PercentageOfSalary
+        &amp;&amp; replacer.CalculationMethod == BenefitCalculationMethod.FixedAmount)
+    {
+        return new Benefits((int) productData.BeneficialSalary * (benefitPct / 100), 0);
+    }
+
+    throw new Exception($&quot;Cannot convert {target.BenefitCalculationMethod} -&gt; {target.ReplacedBenefitCalculationMethod}&quot;));
+}
+</code></pre>
+<p>It is worth noticing how much cleaner this code also has become. </p>
+<ul>
+<li><strong>Although the code still fairly long-winded, we now know all it does it return two simple values.</strong></li>
+<li>Nesting is reduced by using <code>return</code> statements.</li>
+<li>A large lump of code has been assigned a name and is nicely tugged away.</li>
+<li>The variables <code>benefitFixed</code> and <code>benefitPct</code> are no longer available within <code>Replace()</code>.</li>
+</ul>
+<h2 id="perspective">5. Perspective</h2>
+<p><strong>We have shown the power of extracting methods. It is much more than a simple textural reshuffling of the code. We ended up with two pieces of code both of which were significantly simpler.</strong> We could end the story here, but I think there is more to the story.</p>
+<p>I think the great difference in readability was achieved by <em>what</em> we extracted. We did not simply cut the method in half. We extracted the <em>updating logic</em> from the <em>calculation logic</em>. It is this kind of separation that packs a punch. As we suggested above, the updating method should not invoke the calculation method, rather the updating method should take the values object as an argument. In turn, what we are implementing is a pattern known as <a href="http://firstclassthoughts.co.uk//Tags/Functional_core_Imperative_shell.html">&quot;functional core, imperative shell&quot;</a>.</p>
+<p>Finally, I've made the <code>CalculateBenefits</code> method <code>public</code>. Hopefully this is a bit thought-provoking. Ordinarily one should think such a method is private to the replace implementation. But it really doesn't hurt that it is more visible so long the method does not change any state (it's simply returning new values). Anyone is free to call the method without breaking anything. We could stress this further by making it <code>static</code> if we wanted to. By making it more public we are making it easy to test the calculating (i.e. the difficult) bits of the updating separately. It is a light-weight alternative to wrapping the CalculateBenefits-method in a class which implement an interface <code>ICalculateBenefits</code>, and injecting that interface into the <code>Replace()</code> method.   </p>
+<h2 id="summary">6. Summary</h2>
+<ul>
+<li>We have shown that the refactoring using &quot;Extract method&quot; may have a huge impact on readability.</li>
+<li>We have given the perspective that helper methods may be public if it is beneficial and when they do not change state.</li>
+</ul>
+<p>For more related articles, see <a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2;    display: inline-block;">Code Readability</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Coding_Guideline.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #33ad2a;    display: inline-block;">Coding Guideline</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Refactoring.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #c6dc6b;    display: inline-block;">Refactoring</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Functional_core_Imperative_shell.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #49d0f0;    display: inline-block;">Functional core Imperative shell</a></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html&amp;title=Separate%20updating%20logic%20from%20calculations"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html&amp;text=Separate%20updating%20logic%20from%20calculations&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html&amp;t=Separate%20updating%20logic%20from%20calculations"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html&amp;t=Separate%20updating%20logic%20from%20calculations"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br></p>
+<p><strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br>
+<br>
+<br></p>
+<p><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br></p>
+
+
+
+</article>
+</body>
+</html>

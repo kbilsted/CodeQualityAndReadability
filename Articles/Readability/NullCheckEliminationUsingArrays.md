@@ -81,7 +81,7 @@ Notice the prominent place the null-checking has in the code.
 
 ### 2.1 Code after null-checks elimination
 
-When we utilize the empty array to denote "no work". Thus, for every null-check if determine if the semantics of the empty array is equivalent with the null. The value `null`can have many meanings, so it is not an entirely mechanical process. we can simplify the code to:
+When we utilize the empty array to denote "no work". Thus, for every null-check if determine if the semantics of the empty array is equivalent with the null. The value `null` can have many meanings, so it is not an entirely mechanical process. we can simplify the code to:
 
 ```
 void Execute(Event event)
