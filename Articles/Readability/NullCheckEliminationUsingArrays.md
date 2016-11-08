@@ -152,7 +152,7 @@ Using the semantics of an empty array to denote "there is no result" we have eff
 
 The result is shorter and easier to read code, which may even be more reusable.
 
-The strategy is [one of many existing strategies](<BaseUrl/>/Tags/Null_Check_Elimination.html) (link is work in progress) 
+The strategy is [one of many existing strategies](<BaseUrl/>Tags/Null_Check_Elimination.html) (link is work in progress) 
 
 
 Please show your support by sharing and voting:
