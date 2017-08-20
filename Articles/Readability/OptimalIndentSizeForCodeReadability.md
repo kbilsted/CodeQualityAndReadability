@@ -443,7 +443,7 @@ We recommend using an indentation size of 4 for modern OOP languages, but feel f
 
 Further reading
 
-* [Seven Pillars of Pretty Code](http://www.perforce.com/resources/white-papers/seven-pillars-pretty-code) is a short article on seven easy to follow rules for code readability.
+* [Seven Pillars of Pretty Code](http://www.eetimes.com/document.asp?doc_id=1255077) is a short article on seven easy to follow rules for code readability.
 
 
 Please show your support by sharing and voting:
