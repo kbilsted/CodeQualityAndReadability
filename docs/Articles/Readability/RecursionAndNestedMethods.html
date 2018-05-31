@@ -1,0 +1,194 @@
+﻿<html>
+<head>
+<title>Recursion and nested methods</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="recursion-and-nested-methods">Recursion and nested methods</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/RecursionAndNestedMethods.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2;    display: inline-block;">Code Readability</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Coding_Guideline.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #33ad2a;    display: inline-block;">Coding Guideline</a></p>
+<p><em>Using recursion With the introduction of nested methods or &quot;inner functions&quot; to C# 7, we are able to do things not previously possible. Now there is a lot to say about a programming style with heavy 
+use of nested methods (such usage is quite common in functional programming), but here, I'll focus on how be better can express recursion in our code.</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html&amp;title=Recursion%20and%20nested%20methods"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html&amp;text=Recursion%20and%20nested%20methods&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html&amp;t=Recursion%20and%20nested%20methods"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html&amp;t=Recursion%20and%20nested%20methods"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#traditional-implementation-of-recursion">Traditional implementation of recursion</a></li>
+<li>
+<a href="#recursion-using-nested-methods">Recursion using nested methods</a>
+<ul>
+<li><a href="#placement-of-the-nested-method">Placement of the nested method</a></li>
+</ul>
+</li>
+<li><a href="#what-about-lambdas?">What about Lambdas?</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+<h2 id="traditional-implementation-of-recursion">Traditional implementation of recursion</h2>
+<p>With traditional C# or Java, recursion is often expressed using two methods. A public and a private, where the private is a helper method to the public. An example from my <a href="https://github.com/kbilsted/KBGit">KBGit project</a> where I need to get all reachable nodes in a graph from a particular position within that graph.</p>
+<pre class="prettyprint"><code>    public List&lt;KeyValuePair&lt;Id, CommitNode&gt;&gt; GetReachableNodes(Id id)
+    {
+        var result = new List&lt;KeyValuePair&lt;Id, CommitNode&gt;&gt;();
+        GetReachableNodes(id, result);
+        return result;
+    }
+</code></pre>
+<p>which sets up data and invokes the recursive helper method:</p>
+<pre class="prettyprint"><code>    private void GetReachableNodes(Id id, List&lt;KeyValuePair&lt;Id, CommitNode&gt;&gt; result)
+    {
+        var current = Hd.Commits[id];
+        result.Add(new KeyValuePair&lt;Id, CommitNode&gt;(id, current));
+        foreach (var parent in current.Parents)
+        {
+            GetReachableNodes(parent, result);
+        }
+    }
+</code></pre>
+<p>Now, of course there are other ways to define a recursive method, but the style with two methods is the one I've found the most comprehensible. Now there is one downside to this implementation strategy. We have two methods exposed to the class. Inside the class which of the <code>GetReachableNodes()</code> are we supposed to call? </p>
+<p>Another problem is the state propagation, parameters used in the public methods must be manually wired and defined again in the private method. Not a big problem, but a bit clumsy. Particularly when the number of arguments grow.. as they sometimes do. In our example, only the <code>id</code> parameter is repeated. </p>
+<p>This is a concrete example of the general problem that sometimes in order for a method to be more comprehensible, we split it into several methods, but really those methods we want no one to see except for that one method. Behold, nested methods is the answer.</p>
+<h2 id="recursion-using-nested-methods">Recursion using nested methods</h2>
+<p>With nested methods we can in-line one <code>GetReachableNodes()</code> inside the other <code>GetReachableNodes()</code>, thus making the interface simple both internally and externally.</p>
+<pre class="prettyprint"><code>public List&lt;KeyValuePair&lt;Id, CommitNode&gt;&gt; GetReachableNodes(Id id)
+{
+    var result = new List&lt;KeyValuePair&lt;Id, CommitNode&gt;&gt;();
+    GetReachableNodes(id);
+
+    void GetReachableNodes(Id currentId)
+    {
+        var commit = Hd.Commits[currentId];
+        result.Add(new KeyValuePair&lt;Id, CommitNode&gt;(currentId, commit));
+        foreach (var parent in commit.Parents)
+        {
+            GetReachableNodes(parent);
+        }
+    }
+
+    return result;
+}
+</code></pre>
+<p>We notice a few things</p>
+<ul>
+<li>We in-line the recursive methods, which is less clumsy than having two methods.</li>
+<li>Parameters of the recursive methods are minimized since the scope is shared.</li>
+</ul>
+<h3 id="placement-of-the-nested-method">Placement of the nested method</h3>
+<p>Some languages such as ML and F# require the nested method/function to be declared before use. I find this requirement a bit annoying as it leads me to read code backwards. I have to start with the last line of the outer method and read from there since any nested-calls and the context for such calls will be declared here. For this short example it won't matter much but I think you can imagine this style scales badly with multiple methods or more code.</p>
+<pre class="prettyprint"><code>public List&lt;KeyValuePair&lt;Id, CommitNode&gt;&gt; GetReachableNodes(Id id)
+{
+    void GetReachableNodes(Id currentId)
+    {
+        var commit = Hd.Commits[currentId];
+        result.Add(new KeyValuePair&lt;Id, CommitNode&gt;(currentId, commit));
+        foreach (var parent in commit.Parents)
+        {
+            GetReachableNodes(parent);
+        }
+    }
+
+    var result = new List&lt;KeyValuePair&lt;Id, CommitNode&gt;&gt;();
+    GetReachableNodes(id);
+    return result;
+}
+</code></pre>
+<p>I prefer to place the nested method near the first call to it or at the end of the outer method.</p>
+<h2 id="what-about-lambdas">What about Lambdas?</h2>
+<p>Nested methods are a good alternative to lambdas in cases such as this. </p>
+<pre class="prettyprint"><code>public List&lt;KeyValuePair&lt;Id, CommitNode&gt;&gt; GetReachableNodes(Id id)
+{
+    Action&lt;int&gt; getReachableNodes = null;
+    getReachableNodes = id =&gt; 
+    [
+        var commit = Hd.Commits[currentId];
+        result.Add(new KeyValuePair&lt;Id, CommitNode&gt;(currentId, commit));
+        foreach (var parent in commit.Parents)
+        {
+            getReachableNodes(parent);
+        }
+    }
+
+    var result = new List&lt;KeyValuePair&lt;Id, CommitNode&gt;&gt;();
+    getReachableNodes(id);
+    return result;
+}
+</code></pre>
+<p>Remarks.
+  * The lambda syntax is less clumsy, with the <code>Action&lt;...&gt;</code> syntax. 
+  * It require a non-obvious &quot;hack&quot; in order for recursion to compile. The hack is first to define <code>getReachableNodes = null</code>, and then assign the code body. 
+  * The closure of the lambda can reach the parameters of the outer method, which is nice.
+  * Finally, the lambda require the <code>getReachableNodes</code> is defined and assigned a code body before usage.</p>
+<h2 id="summary">Summary</h2>
+<p>With nested methods we can better express our intent - internal functionality not to be used by other than one method. The in-lined method thus is more expressible and less clumsy than both a private helper method and the lambda syntax. It also allows the sharing of parameters and variables declared in the outer method.</p>
+<p>But as with anything, if your nested methods are growing large, your a probably using them wrong. Or if you use a LOT of nested methods inside a method, you may find it hard to properly unit test it. </p>
+<p>As with anything, &quot;don't overuse&quot;.</p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html&amp;title=Recursion%20and%20nested%20methods"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html&amp;text=Recursion%20and%20nested%20methods&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html&amp;t=Recursion%20and%20nested%20methods"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html&amp;t=Recursion%20and%20nested%20methods"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br></p>
+<p><strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/RecursionAndNestedMethods.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br>
+<br>
+<br><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br></p>
+
+
+
+</article>
+</body>
+</html>
