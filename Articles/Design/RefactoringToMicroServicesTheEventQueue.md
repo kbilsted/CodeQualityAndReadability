@@ -35,7 +35,7 @@ Table of Content
 ## 1. Context
 The many benefits to be reaped by using a *Micro service architecture* naturally make a lot of people are eager to jump on the wagon, and get micro servicin'. But how do you transcend from a monolithic architecture to a micro service oriented architecture?
 
-Before we can start extracting code into a service (or write new code as a service) we need a mechanism through which we can publish events from within our monolith. One pattern we have used at MVNO in our transitioning is the event queue pattern.
+Before we can start extracting code into a service (or write new code as a service) we need a mechanism through which we can publish events from within our monolith. One pattern we have used at our company in our transitioning is the event queue pattern.
 
 
 
@@ -87,7 +87,7 @@ class EventQueue
 
 Notice that there is no interface `IEventQueue`. I'm not convinced we need one. There is no need for mocking out the implementation, you can freely use the real implementation in your tests. Instead during testing you need to mock out the event sender.
 
-If you are using an ORM, you may be able to hook into it and automatically call `PublishEvents()` on successful transactions. We do that with NHibernate at MVNO using the `RegisterSynchronization(AfterTransactionCompletes)` hook.
+If you are using an ORM, you may be able to hook into it and automatically call `PublishEvents()` on successful transactions. We do that with NHibernate at our company, using the `RegisterSynchronization(AfterTransactionCompletes)` hook.
 
 
 ### 3.2 Alternative implementation
@@ -187,12 +187,6 @@ For more articles in this series, see <Categories Tags="Refactor_to_Micro_Servic
 Please show your support by sharing and voting: <SocialShareButtons>
 
 </SocialShareButtons>
-
-**August 2016 NOTICE: MVNO IS HIRING** *MVNO at Telenor is looking for talented developers.  MVNO is the infrastructure that keep mobile companies running. Our clients include CBB and OK Mobil.
-Do you want to expand or further grow your skills within the realm of Micro services, IOC containers, NHibernate, Kafka, C#, F#, Javascript, Angular, ASP.NET MVC, Command-Query-Separation, DBA skills, Git, Github, Appveyor, Octopus, look no further. 
-<br>MVNO offers a unique culture where a big part of the working life if about optimizing for happiness. Your happiness! We have 20% of our time allocated for innovation or fixing stuff that bothers us. Great work place with 37h work week, six weeks vacation and highly skilled friendly colleagues.
-<br> If you are interested please contact mokc@telenor.dk for further details. The office is situated at Telenor Copenhagen.*
-
 
 <br><br>
 <CommentText>

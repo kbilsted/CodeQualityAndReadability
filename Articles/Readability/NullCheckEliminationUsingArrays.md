@@ -129,7 +129,6 @@ Naturally, this style of coding takes a bit of getting used to. You may find you
 When employing this pattern you may find some code becomes more readable, while other code does not. For instance, `AdjustRelationToEvent()` become `AdjustRelationsToEvent()` and is specified to be able to return several instances where only a maximum of one instance is ever returned. [Other strategies exists](<BaseUrl/>/Tags/Null_Check_Elimination.html) whose strategies better cater for revealing the intent of the method, for example the use of an "option/maybe type".
 
 
-
 **Reusability**
 The fact that you choose to operate on arrays, lists or sets, may open the door for reusability. For my example code (an extract of production code), 
 it turned out that part of the code (the `FetchDbRelations()` and `UpdateDbTable()`) *was reused* for handling a related event. This event could potentially update several relations. 

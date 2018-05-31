@@ -87,6 +87,7 @@ function PullOrCloneAll($path="c:\src")
 }
 ```
 
+
 ```
 function FetchRepoList()
 {
@@ -117,6 +118,7 @@ function FetchRepoList()
 	return $all | Sort-Object -property Name
 }
 
+
 function MayPullFromRepo()
 {
 	$status = & $git status --porcelain
@@ -136,6 +138,7 @@ function MayPullFromRepo()
 	
 	return $TRUE
 }
+
 
 function Pull($repo)
 {	

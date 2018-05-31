@@ -47,7 +47,7 @@ There a several ways to deal with this situation:
 
 Let's deal with each of the three possibilities. Clearly **(1)** is a bit of a recursive joke. We are in the midst of extracting the monolith into services, so the answer to our problems can hardly be to just do more of that. 
 
-While **(2)** is a viable option, it carries with it a lot of overhead. With code duplication, code changes require manually searching all other code repositories to ensure alignment of the new logic. At MVNO some scornfully sneered at the warning signs and embraced code duplication. But when code changed, we often forgot to re-implement the changes in all the duplicated places. While a part of the microservices paradigm is to trade DRY for flexibility, code duplication is now a path we thread more cautiously. 
+While **(2)** is a viable option, it carries with it a lot of overhead. With code duplication, code changes require manually searching all other code repositories to ensure alignment of the new logic. At work some scornfully sneered at the warning signs and embraced code duplication. But when code changed, we often forgot to re-implement the changes in all the duplicated places. While a part of the microservices paradigm is to trade DRY for flexibility, code duplication is now a path we thread more cautiously. 
 
 **(3)** is the focus of this article. It is what has worked best for us.
 
@@ -72,7 +72,7 @@ The success and speed with which you can transition from monolithic code to fake
 
 
 ### 3.1 Example 1. The customer log
-Many enterprise systems have the notion of a log of business events, essentially what has happened to the customer and when. At MVNO we term such a log a "Customer log", and it holds all of the important information for the administrative staff to understand the customer (when did they pay their bill, late payment thresholds crossed, changes in the subscription, the status of important third party integration calls, etc.). It also holds an entry for each time a staff member performed a lookup the customer. If you don't have a customer log in your system, consider getting one. 
+Many enterprise systems have the notion of a log of business events, essentially what has happened to the customer and when. At our company we term such a log a "Customer log", and it holds all of the important information for the administrative staff to understand the customer (when did they pay their bill, late payment thresholds crossed, changes in the subscription, the status of important third party integration calls, etc.). It also holds an entry for each time a staff member performed a lookup the customer. If you don't have a customer log in your system, consider getting one. 
 
 Needless to say, we can't do much in a service without writing to the customer log. 
 
@@ -133,11 +133,6 @@ For more articles in this series, see <Categories Tags="Refactor_to_Micro_Servic
 Please show your support by sharing and voting: <SocialShareButtons>
 
 </SocialShareButtons>
-
-**August 2016 NOTICE: MVNO IS HIRING** *MVNO at Telenor is looking for talented developers.  MVNO is the infrastructure that keep mobile companies running. Our clients include CBB and OK Mobil.
-Do you want to expand or further grow your skills within the realm of Micro services, IOC containers, Kafka, C#, F#, Javascript, Angular, ASP.NET MVC, Command-Query-Separation, DBA skills, Git, Github, Appveyor, Octopus, look no further. 
-<br>MVNO offers a unique culture where a big part of the working life if about optimizing for happiness. Your happiness! We have 20% of our time allocated for innovation or fixing stuff that bothers us. Great work place with 37h work week, six weeks vacation and highly skilled friendly colleagues.
-<br> If you are interested please contact mokc@telenor.dk for further details. The office is situated at Telenor Copenhagen.*
 
 
 <br><br>
