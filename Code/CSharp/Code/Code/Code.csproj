@@ -51,6 +51,7 @@
     <Compile Include="FinancialDesignPatterns\ProRataDistributor.cs" />
     <Compile Include="FinancialDesignPatterns\SplitMatcher.cs" />
     <Compile Include="Iteration\IterationExamples.cs" />
+    <Compile Include="LocalFunctions\LocalFuntions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

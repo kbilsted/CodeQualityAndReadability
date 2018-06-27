@@ -1,5 +1,5 @@
 ﻿# Code Quality & Readability
-By Kasper B. Graversen  
+By Kasper B. Graversen
 [[All articles]](AllArticles.html)  [[All tags]](AllTags.html)   
 <AllTags />
 
@@ -23,10 +23,10 @@ Newest 4 articles out of <ArticleCount/> articles.
 
 Enough introduction to the flames of damnation that awaits those who have to maintain bad code. I presume that you are reading this out of an interest in creating code worth reading and maintaining. By yourself and others. Out of an interest in making the world a better place. At least the virtual world of code we developers spend a great deal of out lives in.
 
-On to the formalities. *Code readability* is the human judgement of how easy code is to understand. The readability of a
+On to the formalities. *Code readability* is the human judgment of how easy code is to understand. The readability of a
 program directly impact its maintainability cost, and is thus a key factor in overall software quality. The price of the maintenance cost, depending on your source, will range between 40-80% of the total life cycle cost. But long before the maintenance phases, readability impact your daily work. Code is often visited during development to understand how to properly use it, when scouting for appropriate hooks for new features or determining the design strategies for a particular module to follow upon implementing new or changing business requirements.
 
-But it is not all about numbers. It is about creating a professional working environment, following best practises of the craft. About being happy developers who wants to attend work, who pride and joy from the code they produce and maintain.
+But it is not all about numbers. It is about creating a professional working environment, following best practices of the craft. About being happy developers who wants to attend work, who pride and joy from the code they produce and maintain.
 
 **The goal of this site is to improve your programming skills by improving the code you produce**. We will touch upon many facets that constitute the process of programming. And by reflecting over the material presented you will be able to put yourself in the shoes of a future maintenance developer (maybe yourself) and through such analysis make thought through decisions. Let us term such a feeling *empathy*.
 

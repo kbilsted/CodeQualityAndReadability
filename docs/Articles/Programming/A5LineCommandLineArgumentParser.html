@@ -1,0 +1,164 @@
+﻿<html>
+<head>
+<title>Declarative code is better than imperative code - illustrated by writing a command line parser in just 5 lines of code</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="declarative-code-is-better-than-imperative-code---illustrated-by-writing-a-command-line-parser-in-just-5-lines-of-code">Declarative code is better than imperative code - illustrated by writing a command line parser in just 5 lines of code</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/A5LineCommandLineArgumentParser.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br>
+<a href="http://firstclassthoughts.co.uk/Tags/Design.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #eee6bb;    display: inline-block;">Design</a>
+<a href="http://firstclassthoughts.co.uk/Tags/KBGit.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #e6aa84;    display: inline-block;">KBGit</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Declarative_Programming.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #4bc6eb;    display: inline-block;">Declarative Programming</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Imperative_Programming.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #e3d49c;    display: inline-block;">Imperative Programming</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2;    display: inline-block;">Code Readability</a></p>
+<p><strong>One of my pet projects is to implement a working Git clone in just 500 lines of code (See <a href="https://github.com/kbilsted/KBGit">KBGit on Github</a> for more details). For that I needed a command line parser. Given the fairly limited line budget, I needed something short and sweet...</strong></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html&amp;title=Declarative%20code%20is%20better%20than%20imperative%20code%20-%20illustrated%20by%20writing%20a%20command%20line%20parser%20in%20just%205%20lines%20of%20code"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html&amp;text=Declarative%20code%20is%20better%20than%20imperative%20code%20-%20illustrated%20by%20writing%20a%20command%20line%20parser%20in%20just%205%20lines%20of%20code&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html&amp;t=Declarative%20code%20is%20better%20than%20imperative%20code%20-%20illustrated%20by%20writing%20a%20command%20line%20parser%20in%20just%205%20lines%20of%20code"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html&amp;t=Declarative%20code%20is%20better%20than%20imperative%20code%20-%20illustrated%20by%20writing%20a%20command%20line%20parser%20in%20just%205%20lines%20of%20code"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#requirements-for-our-command-line-parser">Requirements for our command line parser</a></li>
+<li><a href="#the-imperative-approach">The imperative approach</a></li>
+<li><a href="#the-declarative-approach">The declarative approach</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<h2 id="requirements-for-our-command-line-parser">Requirements for our command line parser</h2>
+<p>A set of overall requirements for our command line parser:</p>
+<ol>
+<li>What we need to parse is a set of pre-defined keywords such as the sentence <code>git log</code>. </li>
+<li>The user may provide additional information such as a commit message like <code>git commit -m &quot;user input here&quot;</code>. </li>
+<li>After successfully parsing a sentence, we need to invoke specific parts of the git-implementation. E.g. if the user types &quot;git log&quot; we shall invoke the <code>log()</code> method.</li>
+</ol>
+<h2 id="the-imperative-approach">The imperative approach</h2>
+<p>Initially, I thought the smallest implementation was an <em>imperative approach</em>. E.g.</p>
+<pre class="prettyprint"><code>    if (args.length == 1 &amp;&amp; args[0] == &quot;log&quot;)
+        return git.Log();
+    if (args.length == 3 &amp;&amp; args[0] == &quot;commit&quot; &amp;&amp; args[1] == &quot;-m&quot;)
+        return git.Commit(args[2]);
+    if (...)
+    else
+    {
+        Console.WriteLine(@&quot;Cannot parse input&quot;);
+        Help
+        git log                 for logging
+        git commit -m &lt;message&gt; for committing
+        ...&quot;);
+    }
+</code></pre>
+<p>I bet you have seen plenty of code like this. Often when I encounter a wall of code like this, I cannot help but play out in my head, times toll on the code. Preasure to deliver, or perhaps lack of knowledge of a better way. And perhaps it all started out as a single if-else..then.. slowly over time.. turning into a monstrosity.</p>
+<p>Aesthetics aside, there are a few downsides to this approach:</p>
+<ul>
+<li>Given enough if-else branching the code readability quickly deteriorate.</li>
+<li>First, there is no ties between the documentation and what is parsed. The code may quickly go out of sync with the printed documentation. </li>
+<li>Second, for every sentence we can parse, we spend a line of code for the <code>if</code>-statement, a line of code for the invocation, and then a line for printing the help. </li>
+<li>Finally, the approach does not lend itself very well to extra features such as optional arguments, or allow arguments in random order. </li>
+</ul>
+<h2 id="the-declarative-approach">The declarative approach</h2>
+<p>A declarative approach operates on a more formal grammar and has a general matching algorithm applied to all grammar lines in search of a match.  It turns out we can write a declarative parser in only 5 lines of code! In addition to the parser is a line of code declaring the grammar for each sentence to match.</p>
+<p>Let's first have a look at the parser:</p>
+<pre class="prettyprint"><code>// declarative parser
+var matches = config
+    .Where(x =&gt; x.grammar.Length == cmdParams.Length)
+    .SingleOrDefault(x =&gt; x.grammar.Zip(cmdParams, (gramar, arg) =&gt; gramar.StartsWith(&quot;&lt;&quot;) || gramar == arg).All(m =&gt; m));
+
+if (matches.grammar == null)
+    return $&quot;KBGit Help\r\n----------\r\ngit {string.Join(&quot;\r\ngit &quot;, config.Select(x =&gt; $&quot;{string.Join(&quot; &quot;, x.grammar),-34} - {x.explanation}.&quot;))}&quot;;
+
+// using the parser
+var valueFromInvokingTheGitFunction = matches.actionOnMatch(git, cmdParams);
+</code></pre>
+<p>So the basic idea is  </p>
+<ul>
+<li>We operate on a set of pre-defined grammar lines, each specifying how to parse a sentence (<code>config</code>).</li>
+<li>Given some input (from the command line) <code>cmdParams</code>, match it with any grammar lines who specify the same number &quot;words&quot; to be parsed. </li>
+<li>
+Then, <code>Zip()</code> the grammar with the user input. Zipping means taking one element at a time from the user input and the grammar respectively. 
+<ul>
+<li>To denote &quot;holes&quot; in the grammar where the user can supply any kind of information, grammar elements starting with <code>&lt;</code> are skipped during the zipping. </li>
+<li>If all zipped elements match (the <code>All(m =&gt; m)</code>) we have a match. </li>
+</ul>
+</li>
+<li>If we haven't found a match, print wall of text of the commands that can be understood. The beauty here is that the help prints <em>the same data the parser operates on</em>. That way the documentation never goes out of sync with the code. If we have a match, we invoke a function pointer with the parameters from the command line. </li>
+</ul>
+<p>The only thing left to explain, is the grammar lines. Below are two examples. Each grammar line consists of three parts. A readable explanation, the sentence to parse and finally, the code to invoke on a match. We take advantage of the named tuple feature of C# here:</p>
+<pre class="prettyprint"><code>(string explanation, string[] grammar, Func&lt;KBGit, string[], string&gt; actionOnMatch)[] Config =
+{
+    (&quot;Show the commit log&quot;, new[] { &quot;log&quot;}, (git, args) =&gt; git.Log()),
+    (&quot;Make a commit&quot;, new[] { &quot;commit&quot;, &quot;-m&quot;, &quot;&lt;message&gt;&quot;}, (git, args) =&gt; { git.Commit(args[2], &quot;author&quot;, DateTime.Now); }),
+}   
+</code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>The declarative implementation is a bit more complex than the imperative implementation, but has a number of advantages. </p>
+<p>Since the declaration of the grammar is separate from the actual matching, we can improve the parser over time without needing to change our grammar specification (the <code>Config</code> variable above). The parser operates on the grammar and the grammar is (coincidentally) readily printable as a help text. By printing the grammar as the documentation, <em>our documentation is never out of sync</em>.</p>
+<p>Lastly, and perhaps only important to the KBGit implementation, it is less lines of code!</p>
+<p><em>I hope you feel inspired to do more declarative programming and less imperative programming in the future. :-)</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html&amp;title=Declarative%20code%20is%20better%20than%20imperative%20code%20-%20illustrated%20by%20writing%20a%20command%20line%20parser%20in%20just%205%20lines%20of%20code"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html&amp;text=Declarative%20code%20is%20better%20than%20imperative%20code%20-%20illustrated%20by%20writing%20a%20command%20line%20parser%20in%20just%205%20lines%20of%20code&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html&amp;t=Declarative%20code%20is%20better%20than%20imperative%20code%20-%20illustrated%20by%20writing%20a%20command%20line%20parser%20in%20just%205%20lines%20of%20code"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Programming/A5LineCommandLineArgumentParser.html&amp;t=Declarative%20code%20is%20better%20than%20imperative%20code%20-%20illustrated%20by%20writing%20a%20command%20line%20parser%20in%20just%205%20lines%20of%20code"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/A5LineCommandLineArgumentParser.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br></p>
+<p><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br></p>
+
+
+
+</article>
+</body>
+</html>
