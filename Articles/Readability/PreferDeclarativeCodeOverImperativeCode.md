@@ -1,11 +1,11 @@
-﻿# Declarative code is better than imperative code - illustrated by writing a command line parser in just 5 lines of code
+﻿# Prefer declarative code over imperative code - building a command line parser in 5 lines of code
 *Author: Kasper B. Graversen*
 <ArticleHeaderUrls/>
-<Categories Tags="Design, KBGit, Declarative_Programming, Imperative_Programming, Code_Readbility">
+<Categories Tags="Design, KBGit, Declarative_Programming, Imperative_Programming, Code_Readability">
 </Categories>
 
 
-**One of my pet projects is to implement a working Git clone in just 500 lines of code (See [KBGit on Github](https://github.com/kbilsted/KBGit) for more details). For that I needed a command line parser. Given the fairly limited line budget, I needed something short and sweet...**
+*Declarative code has many advantages over imperative code. The code is simpler code due to a good separations of concerns. The "what" is cleanly separated from the "how". Further, the declarations may find other purposes such as automatic consistent documentation.*
 
 
 Please show your support by sharing and voting:
@@ -22,15 +22,18 @@ Table of Content
    * [Conclusion](#conclusion)
    
 
+One of my pet projects is to implement a working Git clone in just 500 lines of code (See [KBGit on Github](https://github.com/kbilsted/KBGit) for more details). For that I need a command line parser. Given the fairly limited line budget, I need something short and sweet... let's build a command line parser in vey few lines of code!    
+
 
 ## Requirements for our command line parser
-A set of overall requirements for our command line parser:
+Our requirements are straight forward. 
 
-  1. What we need to parse is a set of pre-defined keywords such as the sentence `git log`. 
-  2. The user may provide additional information such as a commit message like `git commit -m "user input here"`. 
+  1. We need to parse a set of pre-defined sentence such as `git log`. 
+  2. A sentence may leave room for additional information such as a commit message like `git commit -m "user input here"`. 
   3. After successfully parsing a sentence, we need to invoke specific parts of the git-implementation. E.g. if the user types "git log" we shall invoke the `log()` method.
+  4. If a sentence cannot be matched, print a help-message detailing parseable sentences.
 
-
+  
 ## The imperative approach
 
 Initially, I thought the smallest implementation was an *imperative approach*. E.g.
@@ -51,7 +54,7 @@ Initially, I thought the smallest implementation was an *imperative approach*. E
     }
 ```
         
-I bet you have seen plenty of code like this. Often when I encounter a wall of code like this, I cannot help but play out in my head, times toll on the code. Preasure to deliver, or perhaps lack of knowledge of a better way. And perhaps it all started out as a single if-else..then.. slowly over time.. turning into a monstrosity.
+I bet you have seen plenty of code like this. Often when I encounter a wall of code like this, I cannot help but play out in my head, times toll on the code. Pressure to deliver, or perhaps lack of knowledge of a better way. And perhaps it all started out as a single if-else..then.. slowly over time.. turning into a monstrosity.
 
 Aesthetics aside, there are a few downsides to this approach:
 
@@ -69,12 +72,12 @@ Let's first have a look at the parser:
 
 ```
 // declarative parser
-var matches = config
+var matches = Config
 	.Where(x => x.grammar.Length == cmdParams.Length)
 	.SingleOrDefault(x => x.grammar.Zip(cmdParams, (gramar, arg) => gramar.StartsWith("<") || gramar == arg).All(m => m));
 
 if (matches.grammar == null)
-	return $"KBGit Help\r\n----------\r\ngit {string.Join("\r\ngit ", config.Select(x => $"{string.Join(" ", x.grammar),-34} - {x.explanation}."))}";
+	return $"KBGit Help\r\n----------\r\ngit {string.Join("\r\ngit ", Config.Select(x => $"{string.Join(" ", x.grammar),-34} - {x.explanation}."))}";
 
 // using the parser
 var valueFromInvokingTheGitFunction = matches.actionOnMatch(git, cmdParams);
@@ -99,15 +102,17 @@ The only thing left to explain, is the grammar lines. Below are two examples. Ea
 }   
 ```
 
+If you don't think about it, you almost don't see it. The grammar is quite readable. The grammar simply is `"commit", "-m", "<message>"` !
 
 
 ## Conclusion
 
-The declarative implementation is a bit more complex than the imperative implementation, but has a number of advantages. 
+The declarative implementation is a bit more advanced than the imperative implementation, but has a number of advantages. 
 
-Since the declaration of the grammar is separate from the actual matching, we can improve the parser over time without needing to change our grammar specification (the `Config` variable above). The parser operates on the grammar and the grammar is (coincidentally) readily printable as a help text. By printing the grammar as the documentation, *our documentation is never out of sync*.
-
-Lastly, and perhaps only important to the KBGit implementation, it is less lines of code!
+1. The grammar is very readble and is not concerned with how a matching strategy is implemented.
+2. Since the declaration of the grammar is separate from the actual matching, we can improve the parser over time without needing to change our grammar specification (the `Config` variable above). 
+3. The parser operates on the grammar and the grammar is (coincidentally) readily printable as a help text. By printing the grammar as the documentation, *our documentation is never out of sync*.
+4. Lastly, and perhaps only important to the KBGit implementation, it is less lines of code!
 
 *I hope you feel inspired to do more declarative programming and less imperative programming in the future. :-)*
 
