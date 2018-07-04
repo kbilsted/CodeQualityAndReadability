@@ -1,7 +1,7 @@
 ﻿# Prefer declarative code over imperative code - building a command line parser in 5 lines of code
 *Author: Kasper B. Graversen*
 <ArticleHeaderUrls/>
-<Categories Tags="Design, KBGit, Declarative_Programming, Imperative_Programming, Code_Readability">
+<Categories Tags="Design, KBGit, Declarative_Programming, Imperative_Programming, Coding_Guideline, Code_Readability">
 </Categories>
 
 
@@ -115,6 +115,11 @@ The declarative implementation is a bit more advanced than the imperative implem
 4. Lastly, and perhaps only important to the KBGit implementation, it is less lines of code!
 
 *I hope you feel inspired to do more declarative programming and less imperative programming in the future. :-)*
+
+More articles on this topic
+
+* [From imperative to declarative code using LINQ extension methods](FromImperativeToDeclarativeCodeUsingLINQ.html)
+
 
 Please show your support by sharing and voting:
 <SocialShareButtons>

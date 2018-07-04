@@ -1,6 +1,6 @@
 ﻿# From imperative to declarative code using LINQ extension methods
 *Author: Kasper B. Graversen*
-<ArticleHeaderUrls/><Categories Tags="Code_Readability, Coding_Guideline, Looping, Iteration, for, LINQ">
+<ArticleHeaderUrls/><Categories Tags="Code_Readability, Coding_Guideline, Looping, Iteration, for, LINQ,Declarative_Programming, Imperative_Programming">
 </Categories>
 
 *In this article we show how break down and separate unrelated business logic of a program. By creating a LINQ extension method, the separated code is very easy to reuse across the application, further, it transform the code from being imperative to declarative.*
@@ -353,6 +353,14 @@ I have not made any performance measurements. If you feel inclined, please do so
 
 ### Summary
 We have shown how to turn a `for` into LINQ, thereby reducing the expressibility of the code. Separating unrelated business code that can be independently tested and re-used. We turn imperative code into declarative code. This means we shift focus from *how* to *what*. 
+
+
+More articles on this topic
+
+* [Prefer declarative code over imperative code - building a command line parser in 5 lines of code](PreferDeclarativeCodeOverImperativeCode.html)
+
+
+
 
 Please show your support by sharing and voting:
 <SocialShareButtons>
