@@ -1,0 +1,451 @@
+﻿draft
+# Split matching
+*Author: Kasper B. Graversen*
+<br>[[Introduction]](<BaseUrl/>) [[All categories]](<BaseUrl/>AllTags.html) [[All articles]](<BaseUrl/>AllArticles.html) [[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]](<GithubPageUrl/>)<br>
+
+<Categories Tags="Design, Business_Pattern, Design_Pattern ">
+</Categories>
+
+
+*We introduce a design pattern/general algorithm for performing advanced partial matching between "input" and "rules" by means of splitting potentially both if necessary. It is an extended form of the "chain of responsibility" design pattern where a "command" may choose to only partly consume its input. A generally reusable solution is provided that can freely be used in your own projects.*
+
+
+Please show your support by sharing and voting:
+
+<SocialShareButtons>
+</SocialShareButtons>
+
+<img src="img/httpspixabay.comdavand-anlæg-grøn-bøde-lag-abstrakt-821293.jpg" alt="from https://pixabay.com/da/vand-anl%C3%A6g-gr%C3%B8n-b%C3%B8de-lag-abstrakt-821293/" >
+
+
+Table of Content
+
+   * [1. Introduction](#introduction)
+   * [2. Real life examples](#real-life-examples)
+     * [2.1 Payments and bills - limited rules](#payments-and-bills---limited-rules)
+     * [2.2 "3 for 2" discounts](#for--discounts)
+       * [2.3 Pricing phone calls](#pricing-phone-calls)
+   * [3. Rules for matching](#rules-for-matching)
+     * [3.2 Matching limitations](#matching-limitations)
+   * [4. Using the matching framework](#using-the-matching-framework)
+   * [5. Focusing on the consumer](#focusing-on-the-consumer)
+     * [5.1 Background information](#background-information)
+     * [5.2 Implementing a bill-consumer](#implementing-a-bill-consumer)
+   * [6. Implementation details of the SplitMatcher](#implementation-details-of-the-splitmatcher)
+   * [x. Run-time complexity](#x-run-time-complexity)
+   * [Summary](#summary)
+   ...
+
+## 1. Introduction
+
+In my time in industry, I've faced a number of times when implementing business logic, is that of matching facts with business rules. More often than not, the matching is not completely straight forward, and not impossibly complicated either. Matching, therefore, may entail splitting up the input as to "fit" the rules. Rules may restrict the kind of input it governs, may only consume a limited amount of input - or both restrictions may apply.
+
+On all of these occasions, the biggest failings, are that the matching algorithm were not separated the business rules. This makes the code harder to reason about, and it make the code less reusable. 
+
+A recurring problem when dealing with business logic, is that of having to match elements with business rules. Matching is not always straight forward, as there rarely is a one-to-one correspondence.  Let's first look at different real-life examples that fit this frame work, then formalize the possibilities of matching.
+
+
+
+## 2. Real life examples
+
+Now that we have established some of the possible matching rules, let's have a look at some real-life scenarios which we can directly translate into this universe of "input" and "rules".
+
+
+### 2.1 Payments and bills - limited rules
+
+In a financial system, a customer pays for products/services each month. The customer may be billed for "membership", "access to trade market", "financial advice support" and so on. Alternatively, we can imagine an insurance company, where a customer has a house insurance, an unemployment insurance, a dental insurance etc. The main point is we have a number of bill. 
+
+The customer may choose to pay through one of possible several payments. Rather than simply merging the payments, we'd rather use each payment and document what it paid for. This approach has a number of advantages. If the customer cancels a payment, we can document exactly what services cover each payment. If several legal entities are paying, then we can restrict which products each legal entity may pay for.  This is quite common in Denmark to have a life insurance (pension for retirement), where both employer and employee each pay. And different rules apply payments from each entity. Also different tax rules, where some payments may yield tax-exemption or tax-reduction.
+
+Here each payment serves as "input". Each bill is a rule that captures a limited amount of *input*. 
+
+For example, monthly you are billed $50 and $125 for two services, You pay with the following transfers $25, $50, and $125. In this case we would assume that payment 1 and 2 cover the first bill, while the leftover of payment 2 along with payment 3 cover the second bill.
+
+Since the rules are limited, they only consume limited payment. Typically, after the matching process, it is interesting to know which rules were completed/reached their limit. Here it is natural to know if all bills were in fact paid. Also, it is important to know if there are any left-over payments. Such payments are sometimes referred to as the *residual*. Rather than asking the match result for any residual, it is better to add an unlimited rule for consuming the residual.
+
+ 
+
+### 2.2 "3 for 2" discounts
+Rather than offering a percent discount on items, shops and web shops have found a pricing model that encourages extra spending. The 3for2 pricing scheme is defined by giving away for free the cheapest of items when purchased in bulk of three. Sometimes it has to be the same product, at other times it has only to be within a category of certain items, like soap, canned beef etc.
+ 
+Often before such grouping, all items of the shopping basket are ordered by price. This ensures that the given discount is always the same for a specific set of items.
+
+The items of the shopping basket serve as *"input"* and the will be one or more "3for2" rules grouping together the products. After the matching process, order lines are created for each kind of product. For each 3for2 match you would also create an order line with a negative amount constituting the cheapest of the matched 3 products.
+
+
+
+#### 2.3 Pricing phone calls
+Another example from the real life is that of pricing phone calls. Imagine that a phone call costs $0.5 pr. minute in weekdays, and only $0.25 in weekends. Here we would use two rules to describe a cost associated with calls within a time-span. The rules are unlimited, as each may consume as many calls they like. The number of calls made would be the input.
+
+We can further complicate matters by introducing a discount of say they first $10 worth of weekday calls each month is free of charge. We can model this using the decorator design pattern, decorating the weekday rule with a discount rule that consume one or more calls.
+
+  
+  
+  
+## 3. Rules for matching  
+  
+**Input and rules match one-to-one**
+
+```
+Input                     Rule
+  |                         | 
+ +-+                       +-+ 
+ | |---------------------->| |
+ +-+                       +-+
+  |                         | 
+ +-+                       +-+ 
+ | |---------------------->| |
+ +-+                       +-+
+```
+
+**A rule may not be fully matched/completed**
+
+```
+Input                     Rule
+  |                         | 
+ +-+                       +-+ 
+ | |---------------------->| |
+ +-+                       | | 
+  |                        +-+  
+```
+
+
+**An input may not be fully consumed**
+
+```
+Input                     Rule
+  |                         | 
+ +-+                       +-+ 
+ | |---------------------->| |
+ | |                       +-+
+ +-+                        |
+```
+
+
+
+**Several input required to match/complete a rule**
+
+```
+Input                     Rule
+  |                         | 
+ +-+                       +-+ 
+ | |---------------------->| |
+ +-+          +----------->| | 
+  |           |            +-+  
+ +-+          |             |   
+ | |----------+            +-+  
+ +-+                       | |
+  |                        +-+             
+```
+
+
+**An input may match/complete several rules**
+
+```
+Input                     Rule
+  |                         | 
+ +-+                       +-+ 
+ | |---------------------> | |
+ | |-------------+         +-+
+ +-+             |          |
+  |              |         +-+  
+  |              +-------->| |
+  |                        +-+   
+```
+
+
+**A Rule may match several non-consecutive input**
+
+```
+Input                     Rule
+  |                         | 
+ +-+                       +-+ 
+ | |---------------------->| |
+ +-+          +----------->| |
+  |           |            +-+    
+ +-+          |             |   
+ | |--------- | ----+      +-+  
+ +-+          |     +----->| | 
+  |           |            +-+     
+ +-+          |             |   
+ | |----------+             |
+ +-+                      
+```
+
+
+**A Rule may be consume unlimited input**
+
+```
+Input                     Rule
+  |                         | 
+ +-+---------------------->+-+ 
+ | |       +-------------->| |
+ +-+       |  +----------->+-+
+  |        |  |             |      
+ +-+       |  |            +-+   
+ | |-------+  |            | |   
+ +-+          |            +-+ 
+  |           |             |    
+ +-+          |             |   
+ | |----------+           
+ +-+                      
+```
+
+
+
+
+### 3.2 Matching limitations
+
+It is important to stress, that we will severely limit the matching algorithm. *It is not a [knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem) we are trying to solve*. Ie. we do not attempt all possible combinations of input and rules. Instead, we attempt at a solution by either allowing multiple input or rules to constitute a match. Algorithmically this is a simpler process. But just as importantly, a simpler matching algorithm is one that both customers and the business itself can understand and explain. In many ways this is similar to the *chain of command* design pattern, only we separate the logic of selecting facts from the implementation of rules. This is more filtered together in the chain of command pattern.
+
+Our matching algorithm takes place as follows.
+
+* The algorithm is fed *ordered* lists of "Input" and "rules"
+* For each rule, starting at the first rule
+  * For each unconsumed input starting at the first input
+    * The rule is presented with input and chooses to consume fully or partly or ignore. 
+    * During this process the rule may announce to be fully consumed/matched, then no further input elements are served. 
+* The end result is 
+  * A list of match information is returned which describe input-to-rule matching and to which degree the input is fully or partly consumed. 
+  * A list of completed and uncompleted rules.
+
+
+  
+
+## 4. Using the matching framework
+
+While there infinite variations of usage can be spun over the framework, I believe there are roughly two main approaches.
+
+You can separate the matching process from a later process determining the consequences of each match. Or, you may choose to do *both* the matching and the side-effects of each match. I think it is a matter of temperament and how SOLID you want your code. Possibly the complexity of matching and the following effects are players in this equation too.
+
+Imagine again the pricing of phone calls. We can have either of the two flows
+
+```list calls -> matching -> list matches -> pricing engine -> list prices```
+
+or 
+
+```list calls -> matching + pricing -> list prices```
+
+
+
+
+
+
+
+
+## 5. Focusing on the consumer
+
+### 5.1 Background information
+We have now gone through the conceptual ideas of matching, *facts* and *consumers*. It is time to dig into the implementation details. When a consumer is served an *fact* (a conglomerate of *N* things) the *fact* can either be fully consumed (all *N*) or partially consumed (0 upto *N*). This consumption must be communicated back to the sender such that the particular *fact* is not served to any other consumer. Serving it to any other consumer would be pointless, as there is nothing more to consume. 
+
+In addition, the consumer itself may have limits to its consumption abilities. Therefore the (part) consumption of a *fact* may render the consumer  completed.
+
+It should be clear by now, that for each element of *input* we have two pieces of information to return.
+
+The completion of a rule is a binary value that fit a `bool`. However, I prefer using an enum for the representation. This data structure much better express out intent, and it allows to be extended in the future. Go [here](http://firstclassthoughts.co.uk/Tags/Domain_Types.html) for more thoughts on domain types.
+
+```
+public enum ConsumerStatus { Active, Complete }
+```
+
+The consumption of some input is in fact a triple consisting of 
+
+* The input
+* The amount/volume consumed
+* The rule that consumed 
+
+Hence for a given input we'll potentially have a list of rules that has consumed parts of it. Rather than forcing all *input* to inherit such book keeping information, we wrap each *input* element in a `Matchable` class holding the information.
+
+We are now finally ready to expose the interface all consumers must implement. It merely consist of a match method, returning the consumer status and taking as argument the `Matchable`.
+
+```
+public interface IConsumer<TFact, TConsumption>
+{
+    ConsumerStatus Match(Matchable<TFact, TConsumption> input);
+}
+```
+
+Notice the type parameters `TFact` is simply the type of the fact. Fact are not required to implement anything, and thus do not share an interface.  `TConsumption` is the data type used for measuring the consumption. If we were to deal with phone calls this could be a `TimeSpan` or maybe a `decimal` or a  `Money` class if we were dealing with payments and bills.
+
+
+
+### 5.2 Implementing a bill-consumer
+Consumers all follow the same pattern. 
+
+
+For unlimited consumers
+
+* Check *input* against constraints, eg. a phone call made during the weekend
+* Extract the unconsumed amount from *input*. This is important since preceding consumers could consume part of the input.
+* Produce a match by consuming the input
+* Return consumer status as Active
+
+For limited consumers, the logic is a bit more complex
+
+* Setup book keeping information to track consumption so far to enforce the limited nature of the consumer
+* Check *input* against constraints, eg. a phone call made during the weekend
+* Extract the unconsumed amount from *input*. This is important since preceding consumers could consume part of the input.
+* Create a match of the minimum between the consumers limited consumption and the unconsumed input.
+* If the consumer status as Complete or Active depending on the consumer being completed
+
+Since the limited consumer is the most involved, perhaps it is the most interesting to dig into.
+
+First the class and the constructor setting up the cost. The type parameters indicate that both the *input* and the consumption book keeping is done using `decimal`.
+
+```
+class MonthlyExpense : IConsumer<decimal, decimal> 
+{
+    readonly decimal monthlyCost;
+    decimal CoveredByConsumer;
+
+    public MonthlyExpense(decimal monthlyCost) {
+        if (monthlyCost < 0)
+            throw new ArgumentException("Negative cost");
+
+        this.monthlyCost = monthlyCost;
+    }
+}
+```
+
+Now for the actual matching algorithm, it pretty much a codification of the above bullet list.
+
+```
+public ConsumerStatus Match(Matchable<decimal, decimal> payment)
+{
+    var leftOfPayment = payment.Input - payment.AccumulatedConsumption;
+
+    var toPay = Math.Min(leftOfPayment, monthlyCost - CoveredByConsumer);
+    CoveredByConsumer += toPay;
+
+    var isPaymentComplete = toPay == leftOfPayment;
+    payment.AddMatch(this, toPay, isPaymentComplete);
+
+    return CoveredByConsumer == monthlyCost ? ConsumerStatus.Complete : ConsumerStatus.Active;
+}
+```
+
+
+We can try exercising the code so far in a unit test. As you can see the matching data structure is requiring a little getting used to. Perhaps due to the simplicity of the consumer implementation itself.
+
+```
+[TestMethod]
+public void Match()
+{
+    var sut = new SplitMatcher();
+
+    var input = new[] { 300M, 300M };
+
+    var m1 = new MonthlyExpense(200);
+    var m2 = new MonthlyExpense(200);
+    var consumers = new[] { m1, m2 };
+    
+    MatchResult<decimal, decimal> res = sut.Match2(input, consumers, (x, y) => x + y);
+
+    // both consumers are complete
+    Assert.AreEqual(2, res.Consumers[ConsumerStatus.Complete].Count);
+    Assert.AreEqual(0, res.Consumers[ConsumerStatus.Active].Count);
+    
+    // The first input of $300 paid both monthly expense 1 and 2
+    CollectionAssert.AreEqual(consumers, res.Matches[0].Consumers.Select(x => x.Consumer));
+
+    // The first consumer is "m1" and has consumed $200
+    Assert.AreEqual(m1, res.Matches[0].Consumers.First().Consumer);
+    Assert.AreEqual(200, res.Matches[0].Consumers.First().Consumption);
+    
+    // The second input only paid monthly expense 2
+    Assert.AreEqual(m2, res.Matches[1].Consumers.Single().Consumer);
+}
+```
+
+We have pretty much exhausted the information we can squeeze out of `MatchResult` - the class that holds information about the 
+
+
+```
+public class MatchResult<TFact, TConsumption> 
+{
+    public readonly Dictionary<ConsumerStatus, List<IConsumer<TFact, TConsumption>>> Consumers; 
+    
+    public List<Matchable<TFact, TConsumption>> Matches;
+}
+```
+
+
+
+## 6. Implementation details of the SplitMatcher
+
+The following detail are not meant as required understanding in order to use the frame work. You can easily do without them. But if you really want to see what goes on under the hood, now is the time to take a thorough look.
+
+We first define a delegate `ConsumptionAdder`. This is needed as for each consumer only partly consuming a fact, we need to accumulate the consumption. Since we do not know anything about the type of the `TConsumption`, we have to ask the caller to define how consumption is added together. In the above unit test, it was a simple decimal addition. But chances are, that the consumption be a complex monstrosity counting all sorts of dimensions of time, money etc. The framework does not prevent this if you require such complexity.
+
+
+
+```
+public class SplitMatcher 
+{
+    public delegate TFact ConsumptionAdder<TFact>(TFact consumedSoFar, TFact newlyConsumed);
+}
+```
+
+Now for the heart of the algorithm. We iterate all consumers one at a time, serving it all non-fully consumed facts. If there are no more facts left, we only set the status of the consumer to `Active`. If a consumer is completed, we set it to `Complete`. 
+
+Before we serve facts to the consumers, we first wrap them in a scaffolding structure that we mentioned above. This structure is responsible for tracking which consumers have consumed what amount of each fact.
+
+```
+public MatchResult<TFact, TConsumption> Match2<TFact, TConsumption>(
+    IEnumerable<TFact> fact,
+    IEnumerable<IConsumer<TFact, TConsumption>> consumers,
+    ConsumptionAdder<TConsumption> consumptionAdder)
+{
+    var scaffolding = fact.Select(x => new Matchable<TFact, TConsumption>(x, consumptionAdder)).ToList();
+    var result = new MatchResult<TFact,TConsumption>();
+    var toProcess = scaffolding; 
+
+    foreach (var consumer in consumers) 
+    {
+        if (!toProcess.Any()) 
+        {
+            result.Consumers[ConsumerStatus.Active].Add(consumer); 
+            continue;
+        }
+
+        var consumerCompleted = toProcess
+            .Select(element => consumer.Match(element))
+            .Any(status => status == ConsumerStatus.Complete);
+
+        if (consumerCompleted)
+            result.Consumers[ConsumerStatus.Complete].Add(consumer);
+
+        toProcess = toProcess.Where(x => !x.IsFullyConsumed).ToList();
+    }
+
+    result.Matches = scaffolding;
+
+    return result;
+}
+```
+
+
+## x. Run-time complexity
+
+The runtime complexity of the algorithm is not easy to account for. The complexity is a function of *fact* and *consumers*. If all facts are handled by the first consumer, we have O(N), if all are handled by the last consumer, we have O(F*C) roughly O(N²), where *F* are the number of facts and *C* the number of consumers. *N* denote some abstract "input".
+
+
+## Summary
+We have presented a generally reusable framework to do split matching of facts and consumers. The code is freely available from www.github...
+
+*Samuel Goldwyn  - "I'm willing to admit that I may not always be right, but I am never wrong."*
+
+
+
+
+Please show your support by sharing and voting:
+<SocialShareButtons>
+</SocialShareButtons>
+
+
+
+<br><br>
+<CommentText>
+</CommentText>
+
+<br><br>

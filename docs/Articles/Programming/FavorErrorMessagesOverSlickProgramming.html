@@ -1,0 +1,155 @@
+﻿<html>
+<head>
+<title>Favor error messages over declarative code</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="favor-error-messages-over-declarative-code">Favor error messages over declarative code</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/FavorErrorMessagesOverSlickProgramming.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br>
+<a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2;    display: inline-block;">Code Readability</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Coding_Guideline.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #33ad2a;    display: inline-block;">Coding Guideline</a></p>
+<p><em>With the introduction of declarative language features such as LINQ in C# and Streams in Java, I've come to notice a new coding trend. Programmers easily become &quot;obsessed&quot; with achieving 'slick-looking code' by means of using the new declarative language constructs. Unfortunately, this at the expense of proper error handling, and thus also obfuscating the underlying requirements of the code.</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html&amp;title=Favor%20error%20messages%20over%20declarative%20code"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html&amp;text=Favor%20error%20messages%20over%20declarative%20code&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html&amp;t=Favor%20error%20messages%20over%20declarative%20code"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html&amp;t=Favor%20error%20messages%20over%20declarative%20code"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#declaritive-code-and-error-handling">Declaritive code and error handling</a></li>
+<li><a href="#the-api-requirements">The API requirements</a></li>
+<li><a href="#a-solution">A solution</a></li>
+<li><a href="#bug-report">Bug report</a></li>
+</ul>
+<p>With the advent of new programming features such as LINQ for C# and streams for Java, I see programmers program differently. A coding practice, where one strives toward short functional and to-the-point code - often in for form of many consecutive transformation on some data. Unfortunately, such code has a tendency to cater only for the happy-paths. And only dealing with the happy paths, we all know, is a job half done. I had problems with a plugging I was developing the other day, and I think is illuminates the problem quite well. The plugin is for a well-established ORM framework from Microsoft (Entity Framework). I'm favoring this code base over some homemade example to to show that the coding practise is in fact of a general nature.</p>
+<p>When starting the plugin all I got was a </p>
+<pre class="prettyprint"><code>System.ArgumentNullException: Value cannot be null.
+Parameter name: key
+   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
+   at System.Collections.Generic.Dictionary`2.TryInsert(TKey key, TValue value, InsertionBehavior behavior)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationsAssembly.&lt;&gt;c__DisplayClass3_0.&lt;.ctor&gt;b__0()
+   at Microsoft.EntityFrameworkCore.Internal.LazyRef`1.get_Value()
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationsAssembly.get_Migrations()
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationsAssembly.FindMigrationId(String nameOrId)
+   at Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolder.ScaffoldMigration(String migrationName, String rootNamespace, String subNamespace)
+   at Microsoft.EntityFrameworkCore.Design.Internal.MigrationsOperations.AddMigration(String name, String outputDir, String contextType)
+   at Microsoft.EntityFrameworkCore.Design.OperationExecutor.AddMigrationImpl(String name, String outputDir, String contextType)
+</code></pre>
+<p>Say what? I was bewildered as to whether I had done something wrong or there was a bug in the framework. The error is of such a general nature it was impossible to find useful information on the internet.. And of course it didn't help, that I was completely new at using the Entity Framework when I encountered this error. </p>
+<h2 id="declaritive-code-and-error-handling">Declaritive code and error handling</h2>
+<p>Here is the failing code:</p>
+<pre class="prettyprint"><code>_migrations = new LazyRef&lt;IReadOnlyDictionary&lt;string, TypeInfo&gt;&gt;(
+    () =&gt; (
+            from t in Assembly.GetConstructableTypes()
+            where t.IsSubclassOf(typeof(Migration))
+                  &amp;&amp; t.GetCustomAttribute&lt;DbContextAttribute&gt;()?.ContextType == contextType
+            let id = t.GetCustomAttribute&lt;MigrationAttribute&gt;()?.Id
+            orderby id
+            select new { Key = id, Element = t })
+        .ToDictionary(i =&gt; i.Key, i =&gt; i.Element));
+</code></pre>
+<p>Notice the liberal use of modern concepts in here. 
+  * Lazy evaluation wrapping (using the <code>Lazy</code> construct)
+  * LINQ (<code>from..where</code>), 
+  * and null-conditionals (<code>?.</code>). </p>
+<p>Slick code in many eyes. Unfortunately, this code is not particularly good at dealing with wrong input. Not a single error messages to be found, and it is difficult to deduce the requirements it is implementing. </p>
+<p>Let's introduce the scene where this code is used, and then discuss the code a bit more in-depth.</p>
+<h2 id="the-api-requirements">The API requirements</h2>
+<p>Part of the Entity Framework tool chain is a database migration tool where a database can be &quot;lifted&quot; to cater for new code. To plug into the migration process, one has to implement the following:</p>
+<pre class="prettyprint"><code>[Migration(&quot;Custom migrations title&quot;)]
+class MigrationHook : Migration
+{
+    protected override void Up(MigrationBuilder builder)
+    {
+        // My stuff 
+    }
+}
+</code></pre>
+<p>Notice how you must <em>both</em> inherit <code>Migration</code> <em>and</em> define a title for the logging using the <code>[Migration]</code> attribute. The requirement to use both inheritance and attributes is a fairly common way of defining extension points of an API or application. So nothing wrong with that. But the lack of error handling is striking. In particular, I think the error handling is important at the integration points of your API. At least if you want people to use them.</p>
+<p>Here are the cases the code does not take into account </p>
+<ul>
+<li>Raise an error for all classes inheriting <code>Migration</code> that do not have the attribute <code>[Migration]</code>.</li>
+<li>Raise an error for all classes having the attribute <code>[Migration]</code> but do not inherit <code>Migration</code>.</li>
+</ul>
+<h2 id="a-solution">A solution</h2>
+<p>There are many ways to make an implementation that detect and report errorneous implementations. A declarative one is to </p>
+<ul>
+<li>Find all types that either inherit <code>Migration</code> or use the <code>[Migration]</code> attribute</li>
+<li>If any type only does one of the two collect and report them using an exception</li>
+<li>Transform all the types as the code above and return it.</li>
+</ul>
+<p>Yes this will require more lines of code, and it will require to break up the LINQ into multiple separate portions.</p>
+<h2 id="bug-report">Bug report</h2>
+<p>I reported the bug to Microsoft. Their reaction was hilarious. I guess they prefer slick-looking code over proper error handling :-)</p>
+<p><img src="img/entity-framework-bug-reaction.png"></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html&amp;title=Favor%20error%20messages%20over%20declarative%20code"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html&amp;text=Favor%20error%20messages%20over%20declarative%20code&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html&amp;t=Favor%20error%20messages%20over%20declarative%20code"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Programming/FavorErrorMessagesOverSlickProgramming.html&amp;t=Favor%20error%20messages%20over%20declarative%20code"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/FavorErrorMessagesOverSlickProgramming.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br></p>
+<p><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br></p>
+
+
+
+</article>
+</body>
+</html>

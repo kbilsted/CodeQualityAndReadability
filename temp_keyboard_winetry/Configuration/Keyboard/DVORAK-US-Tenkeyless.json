@@ -1,0 +1,127 @@
+﻿{
+	"KeyboardName": "Dvorak US tenkeyless",
+	"Rows": [
+		{
+			"Keys": [
+				{ "Label1": "Esc", "KeyCode": "Escape" },
+				{ "HorizontalSpace": "True" },
+				{ "Label1": "F1", "KeyCode": "F1" },
+				{ "Label1": "F2", "KeyCode": "F2" },
+				{ "Label1": "F3", "KeyCode": "F3" },
+				{ "Label1": "F4", "KeyCode": "F4" },
+				{ "HorizontalSpace": "True", "Width" : 0.3 },
+				{ "Label1": "F5", "KeyCode": "F5" },
+				{ "Label1": "F6", "KeyCode": "F6" },
+				{ "Label1": "F7", "KeyCode": "F7" },
+				{ "Label1": "F8", "KeyCode": "F8" },
+				{ "HorizontalSpace": "True", "Width" : 0.3 },
+				{ "Label1": "F9", "KeyCode": "F9" },
+				{ "Label1": "F10", "KeyCode": "F10" },
+				{ "Label1": "F11", "KeyCode": "F11" },
+				{ "Label1": "F12", "KeyCode": "F12" },
+				{ "HorizontalSpace": "True", "Width" : 0.3 },
+				{ "Label1" : "Prt"  , "KeyCode" :"PrintScreen"},
+				{ "Label1" : "Scr"  , "KeyCode" :"Scroll"},
+				{ "Label1" : "Pause", "KeyCode" :"Pause"}
+			]
+		},
+		{
+			"IsVertialSpacer": "True", "Height" : 0.05 
+		},
+		{
+			"Keys": [
+				{ "Label1": "~", "Label2" : "`", "KeyCode": "Oem8"  },
+				{ "Label1": "!", "Label2" : "1", "KeyCode": "D1" },
+				{ "Label1": "@", "Label2" : "2", "KeyCode": "D2" },
+				{ "Label1": "#", "Label2" : "3", "KeyCode": "D3" },
+				{ "Label1": "$", "Label2" : "4", "KeyCode": "D4" },
+				{ "Label1": "%", "Label2" : "5", "KeyCode": "D5" },
+				{ "Label1": "^", "Label2" : "6", "KeyCode": "D6" },
+				{ "Label1": "&", "Label2" : "7", "KeyCode": "D7" },
+				{ "Label1": "*", "Label2" : "8", "KeyCode": "D8" },
+				{ "Label1": "(", "Label2" : "9", "KeyCode": "D9" },
+				{ "Label1": ")", "Label2" : "0", "KeyCode": "D0" },
+				{ "Label1": "{", "Label2" : "[", "KeyCode": "OemMinus"   },
+				{ "Label1": "}", "Label2" : "]", "KeyCode": "Oemplus"   },
+				{ "Label1": "Backspace", "KeyCode": "Back", "Width":3},
+				{ "HorizontalSpace": "True", "Width" : 0.5 },
+				{ "Label1": "Ins", "KeyCode": "Insert" },
+				{ "Label1": "Home", "KeyCode": "Home" },
+				{ "Label1": "PgUp", "KeyCode": "PageUp" }
+			]
+		},
+		{
+			"Keys": [
+				{ "Label1": "Tab", "KeyCode": "Tab", "Width":1.6 },
+				{ "Label1": "\"","Label2": "'", "KeyCode": "AAAA" },
+				{ "Label1": "<", "Label2": ",","KeyCode": "AAA" },
+				{ "Label1": ">", "Label2": ".","KeyCode": "AA" },
+				{ "Label1": "P","KeyCode": "P" },
+				{ "Label1": "Y","KeyCode": "Y" },
+				{ "Label1": "F","KeyCode": "F" },
+				{ "Label1": "G","KeyCode": "G" },
+				{ "Label1": "C","KeyCode": "C" },
+				{ "Label1": "R","KeyCode": "R" },
+				{ "Label1": "L","KeyCode": "L" },
+				{ "Label1": "?", "Label2":"/", "KeyCode": "OemOpenBrackets"},
+				{ "Label1": "+", "Label2" : "=", "KeyCode": "Oem6" },
+				{ "Label1": "|", "Label2" : "\\", "KeyCode": "Oem7", "Width" : 2.4 },
+				{ "HorizontalSpace": "True", "Width" : 0.5 },
+				{ "Label1": "Del", "KeyCode": "Delete" },
+				{ "Label1": "End", "KeyCode": "End" },
+				{ "Label1": "PgDn", "KeyCode": "Next" }
+			]
+		},
+		{
+			"Keys": [
+				{ "Label1": "Caps", "Label2": "Lock", "KeyCode": "Capital", "Width": 2 },
+				{ "Label1": "A", "KeyCode": "A" },
+				{ "Label1": "O", "KeyCode": "O" },
+				{ "Label1": "E", "KeyCode": "E" },
+				{ "Label1": "U", "KeyCode": "U" },
+				{ "Label1": "I", "KeyCode": "I" },
+				{ "Label1": "D", "KeyCode": "D" },
+				{ "Label1": "H", "KeyCode": "H" },
+				{ "Label1": "T", "KeyCode": "T" },
+				{ "Label1": "N", "KeyCode": "N" },
+				{ "Label1": "S", "KeyCode": "S" },
+				{ "Label1": "_", "Label2" : "-", "KeyCode": "Oemtilde" },
+				{ "Label1": "Enter", "KeyCode": "Return", "Width": 3.8 }
+			]
+		},
+		{
+			"Keys": [
+				{ "Label1": "Shift", "KeyCode": "LShiftKey", "Width":2.6 },
+				{ "Label1": ";", "Label2":":", "KeyCode": "ooZ" },
+				{ "Label1": "Q", "KeyCode": "Q" },
+				{ "Label1": "J", "KeyCode": "J" },
+				{ "Label1": "K", "KeyCode": "K" },
+				{ "Label1": "X", "KeyCode": "X" },
+				{ "Label1": "B", "KeyCode": "B" },
+				{ "Label1": "M", "KeyCode": "M" },
+				{ "Label1": "W", "KeyCode": "W" },
+				{ "Label1": "V", "KeyCode": "V" },
+				{ "Label1": "Z", "KeyCode": "Z" },
+				{ "Label1": "Shift", "KeyCode": "RShiftKey", "Width": 5 },
+				{ "HorizontalSpace": "True", "Width" : 2.2 },
+				{ "Label1": "↑", "KeyCode": "Up" }
+			]
+		},
+		{
+			"Keys": [
+				{ "Label1": "Ctrl", "KeyCode": "LControlKey", "Width":1.3 },
+				{ "Label1": "Win", "KeyCode": "LWin", "Width":1.3 },
+				{ "Label1": "Alt", "KeyCode": "LMenu", "Width":1.3 },
+				{ "Label1": "Space", "KeyCode": "Space", "Width": 11 },
+				{ "Label1": "Alt", "KeyCode": "RMenu", "Width":1.3 },
+				{ "Label1": "Fn", "KeyCode": "Fn", "Width":1.3 },
+				{ "Label1": "Menu", "KeyCode": "Apps", "Width":1.3 },
+				{ "Label1": "Ctrl", "KeyCode": "RControlKey", "Width":1.8 },
+				{ "HorizontalSpace": "True", "Width" : 0.4 },
+				{ "Label1": "←", "KeyCode": "Left" },
+				{ "Label1": "↓", "KeyCode": "Down" },
+				{ "Label1": "→", "KeyCode": "Right" }
+			]
+		}
+	]
+}
