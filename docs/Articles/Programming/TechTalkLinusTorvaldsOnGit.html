@@ -1,0 +1,109 @@
+﻿<html>
+<head>
+<title>Tech Talk: Linus Torvalds on Git</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="tech-talk-linus-torvalds-on-git">Tech Talk: Linus Torvalds on Git</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/TechTalkLinusTorvaldsOnGit.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br>
+<a href="http://firstclassthoughts.co.uk/Tags/Talks.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #33fe56;    display: inline-block;">Talks</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Git.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #40efe6;    display: inline-block;">Git</a>
+<a href="http://firstclassthoughts.co.uk/Tags/KBGit.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #e6aa84;    display: inline-block;">KBGit</a></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html&amp;title=Tech%20Talk:%20Linus%20Torvalds%20on%20Git"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html&amp;text=Tech%20Talk:%20Linus%20Torvalds%20on%20Git&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html&amp;t=Tech%20Talk:%20Linus%20Torvalds%20on%20Git"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html&amp;t=Tech%20Talk:%20Linus%20Torvalds%20on%20Git"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><em>Consider this article a &quot;shared document&quot;. Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy. <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/TechTalkLinusTorvaldsOnGit.md">Just go to Github, press the edit button and fire away.</a></em></p>
+<p>This high quality tech talk is from 2009, but has by no means become obsolete! This talk is very reflects on the differences between Git and other (older) version system. Focus is not on technology, but processes and people. For example, on the topic of being distributed, problems like commit rights, and repository corruption is brought up and show that problems are mitigated in a distributed model.</p>
+<p>Now you'd think one versioning system is similar to another: It handles versions of files. In my experience after using Git for 10 years, it is <em>true pain</em> going back to inferior versioning system (in my case VSTFS).</p>
+<p>Reasons for watching the talk</p>
+<ul>
+<li>It is a treasure trove of inspiration if you need to discuss versioning systems with colleagues - perhaps even persuading them to switch to Git.</li>
+<li>If you are not using Git, and you want an understanding of the problems Git solves better than your current versioning system.</li>
+</ul>
+<p>A more detailed view</p>
+<ul>
+<li>
+The effects of distributed versioning system 
+<ul>
+<li>Commit rights</li>
+<li>Repository corruption</li>
+<li>Handling of many many repositories, merging and network of trust</li>
+<li>The speed of Git over centralized versioning systems</li>
+</ul>
+</li>
+<li>The effect of light weight branches and, more importantly, merging</li>
+<li>When something starts becoming fast and easy, you use it differently</li>
+<li>Security, content cannot be changed through back doors</li>
+</ul>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4XpnKHJAok8?rel=0&amp;start=511" frameborder="0" allowfullscreen></iframe>
+<p>If you are curious on the inner workings of git, check out this really small and easily understandable C# implementation of Git: The <a href="https://github.com/kbilsted/KBGit">KBGit project</a></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html&amp;title=Tech%20Talk:%20Linus%20Torvalds%20on%20Git"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html&amp;text=Tech%20Talk:%20Linus%20Torvalds%20on%20Git&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html&amp;t=Tech%20Talk:%20Linus%20Torvalds%20on%20Git"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Programming/TechTalkLinusTorvaldsOnGit.html&amp;t=Tech%20Talk:%20Linus%20Torvalds%20on%20Git"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/TechTalkLinusTorvaldsOnGit.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br>
+<br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br></p>
+
+
+
+</article>
+</body>
+</html>

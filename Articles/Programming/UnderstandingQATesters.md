@@ -1,7 +1,7 @@
 ﻿# Talk: On software Into the mind of a tester
 *Author: Kasper B. Graversen*
 <ArticleHeaderUrls/>
-<Categories Tags="Testing, Talk">
+<Categories Tags="Testing, Talks">
 </Categories>
 
 
