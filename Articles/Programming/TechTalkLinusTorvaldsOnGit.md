@@ -13,9 +13,9 @@ Please show your support by sharing and voting:
 
 This 2009 high quality tech talk is getting no where near the views it deserve! Despite its age, it has by no means become obsolete! 
 
-In this video, Linus Thorvalds the inventor of Git, reflects upon the differences between Git and other (older) version systems. With a focus not on technology, but processes and people, it explains the benefits for you to reap, should you start using Git. And if you are already using Git, there still are some interesting facets you haven't contemplated.
+In this video, Linus Thorvalds the inventor of Git, reflects upon the differences between Git and other (older) version systems. With a focus not on technology, but processes and people, it explains the benefits for you to reap, should you start using Git. And if you are already using Git, there still are some interesting facets you might not have contemplated yet.
 
-Now you'd think one versioning system is similar to another: Thet all handle versions of files, don't they? It has been my experience after using Git for more than 10 years, that it is *true pain* going back to an inferior versioning system (in my case TFS).
+Now you'd think one versioning system is similar to another: They all handle versions of files, don't they? It has been my experience after using Git for more than 10 years, that it is *true pain* going back to an inferior versioning system (in my case TFS).
 
 The talk can be divided into the following:
 
