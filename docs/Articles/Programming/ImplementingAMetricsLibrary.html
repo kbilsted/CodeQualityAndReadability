@@ -1,0 +1,323 @@
+﻿<html>
+<head>
+<title>Building a metrics library.. and abandoning it again</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="building-a-metrics-library..-and-abandoning-it-again">Building a metrics library.. and abandoning it again</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/ImplementingAMetricsLibrary.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br>
+<a href="http://firstclassthoughts.co.uk/Tags/Monitoring.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #72b0ae; display: inline-block;">Monitoring</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Metrics.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #f958ea; display: inline-block;">Metrics</a></p>
+<p><em>A tale of how we created a simple monitoring mechanism for our application. The implementation cover the foundation of monitoring frameworks in general. As our implementation grew in size and complexity, we realized our mistake and replaced it with an existing framework on the market.</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html&amp;title=Building%20a%20metrics%20library..%20and%20abandoning%20it%20again"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html&amp;text=Building%20a%20metrics%20library..%20and%20abandoning%20it%20again&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html&amp;t=Building%20a%20metrics%20library..%20and%20abandoning%20it%20again"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html&amp;t=Building%20a%20metrics%20library..%20and%20abandoning%20it%20again"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><img src="img/metrics.png" alt="metrics" ></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#introduction">1 Introduction</a></li>
+<li>
+<a href="#the-home-brew-metrics-library-implementation">2 The home brew metrics library implementation</a>
+<ul>
+<li><a href="#speedometer---counting-failures">2.1 Speedometer - counting failures</a></li>
+<li><a href="#business-code-that-is-being-monitored">2.2 Business code that is being monitored</a></li>
+<li><a href="#speedometer---measuring-the-rate">2.3 Speedometer - measuring the rate</a></li>
+<li><a href="#thread-safety">2.4 Thread safety</a></li>
+<li><a href="#pulling-out-measurements">2.5 Pulling out measurements</a></li>
+</ul>
+</li>
+<li><a href="#evaluation">3 Evaluation</a></li>
+<li><a href="#introducing-the-okanshi-library">4 Introducing the Okanshi library</a></li>
+<li><a href="#summary">5 Summary</a></li>
+</ul>
+<h2 id="introduction">1 Introduction</h2>
+<p>The other day I was writing a service that would fetch data, transform it and ship it to some other service. The thing about services, especially when you have many of them, is that you really would want to know how they are doing. Have they crashed? Are they processing at an unusual rate etc. For that you need application metrics. </p>
+<h2 id="the-home-brew-metrics-library-implementation">2 The home brew metrics library implementation</h2>
+<p>This is how it started. Since I only wanted to know the successes of my application I defined a simple class <code>SpeedOMeter</code>. &quot;How hard could it be?&quot; I reckoned.. And from there I went down a rabbit hole. Our implementation gradually increased in size and complexity, as more and more issues revealed themselves.</p>
+<pre class="prettyprint"><code>class Speedometer 
+{
+    public int Success { get; }
+    
+    public void RegisterSuccess(){ Success++; }
+}
+</code></pre>
+<h3 id="speedometer---counting-failures">2.1 Speedometer - counting failures</h3>
+<p>It didn't last long however, until I realized that knowing the number of failures was just as important, if not more. Thus I extended the application.</p>
+<pre class="prettyprint"><code>class Speedometer 
+{
+    public int Success { get; }
+    public int Fail { get; }
+    
+    public void RegisterSuccess(){ Success++; }
+    public void RegisterFail(){ Fail++; }
+}
+</code></pre>
+<h3 id="business-code-that-is-being-monitored">2.2 Business code that is being monitored</h3>
+<p>We almost forgot. We need some business code that we want to monitor.</p>
+<pre class="prettyprint"><code>class BusinessLogic
+{
+    public void Execute()
+    {
+        while(true)
+        {
+            var rows = Db.Fetch(...);
+            
+            foreach(var row in rows)
+            {
+                var success = DoStuff(row);
+
+                if(success)
+                    speedOMeter.RegisterSuccess();
+                else
+                    speedOMeter.RegisterFail();
+            }
+        }
+    }
+}
+</code></pre>
+<h3 id="speedometer---measuring-the-rate">2.3 Speedometer - measuring the rate</h3>
+<p>So know we how roughly how the application is doing, but we do not know if the service lives up to its &quot;SLA&quot;. It turns out, that the  service had to process and deliver a certain amount of messages a day. Hence, the rate of processing is important too. With the rate in hand, I can quickly verify if my initial implementation is fast enough or if optimizations are required. It also helps us when we, in the future, extend the functionality that perhaps impact performance negatively. </p>
+<p>To measure the rate, we need a time dimension. We group our two counters <code>Success</code> and <code>Fail</code> in a class <code>Measurement</code> along with a timespan. </p>
+<pre class="prettyprint"><code>public class Measurement 
+{
+    const int MillisecondsPrHour = 1000 * 3600;
+
+    public int Fail = 0;
+    public int Success = 0;
+    public TimeSpan Duration;
+
+    public int Total =&gt; Fail + Success;
+
+    public double MessagesPrHour =&gt; 
+        Math.Abs(Duration.TotalMilliseconds) &lt; 1
+        ? 0
+        : (Total * MillisecondsPrHour) / Duration.TotalMilliseconds;
+}
+</code></pre>
+<p>and</p>
+<p>We use this class from our SpeedOMeter. Notice how when we query for a measurement, we get the accumulated metrics since last we queried. This works fine as long as only one client is querying.</p>
+<pre class="prettyprint"><code>public class SpeedOMeter 
+{
+    DateTime startTime = DateTime.Now;
+    Measurement measurement = new Measurement();
+
+    public void RegisterSuccess() { measurement.Success++; }
+
+    public void RegisterError() { measurement.Fail++; }
+
+    public Measurement GetSpeedAndReset() 
+    {
+        measurement.Duration = DateTime.Now - startTime;
+        Measurement result = measurement;
+
+        measurement = new Measurement();
+        startTime = DateTime.Now;
+
+        return result;
+    }
+}
+</code></pre>
+<h3 id="thread-safety">2.4 Thread safety</h3>
+<p>Up until this point we disregarded threads altogether. In order to speed my service up, it concurrently handles messages in threads. But this means, we must ensure thread safety. The easiest way I know to do this is to lock down shared resources using <code>Lock</code>. I don't mind using locks since I know they are really fast. I've investigated this and documented my findings on <a href="http://firstclassthoughts.co.uk/Tags/lock.html">http://firstclassthoughts.co.uk/Tags/lock.html</a>. </p>
+<p>Basically, we lock down every access to the SpeedOMeter class.</p>
+<pre class="prettyprint"><code>public class SpeedOMeter 
+{
+    readonly object _lock = new object();
+
+    DateTime startTime = DateTime.Now;
+    Measurement measurement = new Measurement();
+
+    public void RegisterSuccess() 
+    {
+        lock (_lock) { measurement.Success++; }
+    }
+
+    public void RegisterError() 
+    {
+        lock (_lock) { _measurement.Fail++; }
+    }
+
+    public Measurement GetSpeedAndReset() 
+    {
+        lock (_lock) 
+        {
+            measurement.Duration = DateTime.Now - startTime;
+            Measurement result = measurement;
+
+            measurement = new Measurement();
+            startTime = DateTime.Now;
+
+            return result;
+        }
+    }
+}
+</code></pre>
+<h3 id="pulling-out-measurements">2.5 Pulling out measurements</h3>
+<p>Now that we have all the measuring scaffolding in place, we still need something that at regular intervals pulls out the metrics and published them. I read a long running task for this in my main thread where the service starts.</p>
+<pre class="prettyprint"><code>void ServiceStart() 
+{
+    var speedoMeter = new SpeedOMeter();
+    var cancellationTokenSource = new CancellationTokenSource();
+    var token = cancellationTokenSource.Token;      
+
+    speedOMeterTask = Task.Run(() =&gt; 
+    {
+        var client = new LogSystemClient(&quot;127.234.211.233&quot;);
+
+        var health = new MetricsObserver(client, speedoMeter);
+        var frequency = TimeSpan.FromMinutes(5);
+        health.Execute(token, frequency);
+    }
+
+    ...
+</code></pre>
+<p>This rely on an actual implementation <code>MetricsObserver</code> that pulls out the data and converts it for some receiver system (Splunk, Elastic Search, InfluxDb, ...). We try to &quot;play nice&quot; by supporting the cancellation token in the event some one is trying to stop our service.</p>
+<pre class="prettyprint"><code>class MetricsObserver
+{
+    readonly IClient client
+    readonly SpeedOMeter speedoMeter;
+
+    public MetricsAndHealthcheck(ILogger logger, SpeedOMeter speedoMeter) 
+    {
+        client = logger;
+        speedoMeter = speedoMeter;
+    }
+
+    public void Execute(CancellationToken token, TimeSpan frequency) 
+    {
+        while (!token.IsCancellationRequested) 
+        {
+            var cancelled = token.WaitHandle.WaitOne(frequency);
+            if (cancelled)
+                break;
+
+            var measurement = speedoMeter.GetSpeedAndReset();
+            string json = JSon.Convert(measurement);
+            client.Transmit(json);
+        }
+    }
+}
+</code></pre>
+<p>Oh, and perhaps we should use <code>async</code> when pulling out the metrics and submitting them...</p>
+<h2 id="evaluation">3 Evaluation</h2>
+<p>To evaluate. We ended up with quite a bit of code. More than first anticipated! And admittedly, it was great fun to do! The code was fairly easy for me to churn out, but I also suspect my experience in the field being the explanation, as some non-trivial concepts are involved. And perhaps my implementation still has some glaring omissions and bugs. I haven't used the code enough for me to say.</p>
+<p>One thing is for certain, if we choose to stick with the implementation, the code needs be extracted into a reusable library. We don't want general infrastructure code in our service. Inevitably, more services will be developed that needs monitoring too. And we don't want to re-implement all of it again. </p>
+<p>I think three things stand out in particular.</p>
+<ul>
+<li>As we use the code, we kept finding new things that needed implementing. What was a small 4 line class ended up being many classes. It is doubtful that we really have a sufficiently mature code base.</li>
+<li>There is a low degree of abstractions in the implementation. E.g. we can only measure one metric, and we do not support several &quot;metric observers&quot; since the first pulling out metrics will reset it for the next.</li>
+<li>There are still major missing feature points. There is no &quot;health check&quot; end-point or otherwise functionality to tell some monitoring system that we are alive. Or how about an OWIN integration for your webservice implementations - just to name a few.</li>
+</ul>
+<p>I think those evaluation points tells us that it's time to look around for greener pastures. Find an existing monitoring library. That library will provide us a more bug-free code base, more feature rich and with more abstractions. Abd perhaps also a helpful community.</p>
+<h2 id="introducing-the-okanshi-library">4 Introducing the Okanshi library</h2>
+<p>I've chosen to show case the library <a href="https://github.com/mvno/Okanshi">Okanshi</a>. I have dabbled around with a few monitoring libraries, and Okanshi strikes a nice balanced between performance, sensible defaults and easy to extend to cater for your own needs. The code base is only around 1000 lines of code, most of which is fairly grokable.</p>
+<p>Relating Okanshi to our implementation, Okanshi provides a number of various metrics we can hook into. It also provides out of the box, a scheduler for collecting metrics.</p>
+<p>Rather than messing around with threads and tasks, you can set up scheduling of metric collection using: </p>
+<pre class="prettyprint"><code>void ServiceStart() 
+{
+    var api = new MonitorEndpoint();
+    api.Start();
+</code></pre>
+<p>This will create a http endpoint in your service from which you can poll the latest metrics. It also creates a health check endpoint.</p>
+<p>The business logic is almost the same as before</p>
+<pre class="prettyprint"><code>class BusinessLogic
+{
+    ...
+    while(true)
+    {
+        OkanshiMonitor.BasicTimer(&quot;send&quot;).Record(() =&gt;
+        {
+            var rows = Db.Fetch(...);
+            
+            foreach(var row in rows)
+            {
+                var s = Stopwatch.StartNew();
+                var success = DoStuff(row);
+                s.Stop();
+
+                if(success)
+                    OkanshiMonitor.BasicTimer(&quot;success&quot;).Register(s.ElapsedMilliseconds);
+                else
+                    OkanshiMonitor.BasicTimer(&quot;fail&quot;).Register(s.ElapsedMilliseconds);
+            }
+        });
+    }
+}
+</code></pre>
+<p>As you can see, we are now using the general timer <code>BasicTimer</code> rather than a bespoke <code>SpeedOMeter</code>. If we want to keep that interface, nothing prevents us from wrapping Okanshi-metrics in bespoke classes. </p>
+<p>Another thing you may notice is that I've changed the metrics slightly. Rather than counting the success and failures and the speed, we now have three timers instead. It is not be obvious, but a <code>BasicTimer</code> not only measure the execution time of some code, it also count  the number of invocations. I.e. it is a counter as well as a timer.</p>
+<p>We chose the &quot;standard route&quot; of using in-built metrics for two reasons. </p>
+<p>One, Okanshi does not come out of the box with a success-fail-timer like the one we created. Second, and perhaps more importantly, when working with monitoring, it is very easy to set up some metrics, and then when working with them for a while (or they don't provide the insights needed) you change them. In my case, I found that since error-handling touches the database among other things, it may be very insightful to know how the performance of the failure handling as well. So we create an overall &quot;send&quot; metric to calculate a speed, and two timers, one for each scenario.</p>
+<h2 id="summary">5 Summary</h2>
+<p>We created our own bespoke SpeedOMeter class. It turned into a longer affair involving threads and timers. Before ending up developing a large framework ourselves, and having to find all the bug that inevitably has crept in, we chose to ditch it all and use one of the existing full-blown monitoring frameworks on the market. </p>
+<p><em>But all is not lost!</em> The implementation we presented convey the fundamentals of basically any monitoring framework out there. So thats the lesson here I guess. </p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html&amp;title=Building%20a%20metrics%20library..%20and%20abandoning%20it%20again"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html&amp;text=Building%20a%20metrics%20library..%20and%20abandoning%20it%20again&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html&amp;t=Building%20a%20metrics%20library..%20and%20abandoning%20it%20again"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Programming/ImplementingAMetricsLibrary.html&amp;t=Building%20a%20metrics%20library..%20and%20abandoning%20it%20again"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br>
+<strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Programming/ImplementingAMetricsLibrary.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br><br>
+<br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br></p>
+
+
+
+</article>
+</body>
+</html>
