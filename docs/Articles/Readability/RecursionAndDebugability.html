@@ -1,0 +1,212 @@
+﻿<html>
+<head>
+<title>Debugability of recursive code</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="debugability-of-recursive-code">Debugability of recursive code</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/RecursionAndDebugability.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2; display: inline-block;">Code Readability</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Coding_Guideline.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #33ad2a; display: inline-block;">Coding Guideline</a>
+<a href="http://firstclassthoughts.co.uk/Tags/SOLID.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #815bee; display: inline-block;">SOLID</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Refactoring.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #c6dc6b; display: inline-block;">Refactoring</a></p>
+<p><em>There are many ways in which you can express code with recursive functions. We look beyond the aestethics and turn to the debugability of the code</em></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html&amp;title=Debugability%20of%20recursive%20code"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html&amp;text=Debugability%20of%20recursive%20code&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html&amp;t=Debugability%20of%20recursive%20code"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html&amp;t=Debugability%20of%20recursive%20code"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p>Table of Content</p>
+<ul>
+<li><a href="#intro">Intro</a></li>
+<li><a href="#the-functional-approach">The functional approach</a></li>
+<li><a href="#separate-initial-step-from-the-rest-of-the-steps">Separate initial step from the rest of the steps</a></li>
+<li><a href="#separation-of-concerns">Separation of concerns</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+<h2 id="intro">Intro</h2>
+<p>When writing code, it is important for it to be readable. Often we judge short code more readable than longer code. At times this may <em>hurt</em> how debugable the code is. Its &quot;debugability&quot;.</p>
+<p>I think we need to make a concious trade-off between short code and debugable code. This is also why I shy away from very long chained LINQ statements.</p>
+<blockquote>
+<p>&quot;Debugable code&quot; is code that you can reason about the current state of input and output - perhaps even make it possible to change past or future computations as well. it is also code where you can insert conditional break points without bending over backwards.</p>
+</blockquote>
+<p>At times I do smaller coding projects in my spare time. It allows me to think in context and experiment with code. One such project is a small implementation of GIT (the source revision control system). You can find it at https://github.com/kbilsted/KBGit. When implementing a  <code>git log</code> functionality showing the history of commits, I went ahead and did three implementations for contrast and comparrison.</p>
+<p>If details are a bit hazy to you, the standard git log looks like</p>
+<pre class="prettyprint"><code>$&gt; git log
+commit f7ad4bdd31868bb8f057e1dda148a45281258e9c (HEAD -&gt; master, origin/master, origin/HEAD)
+Author: Kasper B. Graversen &lt;kbilsted@users.noreply.github.com&gt;
+
+    bugfix include index.md in article list
+
+commit 650ec01888f712076f33ea7c75c777259c09be46
+Author: Kasper B. Graversen &lt;kbilsted@users.noreply.github.com&gt;
+
+    optimize css
+
+commit d9d86ad0eeb833b55a9a0a52d80d7c8a70c6d470
+Author: Kasper B. Graversen &lt;kbilsted@users.noreply.github.com&gt;
+
+    Optimize file access
+
+commit 935b0a1790430b056486ca9d0ffe4a007f495f64
+Author: Kasper B. Graversen &lt;kbilsted@users.noreply.github.com&gt;
+...
+</code></pre>
+<p>Given the commit history of GIT is a Directed Acyclic Graph, in order to print the log, we must recursevely traverse the DAG and visit each parent of each commit and append its output with the output of the commit. This way, we cater for both merging and branching along the commit history.</p>
+<p>Let's look at each of the ways I implemented it. Quite possibly there exists other approaches to implementing this, if you feel you found an illustrative example, feel free to send a PR or raise a bug for discusion on github <a href="https://github.com/kbilsted/CodeQualityAndReadability/">https://github.com/kbilsted/CodeQualityAndReadability/</a></p>
+<h2 id="the-functional-approach">The functional approach</h2>
+<p>This approach is a typical recursive coding strategy where we call ourselves until a stop-condition is met.</p>
+<pre class="prettyprint"><code> public string Log_1(Id? id = null, HashSet&lt;Id&gt; seenBefore = null)
+ {
+    // stop conditions
+    id ??= headHandling.ReadHead();
+    if (id == null)
+        return &quot;&quot;;
+
+    seenBefore ??= new HashSet&lt;Id&gt;();
+    if (seenBefore.Contains(id))
+        return &quot;&quot;;
+    seenBefore.Add(id);
+
+    // logic
+    var commit = Commit.Parse(objectDb.ReadObject(id));
+
+    var ancestors = string.Join(&quot;\r\n&quot;, commit.Parents.Select(x =&gt; Log_1(x, seenBefore)));
+    return $&quot;commit {commit.Content}\r\nAuthor: {commit.Author}\r\n\r\n    {commit.CommitMessage}\r\n\r\n{ancestors}&quot;;
+}
+</code></pre>
+<p>From a debugability perspective, the problem lies in the <code>ancestor</code>variable assignment. This is the recursive bit. Ultimately, the state of the code is on the call stack, and not in some explicit local variable. </p>
+<p>This makes it impossible to go back one iteration and change stuff, or stop the debugger with a condition that some specific log has been processed.</p>
+<p>Also, I don't like how the parameters are null for the initial call and the filled out by the recursive calls. It is not clear, that the parameters are only for internal use.</p>
+<h2 id="separate-initial-step-from-the-rest-of-the-steps">Separate initial step from the rest of the steps</h2>
+<p>In the second implementation we split the code into the code that initializes the state and a private method for the logic. A <code>StrinbBuilder</code> is passed around explicitly, holding the processed state so far. This makes it easier to reason about the previous calculations and it makes it easier to set conditional break points base on that.</p>
+<pre class="prettyprint"><code>    public string Log_2()
+    {
+        var id = headHandling.ReadHead();
+        if (id == null)
+            return &quot;&quot;;
+
+        var sb = new StringBuilder();
+        Log_2(sb, new HashSet&lt;Id&gt;(), id);
+
+        return sb.ToString();
+    }
+
+    private void Log_2(StringBuilder sb, HashSet&lt;Id&gt; seenBefore, Id id)
+    {
+        if (seenBefore.Contains(id))
+            return;
+        seenBefore.Add(id);
+
+        var commit = Commit.Parse(objectDb.ReadObject(id));
+
+        sb.AppendLine($&quot;commit {commit.Content}\r\nAuthor: {commit.Author}\r\n\r\n    {commit.CommitMessage}\r\n&quot;);
+
+        commit.Parents.Each(x =&gt; Log_2(sb, seenBefore, x));
+    }
+</code></pre>
+<p>As showed in <a href="http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html">http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndNestedMethods.html</a> we can also experiment with hiding the private method even further by turning it into a nested method, making it impossible for other methods of the class to call it.</p>
+<h2 id="separation-of-concerns">Separation of concerns</h2>
+<p>With the advice taken straight out of the SOLID principles we separate the two concerns of the code. One concern is the traversal and picking up unique commit nodes. The other concern is the formatting of a textual represenation. </p>
+<p>Clearly there are two benefits reaped right of the bat. We get a simpler log-functionality, and we get a general purpose functionality for fetching all parent nodes of a commit. This functionality can is freely available (and useful) to the rest of the code base.</p>
+<pre class="prettyprint"><code>    public string Log_3()
+    {
+        var id = headHandling.ReadHead();
+        if (id == null)
+            return &quot;&quot;;
+
+        var ancestors = new List&lt;Commit&gt;();
+        GetReachableNodes(id, new HashSet&lt;Id&gt;(), ancestors);
+
+        return string.Join(&quot;\r\n&quot;, ancestors.Select(x =&gt; $&quot;commit {x.Content}\r\nAuthor: {x.Author}\r\n\r\n    {x.CommitMessage}\r\n&quot;));
+    }
+
+    public void GetReachableNodes(Id from, HashSet&lt;Id&gt; seenBefore, List&lt;Commit&gt; result)
+    {
+        if (seenBefore.Contains(id))
+            return;
+        seenBefore.Add(id);
+
+        var commit = Commit.Parse(objectDb.ReadObject(id));
+
+        result.Add(commit);
+
+        commit.Parents.Each(x =&gt; GetReachableNodes(x, seenBefore,  result));
+    }
+</code></pre>
+<p>I've written before about this in &quot;Separate updating logic from calculations&quot; (<a href="http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html">http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html</a>) if you want more examples of this strategy and its benefits.</p>
+<h2 id="summary">Summary</h2>
+<p>When coding weigh in both readability and debugability. Through the article different implementation approaches were shown.</p>
+<p>Recursion and readability is a large topic also covered in oher articles on the site see</p>
+<p><a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2; display: inline-block;">Code Readability</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Coding_Guideline.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #33ad2a; display: inline-block;">Coding Guideline</a>
+<a href="http://firstclassthoughts.co.uk/Tags/SOLID.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #815bee; display: inline-block;">SOLID</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Refactoring.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #c6dc6b; display: inline-block;">Refactoring</a></p>
+<p>Please show your support by sharing and voting:</p>
+<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html&amp;title=Debugability%20of%20recursive%20code"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html&amp;text=Debugability%20of%20recursive%20code&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html&amp;t=Debugability%20of%20recursive%20code"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/RecursionAndDebugability.html&amp;t=Debugability%20of%20recursive%20code"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><br><br></p>
+<p><strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/RecursionAndDebugability.md">Just go to Github, press the edit button and fire away.</a>
+<br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
+         <div id="disqus_thread"></div></p>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'qualityandreadability';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></p>
+<p><br>
+<br>
+<br><br>
+<br>
+Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+<br>
+<br></p>
+
+
+
+</article>
+</body>
+</html>
