@@ -34,8 +34,8 @@
 
 <h1 id="productivity-features-that-may-ruin-code-readability">Productivity features that may ruin code readability</h1>
 <p><em>Author: Kasper B. Graversen</em>
-<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2cbbe2; display: inline-block;">Code Readability</a>
-<a href="http://firstclassthoughts.co.uk/Tags/Tools.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #5d59a2; display: inline-block;">Tools</a></p>
+<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2abc17; display: inline-block;">Code Readability</a>
+<a href="http://firstclassthoughts.co.uk/Tags/Tools.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #7b59b9; display: inline-block;">Tools</a></p>
 <p><em>It is the programmers that builds software, not the tools. Are glossy so-called productivity boosters beneficial or leading to sub-optimal code?</em></p>
 <p>Please show your support by sharing and voting:</p>
 <p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/ProductivityFeaturesThatMayRuinCodeReadability.html&amp;title=Productivity%20features%20that%20may%20ruin%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
@@ -62,6 +62,8 @@
 <li><a href="#code-scrollbar">3.1 Code scrollbar</a></li>
 <li><a href="#vertical-indentation-guides">3.2 Vertical indentation guides</a></li>
 <li><a href="#scope-outlining">3.3 Scope outlining</a></li>
+<li><a href="#sticky-scrolling">3.4 Sticky scrolling</a></li>
+<li><a href="#length-outline">3.5 Length outline</a></li>
 </ul>
 </li>
 <li><a href="#syntax-highlighting">4. Syntax highlighting</a></li>
@@ -107,9 +109,6 @@ We should navigate the code by name instead of geography.<br />
 Those landmarks should be method calls.  
 </p>
 </blockquote>
-<p>Many years ago I started the project <a href="http://euphoria.sourceforge.net/">Euphoria</a>, an attempt at creating an editor for the LaTeX language. One of its features was a graphical outlining as can be seen to the right hand of the below picture</p>
-<p><img src="http://sourceforge.net/dbimage.php?id=74829"></p>
-<p>This is a graphical representation of your document. But unlike the code scrollbar, its focus is to show the main structure by making thick lines the chapters, thinner lines the sections, etc. and most importantly, <a href="http://sourceforge.net/p/euphoria/code/HEAD/tree/csharp-v1/Eupho1/Eupho1/PluginGFXOverview.cs">colourizing the lines in terms of their relative size in relation to the rest of the document</a>. This means, that if you have an exceedingly long chapter, it will be shown as red, if the document contains chapters of more or less the same length. Wouldn't it be cool if the scroll bar of the IDE would highlight in red long methods, or long files instead? Possibly, <em>that</em> would be a useful feature :-)  </p>
 <h3 id="vertical-indentation-guides">3.2 Vertical indentation guides</h3>
 <p>The popular <a href="https://visualstudiogallery.msdn.microsoft.com/d0d33361-18e2-46c0-8ff2-4adea1e34fef">Productivity Power Tools</a> for visual studio offer
  a feature where by each column matching the indentation size is highlighted with a vertical line. This enables the developer to better see the span of a scope. And it looks cool, just look below. </p>
@@ -120,6 +119,16 @@ Those landmarks should be method calls.
 <p>On a similar vein as &quot;vertical indentation guides&quot;, ReSharper has a feature called scope outlining, where you get to see the outlining of the current scope.</p>
 <p><img src="img/scope_highlight.png"></p>
 <p>Compared to &quot;vertical indentation guides&quot;, the code is less cluttered with all the vertical lines, only showing you the scope from the position of the cursor.</p>
+<h3 id="sticky-scrolling">3.4 Sticky scrolling</h3>
+<p>Sticky scrolling is a feature that shows you the context of the code while scroling</p>
+<p><img src="img/vscode_sticky_scrolling.gif"></p>
+<p>It looks cool. Well, it looks different! And I think we will see as with the other examples here, that it will lead to less readable code. Readability is really about keeping things small, since too many details overloads the brain. This tool does not encourage keeping things small. Perhaps even the contrary.</p>
+<h3 id="length-outline">3.5 Length outline</h3>
+<p>Many years ago I started the project <a href="http://euphoria.sourceforge.net/">Euphoria</a>, an attempt at creating an editor for the mark up language &quot;LaTeX&quot; language. One of its features was a graphical outlining as can be seen to the right hand of the below picture</p>
+<p><img src="http://sourceforge.net/dbimage.php?id=74829"></p>
+<p>This shows the editor with a document opened. Focus on the right-most window. This is a graphical representation of the document. But unlike the code scrollbar, its focus is to show the main structure by making thick lines the chapters, thinner lines the sections, etc. More importantly, <a href="http://sourceforge.net/p/euphoria/code/HEAD/tree/csharp-v1/Eupho1/Eupho1/PluginGFXOverview.cs">colourizing the lines in terms of their relative size in relation to the rest of the document</a>. This means, that if you have an exceedingly long chapter, it will be shown as red, if the document contains chapters of more or less the same length. </p>
+<p>Wouldn't it be cool if the scroll bar of the IDE would highlight in red long methods, or long files instead? Possibly, <em>that</em> would be a useful feature :-)  </p>
+<p>For the editor itself, it I did use it for my Ph.D. thesis, but I had trouble benefitting from the feature. For long documents or books, it is quite natural for one part to be longer than the others. So whenever a section or chapter was identified as either too small or too long compared to the rest, there was little to do about it.</p>
 <h2 id="syntax-highlighting">4. Syntax highlighting</h2>
 <p>Now this is most certainly going out on a limb. But I cannot help but having mixed feelings about syntax highlighting. All that splash of colour can take away focus from the code. Take for instance the &quot;desert nights&quot; colour theme</p>
 <p><img src="img/desertnights_vs_theme.png"></p>
