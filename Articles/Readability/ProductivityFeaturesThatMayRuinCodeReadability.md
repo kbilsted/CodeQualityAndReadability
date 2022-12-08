@@ -23,6 +23,8 @@ Table of Content
      * [3.1 Code scrollbar](#code-scrollbar)
      * [3.2 Vertical indentation guides](#vertical-indentation-guides)
      * [3.3 Scope outlining](#scope-outlining)
+     * [3.4 Sticky scrolling](#sticky-scrolling)
+     * [3.5 Length outline](#length-outline)
    * [4. Syntax highlighting](#syntax-highlighting)
    * [5. Conclusions](#conclusions)
    * [6. Quotes...](#quotes)
@@ -101,14 +103,6 @@ This is all backwards. Why are the files so long, that you have no overview with
 > Those landmarks should be method calls.  
 
 
-Many years ago I started the project [Euphoria](http://euphoria.sourceforge.net/), an attempt at creating an editor for the LaTeX language. One of its features was a graphical outlining as can be seen to the right hand of the below picture
-
-<img src="http://sourceforge.net/dbimage.php?id=74829">
-
-This is a graphical representation of your document. But unlike the code scrollbar, its focus is to show the main structure by making thick lines the chapters, thinner lines the sections, etc. and most importantly, [colourizing the lines in terms of their relative size in relation to the rest of the document](http://sourceforge.net/p/euphoria/code/HEAD/tree/csharp-v1/Eupho1/Eupho1/PluginGFXOverview.cs). This means, that if you have an exceedingly long chapter, it will be shown as red, if the document contains chapters of more or less the same length. Wouldn't it be cool if the scroll bar of the IDE would highlight in red long methods, or long files instead? Possibly, *that* would be a useful feature :-)  
-
-
-
 ### 3.2 Vertical indentation guides
 The popular [Productivity Power Tools](https://visualstudiogallery.msdn.microsoft.com/d0d33361-18e2-46c0-8ff2-4adea1e34fef) for visual studio offer
  a feature where by each column matching the indentation size is highlighted with a vertical line. This enables the developer to better see the span of a scope. And it looks cool, just look below. 
@@ -130,6 +124,26 @@ Compared to "vertical indentation guides", the code is less cluttered with all t
 
 
 
+### 3.4 Sticky scrolling
+
+Sticky scrolling is a feature that shows you the context of the code while scroling
+
+<img src="img/vscode_sticky_scrolling.gif">
+
+It looks cool. Well, it looks different! And I think we will see as with the other examples here, that it will lead to less readable code. Readability is really about keeping things small, since too many details overloads the brain. This tool does not encourage keeping things small. Perhaps even the contrary.
+
+
+
+### 3.5 Length outline
+Many years ago I started the project [Euphoria](http://euphoria.sourceforge.net/), an attempt at creating an editor for the mark up language "LaTeX" language. One of its features was a graphical outlining as can be seen to the right hand of the below picture
+
+<img src="http://sourceforge.net/dbimage.php?id=74829">
+
+This shows the editor with a document opened. Focus on the right-most window. This is a graphical representation of the document. But unlike the code scrollbar, its focus is to show the main structure by making thick lines the chapters, thinner lines the sections, etc. More importantly, [colourizing the lines in terms of their relative size in relation to the rest of the document](http://sourceforge.net/p/euphoria/code/HEAD/tree/csharp-v1/Eupho1/Eupho1/PluginGFXOverview.cs). This means, that if you have an exceedingly long chapter, it will be shown as red, if the document contains chapters of more or less the same length. 
+
+Wouldn't it be cool if the scroll bar of the IDE would highlight in red long methods, or long files instead? Possibly, *that* would be a useful feature :-)  
+
+For the editor itself, it I did use it for my Ph.D. thesis, but I had trouble benefitting from the feature. For long documents or books, it is quite natural for one part to be longer than the others. So whenever a section or chapter was identified as either too small or too long compared to the rest, there was little to do about it.
 
 
 ## 4. Syntax highlighting
@@ -153,7 +167,6 @@ Some of the things I have experimented with regarding syntax highlighting
 * Colouring operator overloads is a good idea, it's nice to get warned that e.g. `==` in the code may have an entirely different meaning.
 * Different colours for different operators such as `+`, `-`, `*` is a bad idea, but that operators in a different colour than number and variables help make them stand out.
 * Tools such as ReSharper offer a lot of colouring  tuning. I've found that you can tweak all you want, but in the end, with too many different colours on the screen it gets too funky to look at, and you can't remember the semantics behind the colouring any ways. E.g. reference types can be coloured differently that structs, inheriting an interface can be coloured differently than inheriting from a class. 
-
 
 
 ## 5. Conclusions
