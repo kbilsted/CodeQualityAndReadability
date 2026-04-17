@@ -3,6 +3,6 @@ By Kasper B. Graversen
 
 A site providing information on achieving super readable and maintainable code.
 
-Notice we have moved. Please go to http://firstclassthoughts.co.uk
+Notice we have moved. Please go to https://kbilsted.github.io/CodeQualityAndReadability/
 
 
