@@ -5,8 +5,8 @@
 <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
 
-<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
-<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<link href="https://kbilsted.github.io/CodeQualityAndReadability/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='https://kbilsted.github.io/CodeQualityAndReadability/favicon.ico'/>
 <style>
       .markdown-body {
                 min-width: 200px;
@@ -34,19 +34,19 @@
 
 <h1 id="the-6-best-practices-for-writing-linq-extension-methods">The 6 best practices for writing LINQ extension methods</h1>
 <p><em>Author: Kasper B. Graversen</em>
-<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/LINQExtensionMethodsBestPractices.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a>
+<br><a href="https://kbilsted.github.io/CodeQualityAndReadability/">[Introduction]</a> <a href="https://kbilsted.github.io/CodeQualityAndReadability/AllTags.html">[All categories]</a> <a href="https://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/LINQExtensionMethodsBestPractices.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a>
 <br>
-<a href="http://firstclassthoughts.co.uk/Tags/LINQ.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #ac09a1; display: inline-block;">LINQ</a>
-<a href="http://firstclassthoughts.co.uk/Tags/Extension_Methods.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #d5b5aa; display: inline-block;">Extension Methods</a></p>
+<a href="https://kbilsted.github.io/CodeQualityAndReadability/Tags/LINQ.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #ac09a1; display: inline-block;">LINQ</a>
+<a href="https://kbilsted.github.io/CodeQualityAndReadability/Tags/Extension_Methods.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #d5b5aa; display: inline-block;">Extension Methods</a></p>
 <p><em>LINQ extension methods are often easy to describe, and quickly you can build something that seems to work. But there are pitfalls that you must be aware of in order for your code to work in the general case. This article describes the best practices you need to follow when writing LINQ extension methods.</em> </p>
 <p>Please show your support by sharing and voting: </p>
-<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html&amp;title=The%206%20best%20practices%20for%20writing%20LINQ%20extension%20methods"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
-<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html&amp;text=The%206%20best%20practices%20for%20writing%20LINQ%20extension%20methods&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
-<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
-<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html&amp;t=The%206%20best%20practices%20for%20writing%20LINQ%20extension%20methods"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
-<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
-<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
-<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/LINQExtensionMethodsBestPractices.html&amp;t=The%206%20best%20practices%20for%20writing%20LINQ%20extension%20methods"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><a href="https://www.reddit.com/submit?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/LINQExtensionMethodsBestPractices.html&amp;title=The%206%20best%20practices%20for%20writing%20LINQ%20extension%20methods"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/LINQExtensionMethodsBestPractices.html&amp;text=The%206%20best%20practices%20for%20writing%20LINQ%20extension%20methods&amp;via=kbilsted"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/LINQExtensionMethodsBestPractices.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/LINQExtensionMethodsBestPractices.html&amp;t=The%206%20best%20practices%20for%20writing%20LINQ%20extension%20methods"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/LINQExtensionMethodsBestPractices.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/LINQExtensionMethodsBestPractices.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/LINQExtensionMethodsBestPractices.html&amp;t=The%206%20best%20practices%20for%20writing%20LINQ%20extension%20methods"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/ycombinator.png" alt="Ycombinator this" /></a></p>
 <p><img src="img/pixabay.com_da_industry-569145_640.jpg" alt="from https://pixabay.com/da/industri-pumper-udstyr-teknologi-569145/"></p>
 <p>Table of Content</p>
 <ul>
@@ -258,7 +258,7 @@ var billing = newYorkerRichards.SomeOperation();
 <p><br><br>
 <br>
 <br>
-Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+Read the <a href="https://kbilsted.github.io/CodeQualityAndReadability/">Introduction</a> or browse the rest <a href="https://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html">of the site</a>
 <br>
 <br></p>
 

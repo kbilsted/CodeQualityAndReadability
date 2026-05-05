@@ -5,8 +5,8 @@
 <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
 
-<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
-<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<link href="https://kbilsted.github.io/CodeQualityAndReadability/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='https://kbilsted.github.io/CodeQualityAndReadability/favicon.ico'/>
 <style>
       .markdown-body {
                 min-width: 200px;
@@ -34,21 +34,21 @@
 
 <h1 id="application-architectures-with-persistent-storage">Application architectures with persistent storage</h1>
 <p><em>Author: Kasper B. Graversen</em>
-<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/ApplicationArchitecturesWithPersistentStorage.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br>
-<a href="http://firstclassthoughts.co.uk/Tags/Architecture.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #9f687a; display: inline-block;">Architecture</a>
-<a href="http://firstclassthoughts.co.uk/Tags/Design.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #4f19e2; display: inline-block;">Design</a>
-<a href="http://firstclassthoughts.co.uk/Tags/Database.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #8368a9; display: inline-block;">Database</a>
-<a href="http://firstclassthoughts.co.uk/Tags/Monolith.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #10b340; display: inline-block;">Monolith</a>
-<a href="http://firstclassthoughts.co.uk/Tags/Micro_Service.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #bc40a2; display: inline-block;">Micro Service</a></p>
+<br><a href="https://kbilsted.github.io/CodeQualityAndReadability/">[Introduction]</a> <a href="https://kbilsted.github.io/CodeQualityAndReadability/AllTags.html">[All categories]</a> <a href="https://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/ApplicationArchitecturesWithPersistentStorage.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br>
+<a href="https://kbilsted.github.io/CodeQualityAndReadability/Tags/Architecture.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #9f687a; display: inline-block;">Architecture</a>
+<a href="https://kbilsted.github.io/CodeQualityAndReadability/Tags/Design.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #4f19e2; display: inline-block;">Design</a>
+<a href="https://kbilsted.github.io/CodeQualityAndReadability/Tags/Database.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #8368a9; display: inline-block;">Database</a>
+<a href="https://kbilsted.github.io/CodeQualityAndReadability/Tags/Monolith.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #10b340; display: inline-block;">Monolith</a>
+<a href="https://kbilsted.github.io/CodeQualityAndReadability/Tags/Micro_Service.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #bc40a2; display: inline-block;">Micro Service</a></p>
 <p><em>Through time as hardware got faster and cheaper, the role of databases in application architecture vastly changed - from many applications sharing the same database, to having a single application using many databases. Let's have a look at the various architectures.</em></p>
 <p>Please show your support by sharing and voting:</p>
-<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;title=Application%20architectures%20with%20persistent%20storage"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
-<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;text=Application%20architectures%20with%20persistent%20storage&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
-<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
-<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;t=Application%20architectures%20with%20persistent%20storage"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
-<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
-<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
-<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;t=Application%20architectures%20with%20persistent%20storage"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><a href="https://www.reddit.com/submit?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;title=Application%20architectures%20with%20persistent%20storage"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;text=Application%20architectures%20with%20persistent%20storage&amp;via=kbilsted"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;t=Application%20architectures%20with%20persistent%20storage"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;t=Application%20architectures%20with%20persistent%20storage"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/ycombinator.png" alt="Ycombinator this" /></a></p>
 <p>Table of Content</p>
 <ul>
 <li><a href="#table-sharing-one-database-for-different-applications">1. Table sharing: One database for different applications</a></li>
@@ -165,13 +165,13 @@
 <p>With the different architectural styles we observe a fan of approaches. The more you entangle your applications, the more opportunities there are for reaping resource benefits and light-weight transactional safety. Partly that is the reason it has shown surprisingly difficult to re-write old mainframe in modern programming languages using modern architectures whilst maintaining performance. On the other hand, changes become increasingly difficult to carry out, to the point where your applications are in a choke-hold. </p>
 <p>At the other end of the spectrum, emphasis is put on isolating business in bounded contexts. Isolation enables independent upgrade and roll-out of new features, and easier extension of the system. The cost is sacrificing the ACID properties across business entities, more data duplication, and a growing need for infrastructure. I</p>
 <p>Please show your support by sharing and voting:</p>
-<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;title=Application%20architectures%20with%20persistent%20storage"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
-<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;text=Application%20architectures%20with%20persistent%20storage&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
-<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
-<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;t=Application%20architectures%20with%20persistent%20storage"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
-<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
-<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
-<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;t=Application%20architectures%20with%20persistent%20storage"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><a href="https://www.reddit.com/submit?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;title=Application%20architectures%20with%20persistent%20storage"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;text=Application%20architectures%20with%20persistent%20storage&amp;via=kbilsted"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;t=Application%20architectures%20with%20persistent%20storage"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Design/ApplicationArchitecturesWithPersistentStorage.html&amp;t=Application%20architectures%20with%20persistent%20storage"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/ycombinator.png" alt="Ycombinator this" /></a></p>
 <p>​​</p>
 <p><br><br>
 <strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Design/ApplicationArchitecturesWithPersistentStorage.md">Just go to Github, press the edit button and fire away.</a>
@@ -192,7 +192,7 @@
 <p><br><br>
 <br>
 <br>
-Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+Read the <a href="https://kbilsted.github.io/CodeQualityAndReadability/">Introduction</a> or browse the rest <a href="https://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html">of the site</a>
 <br>
 <br></p>
 

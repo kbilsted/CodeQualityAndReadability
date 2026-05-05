@@ -5,8 +5,8 @@
 <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
 
-<link href="http://firstclassthoughts.co.uk/github-markdown.css" type ="text/css" rel="stylesheet">
-<link rel='shortcut icon' type='image/x-icon' href='http://firstclassthoughts.co.uk/favicon.ico'/>
+<link href="https://kbilsted.github.io/CodeQualityAndReadability/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='https://kbilsted.github.io/CodeQualityAndReadability/favicon.ico'/>
 <style>
       .markdown-body {
                 min-width: 200px;
@@ -34,18 +34,18 @@
 
 <h1 id="optimal-indent-size-for-code-readability">Optimal indent size for code readability</h1>
 <p><em>Author: Kasper B. Graversen</em>
-<br><a href="http://firstclassthoughts.co.uk/">[Introduction]</a> <a href="http://firstclassthoughts.co.uk/AllTags.html">[All categories]</a> <a href="http://firstclassthoughts.co.uk/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="http://firstclassthoughts.co.uk/Tags/Code_Layout.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #bdf03c; display: inline-block;">Code Layout</a>
-<a href="http://firstclassthoughts.co.uk/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2abc17; display: inline-block;">Code Readability</a>
-<a href="http://firstclassthoughts.co.uk/Tags/Design_Pattern.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #23769b; display: inline-block;">Design Pattern</a></p>
+<br><a href="https://kbilsted.github.io/CodeQualityAndReadability/">[Introduction]</a> <a href="https://kbilsted.github.io/CodeQualityAndReadability/AllTags.html">[All categories]</a> <a href="https://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="https://kbilsted.github.io/CodeQualityAndReadability/Tags/Code_Layout.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #bdf03c; display: inline-block;">Code Layout</a>
+<a href="https://kbilsted.github.io/CodeQualityAndReadability/Tags/Code_Readability.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #2abc17; display: inline-block;">Code Readability</a>
+<a href="https://kbilsted.github.io/CodeQualityAndReadability/Tags/Design_Pattern.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #23769b; display: inline-block;">Design Pattern</a></p>
 <p><em>In this article, we investigate the effects on source code, when using small or large indentation size. Small idention sizes seems to have a negative effect on code readability. Larger ones, the opposite.</em></p>
 <p>Please show your support by sharing and voting:</p>
-<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;title=Optimal%20indent%20size%20for%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
-<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;text=Optimal%20indent%20size%20for%20code%20readability&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
-<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
-<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;t=Optimal%20indent%20size%20for%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
-<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
-<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
-<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;t=Optimal%20indent%20size%20for%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><a href="https://www.reddit.com/submit?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;title=Optimal%20indent%20size%20for%20code%20readability"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;text=Optimal%20indent%20size%20for%20code%20readability&amp;via=kbilsted"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;t=Optimal%20indent%20size%20for%20code%20readability"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;t=Optimal%20indent%20size%20for%20code%20readability"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/ycombinator.png" alt="Ycombinator this" /></a></p>
 <p><img src="img/i.imgur.com_BtjZedW.jpg"></p>
 <p>Table of Content</p>
 <ul>
@@ -369,13 +369,13 @@ while smaller indention sizes encourages more scopes within a method.</p>
 <li><a href="http://www.eetimes.com/document.asp?doc_id=1255077">Seven Pillars of Pretty Code</a> is a short article on seven easy to follow rules for code readability.</li>
 </ul>
 <p>Please show your support by sharing and voting:</p>
-<p><a href="https://www.reddit.com/submit?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;title=Optimal%20indent%20size%20for%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/reddit.png" alt="Reddit this" /></a>
-<a href="https://twitter.com/intent/tweet?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;text=Optimal%20indent%20size%20for%20code%20readability&amp;via=kbilsted"><img src="http://firstclassthoughts.co.uk/img/twitter.png" alt="Tweet this" /></a>
-<a href="https://plus.google.com/share?url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/gplus.png" alt="Googleplus this" /></a>
-<a href="https://facebook.com/sharer.php?u=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;t=Optimal%20indent%20size%20for%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/facebook.png" alt="Facebook this" /></a>
-<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/linkedin.png" alt="LinkedIn this" /></a>
-<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="http://firstclassthoughts.co.uk/img/feedly.png" alt="Feedly this" /></a>
-<a href="http://news.ycombinator.com/submitlink?u=http://firstclassthoughts.co.uk/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;t=Optimal%20indent%20size%20for%20code%20readability"><img src="http://firstclassthoughts.co.uk/img/ycombinator.png" alt="Ycombinator this" /></a></p>
+<p><a href="https://www.reddit.com/submit?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;title=Optimal%20indent%20size%20for%20code%20readability"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/reddit.png" alt="Reddit this" /></a>
+<a href="https://twitter.com/intent/tweet?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;text=Optimal%20indent%20size%20for%20code%20readability&amp;via=kbilsted"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/twitter.png" alt="Tweet this" /></a>
+<a href="https://plus.google.com/share?url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/gplus.png" alt="Googleplus this" /></a>
+<a href="https://facebook.com/sharer.php?u=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;t=Optimal%20indent%20size%20for%20code%20readability"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/facebook.png" alt="Facebook this" /></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/linkedin.png" alt="LinkedIn this" /></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/feedly.png" alt="Feedly this" /></a>
+<a href="http://news.ycombinator.com/submitlink?u=https://kbilsted.github.io/CodeQualityAndReadability/Articles/Readability/OptimalIndentSizeForCodeReadability.html&amp;t=Optimal%20indent%20size%20for%20code%20readability"><img src="https://kbilsted.github.io/CodeQualityAndReadability/img/ycombinator.png" alt="Ycombinator this" /></a></p>
 <p><br><br>
 <strong>Congratulations! You've come all the way to the bottom of the article! Please help me make this site better for everyone by commenting below. Or how about making editorial changes? Feel free to fix spelling mistakes, weird sentences, or correct what is plain wrong. All the material is on GitHub so don't be shy.</strong> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/Readability/OptimalIndentSizeForCodeReadability.md">Just go to Github, press the edit button and fire away.</a>
 <br><br><br><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/QualityAndReadability" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/QualityAndReadability', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail"><font color="red">Subscribe now to the <i>free newsletter service</i></font>.<br>Low frequency mailing list. Get notified when new articles arrive!</label></p><p><input type="text" onClick="this.select();" style="width:140px" name="email" id="tlemail" value="Email address"></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /></form>
@@ -395,7 +395,7 @@ while smaller indention sizes encourages more scopes within a method.</p>
 <p><br><br>
 <br>
 <br>
-Read the <a href="http://firstclassthoughts.co.uk/">Introduction</a> or browse the rest <a href="http://firstclassthoughts.co.uk/AllArticles.html">of the site</a>
+Read the <a href="https://kbilsted.github.io/CodeQualityAndReadability/">Introduction</a> or browse the rest <a href="https://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html">of the site</a>
 <br>
 <br></p>
 
