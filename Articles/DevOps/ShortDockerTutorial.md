@@ -40,14 +40,14 @@ FROM ubuntu:latest
 In the same folder, run:
 
 ```
-docker build -t my-stuff:1.0 -t my-stuff:latest .
+docker build -t my_stuff:1.0 -t my_stuff:latest .
 ```
 
 
 Flags explained:
 
-* `-t my-stuff:1.0` = a tag, meaning the name and version of your image
-* `-t my-stuff:latest` = another tag for the same image
+* `-t my_stuff:1.0` = a tag, meaning the name and version of your image
+* `-t my_stuff:latest` = another tag for the same image
 * `.` = build from the Dockerfile in the current folder
 
 We tag the image so we can find it again easily. We use *two* tags, so we have both a versioned tag and a `latest` tag. The `latest` tag makes it easy to refer to the most recent build, similar to how we use `FROM ubuntu:latest`.
@@ -70,18 +70,18 @@ The image is only visible inside Docker's internal image store:
 > docker image ls
 
 REPOSITORY                 TAG       IMAGE ID       CREATED        SIZE
-my-stuff                   1.0       4e759ff0d3fd   13 days ago    157MB
-my-stuff                   latest    4e759ff0d3fd   13 days ago    157MB
+my_stuff                   1.0       4e759ff0d3fd   13 days ago    157MB
+my_stuff                   latest    4e759ff0d3fd   13 days ago    157MB
 ...
 ```
 
 
-### Save the image to a file on the filesystem
+### Save the image to the local filesystem
 We can save the image to the filesystem. Docker saves images as tar files. Other formats, such as zip files, are not supported by `docker save`.
 
 
 ```
-> docker save -o my.tar my-stuff:1.0
+> docker save -o my.tar my_stuff:1.0
 > dir
 
 Mode                 LastWriteTime         Length Name
@@ -91,12 +91,12 @@ Mode                 LastWriteTime         Length Name
 ```
 
 
-## Running the image as a container
+## 'docker run' - Running the image as a container
 
 To create a container from an image and get an interactive shell in Ubuntu Linux, run:
 
 ```
-> docker run -it my-stuff:1.0
+> docker run -it my_stuff:1.0
 
 root@2bd442a1e2d1:/#
 ```
@@ -109,13 +109,40 @@ root@2bd442a1e2d1:/#
 We can also run the container with the command `ls` to see the content of the startup folder:
 
 ```
-> docker run -t my-stuff:1.0 ls
+> docker run -t my_stuff:1.0 ls
 
 bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
 ```
 
+## 'docker ps' - process status
+After a container has terminated executing, it will still be around. We can see the process status using the  `ps` command.
 
- 
+```
+> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+```
+
+ok the list is empty. This is because there are no currently running containers. We can see all containers in the system using  `-a` flag 
+
+```
+> docker ps -a
+
+CONTAINER ID   IMAGE             COMMAND      CREATED         STATUS                     PORTS     NAMES
+3186acd26e02   my_stuff:1.0      "..."        6 seconds ago   Exited (0) 5 seconds ago             confident_diffie
+``` 
+
+
+## 'docker start' - re-run an existing image
+The command `docker run .. ` creates a new container. If every time you want to run some "docker image" you spin up a new container, you potentially can be using a lot of resources. A better approach is to re-start an existing image. 
+
+``` 
+docker start confident_diffie
+```
+
+we use `confident_diffie` but could also just as well have used the ID `3186acd26e02` as the parameter.
+
+
+
 
 ## 'ENTRYPOINT' and 'CMD' - command and argument on startup
 
@@ -128,8 +155,8 @@ FROM ubuntu:latest
 ENTRYPOINT [ "echo" ]
 CMD [ "Hello World", "again.." ]
 
-> docker build -t my-stuff:latest .
-> docker run my-stuff:latest
+> docker build -t my_stuff:latest .
+> docker run my_stuff:latest
 
 Hello World again..
 ```
@@ -137,7 +164,7 @@ Hello World again..
 If we pass a command parameter such as `ls`, as we did earlier, we do not get the folder content.
 
 ```
-> docker run my-stuff:latest ls
+> docker run my_stuff:latest ls
 
 ls
 ```
@@ -147,7 +174,7 @@ This happens because `ls` is passed as an argument to `echo`. The result is the 
 When debugging a faulty image, it can be helpful to alternate what is started. The `ENTRYPOINT` can be changed using  `--entrypoint`:
 
 ```
-> docker run --entrypoint ls my-stuff:latest /
+> docker run --entrypoint ls my_stuff:latest /
 
 bin
 boot
@@ -173,8 +200,8 @@ CMD ["sh", "-c", "echo First && echo Second && echo Third"]
 Build and run the new image:
 
 ```
-> docker build -t my-stuff:3.0 -t my-stuff:latest .
-> docker run my-stuff:latest
+> docker build -t my_stuff:3.0 -t my_stuff:latest .
+> docker run my_stuff:latest
 
 First
 Second
@@ -184,7 +211,7 @@ Third
 `CMD` can be overridden. We can replace the command at runtime:
 
 ```
-> docker run -t my-stuff:latest ls
+> docker run -t my_stuff:latest ls
 
 bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
 ```
@@ -192,7 +219,7 @@ bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  s
 The `ls` argument replaces the whole `CMD`-definition from the `dockerfiile`. So Docker runs `ls` instead of the default command.
 
 
-### Warning about []
+### Warning about '[]'
 The `[]` parenthesis enable us to supply more than one argument to `ENTRYPOINT` and `CMD`. But is also changes how the arguement to these are handled. Try removing the `[]` and see how the docker image no longer work. 
 
 ```
@@ -203,12 +230,12 @@ CMD "Hello World"
 and run
 
 ```
-> docker build -t my-stuff:latest .
+> docker build -t my_stuff:latest .
  2 warnings found (use docker --debug to expand):
  - JSONArgsRecommended: JSON arguments recommended for ENTRYPOINT to prevent unintended behavior related to OS signals (line 2)
  - JSONArgsRecommended: JSON arguments recommended for CMD to prevent unintended behavior related to OS signals (line 3)
 
-> docker run my-stuff:latest
+> docker run my_stuff:latest
 
 (( missing output!))
 ```
@@ -242,8 +269,8 @@ CMD ["/print_numbers.sh"]
 We copy our application to the `/app/` folder to separate it from the tools we may need to install later. We use `chmod` to make the script executable. Finally, we set it as the default command using `ENTRYPOINT` + `CMD`.
 
 ```
-> docker build -t my-stuff:latest .
-> docker run my-stuff:latest
+> docker build -t my_stuff:latest .
+> docker run my_stuff:latest
 
 1
 2
@@ -251,28 +278,72 @@ We copy our application to the `/app/` folder to separate it from the tools we m
 ```
 
 
+
+## 'WORKDIR' - setting the current directory
+It is normal to operate on a number of folders in the docker image. E.g. we may separate the app/ from the data/ which natually are two folders. In order to change the current folder, we use `WORKDIR  path`. If the path does not exist, it is created.
+
+
 ## Persist data inside 
 A container is running on the host operating system, while being isolated from it. This means a program inside a container cannot write to the "outside" file system unless given permission. Let us play with storing state locally inside the container and then move on to storing the same state outside.
 
-Change the `dockerfile` to 
+Change the `dockerfile` and notice we create the folder `/data/` 
 
 ```
 FROM ubuntu:latest
-RUN echo "test data" > /data/file.txt
+WORKDIR "/data/"
+CMD ["/bin/bash", "-c", "echo "test data >> /data/log.txt"]
 ```
 
 and run
 
 ```
-> docker build -t my-stuff:latest .
-> docker run my-stuff:latest
+> docker build -t my_stuff:latest .
+> docker run my_stuff:latest
 ```
 
-/data/file.txt ligger i container-lagene (overlay filesystem)
-Når containeren stoppes, bevares den (exit code 0)
-Når du sletter containeren: docker rm, slettes også alle filer
+Our code appends "test data"  to the file "log.txt". Let's run it a few times and inspect the content within the container.
+If we just issue another `docker run` a new container is spun up. We want to re-execute the existing container, in order to see the effect of many log lines in our log file. 
+
+```
+docker ps -a
+
+CONTAINER ID   IMAGE             COMMAND
+3186acd26e02   my_stuff:latest   ...
+
+> docker start 3186acd26e02
+> docker start 3186acd26e02
+> docker start 3186acd26e02
+```
+
+Let's inspect our file. We can do this a number of ways. 
+
+To show the changes of the image
+```
+> docker diff 3186acd26e02
+
+C /data
+A /data/file.txt
+```
+
+To see the content we copy it out of the container
+
+```
+> docker cp 3186acd26e02:/data/log.txt ./locallog.txt
+> cat ./locallog.txt
+
+test data
+test data
+test data
+test data
+```
+
+As expected we see the log lines, one for each time we start the container
 
 
+
+
+
+## Storing outside the container
 docker commit running-container my-new-image
 Det laver en ny image med alle filer fra containeren.
 
