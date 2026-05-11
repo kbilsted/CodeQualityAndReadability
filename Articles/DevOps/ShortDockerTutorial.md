@@ -26,7 +26,7 @@ Table of contents
 ## Images and containers
 In programming, we have classes and objects that are instances of classes. In the Docker world, an image is comparable to a class, and a container is comparable to an object.
 
-## Creating our first image
+### Creating our first image
 
 Create a file named `Dockerfile` in an empty folder with this content:
 
@@ -61,7 +61,7 @@ Looking in the current folder will not show anything new:
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
--a---          05-05-2026    08:16             37 dockerfile
+-a---          05-05-2026    08:16             37 Dockerfile
 ```
 
 The image is only visible inside Docker's internal image store:
@@ -86,7 +86,7 @@ We can save the image to the filesystem. Docker saves images as tar files. Other
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
--a---          05-05-2026    08:16             37 dockerfile
+-a---          05-05-2026    08:16             37 Dockerfile
 -a---          05-05-2026    08:25       41.574.400 my.tar
 ```
 
@@ -122,7 +122,7 @@ After a container has terminated executing, it will still be around. We can see 
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 ```
 
-ok the list is empty. This is because there are no currently running containers. We can see all containers in the system using  `-a` flag 
+The list is empty. This is because there are no currently running containers. We can see all containers in the system using the `-a` flag.
 
 ```
 > docker ps -a
@@ -132,14 +132,14 @@ CONTAINER ID   IMAGE             COMMAND      CREATED         STATUS            
 ``` 
 
 
-## 'docker start' - re-run an existing image
-The command `docker run .. ` creates a new container. If every time you want to run some "docker image" you spin up a new container, you potentially can be using a lot of resources. A better approach is to re-start an existing image. 
+## 'docker start' - restart an existing container
+The command `docker run .. ` creates a new container. If you create a new container every time you want to run an image, you may end up with a lot of stopped containers. Another approach is to restart an existing container.
 
 ``` 
 docker start confident_diffie
 ```
 
-we use `confident_diffie` but could also just as well have used the ID `3186acd26e02` as the parameter.
+We use `confident_diffie`, but we could also have used the ID `3186acd26e02` as the parameter.
 
 
 
@@ -217,11 +217,32 @@ Third
 bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
 ```
 
-The `ls` argument replaces the whole `CMD`-definition from the `dockerfiile`. So Docker runs `ls` instead of the default command.
+The `ls` argument replaces the whole `CMD` definition from the `Dockerfile`. So Docker runs `ls` instead of the default command.
 
 
 ### Warning about '[]'
-The `[]` parenthesis enable us to supply more than one argument to `ENTRYPOINT` and `CMD`. But is also changes how the arguement to these are handled. Try removing the `[]` and see how the docker image no longer work. 
+The `[]` parentheses enable us to supply more than one argument to `ENTRYPOINT` and `CMD`. It also changes how the arguments are handled.
+
+This is called the *exec form*. The syntax is a JSON array, so every value must use double quotes:
+
+```
+ENTRYPOINT ["echo"]
+CMD ["Hello World"]
+```
+
+Docker does not run this through a shell. It runs `echo` directly and passes `Hello World` as an argument. This makes argument handling more predictable, especially when arguments contain spaces.
+
+Because the syntax is JSON, escaping also follows JSON rules. If you need a quote inside an argument, escape it with `\"`. If you need a Windows path with backslashes, the backslashes must be escaped as `\\`.
+
+For example:
+
+```
+CMD ["sh", "-c", "echo \"Hello World\""]
+```
+
+Without `[]`, Docker uses the *shell form*. The command is treated as a single string and is run through a shell. That can be useful for shell features such as `&&`, pipes, and variable expansion, but it also means Docker is no longer passing the arguments in the same direct way.
+
+Try removing the `[]` and see how the Docker image no longer works as expected.
 
 ```
 FROM ubuntu:latest
@@ -241,7 +262,20 @@ and run
 (( missing output!))
 ```
 
-Feel free to dig more into this if you find it interesting. For now, perhaps just remember to always use `[]`
+In this example, `ENTRYPOINT "echo"` is shell form. The `CMD "Hello World"` value is not passed to `echo` the same way as in the JSON-array version, so `echo` runs without the text we expected.
+
+Feel free to dig more into this if you find it interesting. For now, perhaps just remember to use `[]` unless you specifically need shell behavior.
+
+
+
+
+
+## 'WORKDIR' - setting the current directory
+It is normal to operate on a number of folders in the Docker image. Often we separate the `/app/` folder from the `/data/` folder.
+
+To change the current folder, we use `WORKDIR path`. If the path does not exist, it is created.
+
+
 
 
 ## 'COPY' / 'ADD' - getting artifacts into the image
@@ -261,10 +295,11 @@ Change the `Dockerfile` to:
 
 ```
 FROM ubuntu:latest
-COPY print_numbers.sh /print_numbers.sh
-RUN chmod +x /print_numbers.sh
+WORKDIR /app
+COPY print_numbers.sh /app/print_numbers.sh
+RUN chmod +x /app/print_numbers.sh
 ENTRYPOINT ["/bin/bash"]
-CMD ["/print_numbers.sh"]
+CMD ["/app/print_numbers.sh"]
 ```
 
 We copy our application to the `/app/` folder to separate it from the tools we may need to install later. We use `chmod` to make the script executable. Finally, we set it as the default command using `ENTRYPOINT` + `CMD`.
@@ -280,14 +315,10 @@ We copy our application to the `/app/` folder to separate it from the tools we m
 
 
 
-## 'WORKDIR' - setting the current directory
-It is normal to operate on a number of folders in the docker image. Often we separate the app/ from the data/ using two folders. In order to change the current folder, we use `WORKDIR path`. If the path does not exist, it is created.
-
-
 ## Persist data inside 
 A container is running on the host operating system, while being isolated from it. This means a program inside a container cannot write to the "outside" file system unless given permission. Let us play with storing state locally inside the container and then move on to storing the same state outside.
 
-Change the `dockerfile` and notice we create the folder `/data/` 
+Change the `Dockerfile` and notice we create the folder `/data/`.
 
 ```
 FROM ubuntu:latest
@@ -318,13 +349,13 @@ CONTAINER ID   IMAGE             COMMAND
 
 Let's inspect our file. We can do this a number of ways. 
 
-To show the changes of the image, we use `docker diff`.
+To show the filesystem changes inside the container, we use `docker diff`.
 
 ```
 > docker diff 3186acd26e02
 
 C /data
-A /data/file.txt
+A /data/log.txt
 ```
 
 To see the content we copy it out of the container
@@ -347,11 +378,11 @@ As expected we see the log lines, one for each time we started the container.
 ## `VOLUME` - Storing outside the container
 Normally, files written inside a container disappear when the container is removed. 
 
-Perhaps you want to run a database as a container. If we store the data rows inside the image, we cannot upgrade the DB using a new image without loosing all our data.
+Perhaps you want to run a database as a container. If we store the data rows inside the image, we cannot upgrade the DB using a new image without losing all our data.
 
 A Docker volume is storage managed by Docker that can live longer than any single container. We define a `VOLUME` inside our `Dockerfile` and then when invoking the image, specify where on the host operating system that points to.
 
-Let's modify our dockerfile
+Let's modify our `Dockerfile`:
 
 ```
 FROM ubuntu:latest
@@ -362,22 +393,22 @@ CMD ["/bin/bash", "-c", "echo 'test data' >> /data/log.txt"]
 ```
 
 * We must run the container using a `-v` flag or state is stored in an anonymous volume that may be hard to find
-* we can see all volumes using `docker ls volume`
+* We can see all volumes using `docker volume ls`
 
-First try *omitting* the colume, and observe an anonymous volume is created. 
+First try *omitting* the volume, and observe that an anonymous volume is created.
 
 ```
 > docker build -t my_stuff:latest .
 >
 > docker volume ls
-> docker run my-stuff:latest
+> docker run my_stuff:latest
 > docker volume ls
 
 DRIVER    VOLUME NAME
 local     7c7044f1f1513b0aab2e6a62a35...
 ``` 
 
-### `docker volume create` 
+### `docker volume create` - target a volume file on the host machine
 
 To create a volume we use `docker volume create myvol`
 
@@ -385,7 +416,7 @@ Let's see the whole sequence of executions
 
 ```
 > docker volume create myvol
-> docker run -v myvol:/data my-stuff:latest
+> docker run -v myvol:/data my_stuff:latest
 > docker volume ls
 DRIVER    VOLUME NAME
 local     7c7044f1f1513b0aab2e6a62a35...
@@ -395,9 +426,9 @@ local     myvol
 When we run the image again or start the container, both approaches will append to the volume. We use the `--rm` flag to remove the container after use
 
 ```
-> docker run --rm -v myvol:/data my-stuff:latest
+> docker run --rm -v myvol:/data my_stuff:latest
 > docker start 1513b..
-> docker run --rm -v myvol:/data my-stuff:latest  cat /data/log.txt
+> docker run --rm -v myvol:/data my_stuff:latest cat /data/log.txt
 test data
 test data
 test data
@@ -412,25 +443,23 @@ When you are done with the volume, remove it:
 ```
 
 
-## Mount a folder from the host machine
+## Binding Mount - target a folder on the host machine
 
 Sometimes you do not want Docker to manage the storage. Instead, you want the container to read and write directly to a normal folder on your machine. This is called a bind mount.
 
-Create a folder on the host machine and run the image. If you are on windows you must use the `\` for the path. We use `.\host-data` to denote the sub-folder from where we run
+Create a folder on the host machine and run the image. If you are on Windows, you must use `\` for the path. We use `.\host-data` to denote the sub-folder from where we run.
 
 ```
 > mkdir host-data
-> docker run --rm -v .\host-data:/data my-stuff:latest
+> docker run --rm -v .\host-data:/data my_stuff:latest
 ```
 
 
-The container writes the file to `/data/message.txt`, but `/data` points to the `host-data` folder on your machine.
-
-If we now look in the folder outside Docker, we can see the file:
+The container writes the file to `/data/log.txt`, but `/data` points to the `host-data` folder on your machine. Let us now look inside the folder:
 
 
 ```
-> dir host-data
+> dir host-data\
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
 -a---          05-05-2026    08:38             10 log.txt
@@ -441,22 +470,22 @@ test data
 
 ### Volume summary
 
-*Volume mounts* are useful when Docker should own the storage. It is said it is faster and more stable.
+*Volume mounts* are useful when Docker should own the storage. They are usually a good default for database files and other container-owned state.
 
-*Bind mounts* are useful when the host machine and the container should share a specific folder. Also during software development it is very transparent to see and change files.
+*Bind mounts* are useful when the host machine and the container should share a specific folder. During software development, they make it transparent to see and change files.
 
 
 
 ## `RUN` - execute during build time
 
-`RUN` executes commands at build time. This is different to `CMD`/`ENTRYPOINT` that execute on startup time. 
+`RUN` executes commands at build time. This is different from `CMD`/`ENTRYPOINT` that execute when the container starts.
 
-We use curl to fetch data and print to the screen. 
-we use `set -eux` :
+We use curl to fetch data and print to the screen.
+We use `set -eux`:
 
-* -e: stop build hvis en kommando fejler
-* -u: fejl ved ikke-definerede variabler
-* -x: print kommandoer mens de køres
+* `-e`: stop the build if a command fails
+* `-u`: fail on undefined variables
+* `-x`: print commands as they run
 
 The `Dockerfile` content. For security reasons ubuntu is not shipped with curl out of the box, so we need first to install it.
 ```
@@ -481,7 +510,7 @@ RUN set -eux; \
 to see the content fetched from curl, we need to use the `--progress=plain` flag
 
 ```
-> docker build --no-cache --progress=plain -t my-stuff:latest .
+> docker build --no-cache --progress=plain -t my_stuff:latest .
 
 ...
 #7 [4/5] RUN set -eux;  echo "fetching";        curl -fsSL https://example.com -o /data/example.content.txt;
