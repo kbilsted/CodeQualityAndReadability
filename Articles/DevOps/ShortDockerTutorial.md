@@ -185,9 +185,10 @@ dev
 Only one `CMD` instruction can be used. If the Dockerfile contains multiple `CMD` instructions, only the last one is used.
 
 
+
 ### When  'CMD' becomes the command
 
-I am not sure why this is possible or even sane. But you may omit `ENTRYPOINT` and only use `CMD`. In this situation,
+You may omit `ENTRYPOINT` and only use `CMD`. In this situation,
 `CMD` defines the default command, that runs when the container starts. 
 
 Let's modify our `Dockerfile` to:
@@ -280,7 +281,7 @@ We copy our application to the `/app/` folder to separate it from the tools we m
 
 
 ## 'WORKDIR' - setting the current directory
-It is normal to operate on a number of folders in the docker image. E.g. we may separate the app/ from the data/ which natually are two folders. In order to change the current folder, we use `WORKDIR  path`. If the path does not exist, it is created.
+It is normal to operate on a number of folders in the docker image. Often we separate the app/ from the data/ using two folders. In order to change the current folder, we use `WORKDIR path`. If the path does not exist, it is created.
 
 
 ## Persist data inside 
@@ -291,7 +292,7 @@ Change the `dockerfile` and notice we create the folder `/data/`
 ```
 FROM ubuntu:latest
 WORKDIR "/data/"
-CMD ["/bin/bash", "-c", "echo "test data >> /data/log.txt"]
+CMD ["/bin/bash", "-c", "echo 'test data' >> /data/log.txt"]
 ```
 
 and run
@@ -305,7 +306,7 @@ Our code appends "test data"  to the file "log.txt". Let's run it a few times an
 If we just issue another `docker run` a new container is spun up. We want to re-execute the existing container, in order to see the effect of many log lines in our log file. 
 
 ```
-docker ps -a
+> docker ps -a
 
 CONTAINER ID   IMAGE             COMMAND
 3186acd26e02   my_stuff:latest   ...
@@ -317,7 +318,8 @@ CONTAINER ID   IMAGE             COMMAND
 
 Let's inspect our file. We can do this a number of ways. 
 
-To show the changes of the image
+To show the changes of the image, we use `docker diff`.
+
 ```
 > docker diff 3186acd26e02
 
@@ -337,105 +339,68 @@ test data
 test data
 ```
 
-As expected we see the log lines, one for each time we start the container
+As expected we see the log lines, one for each time we started the container.
 
 
 
 
+## `VOLUME` - Storing outside the container
+Normally, files written inside a container disappear when the container is removed. 
 
-## Storing outside the container
-docker commit running-container my-new-image
-Det laver en ny image med alle filer fra containeren.
+Perhaps you want to run a database as a container. If we store the data rows inside the image, we cannot upgrade the DB using a new image without loosing all our data.
 
+A Docker volume is storage managed by Docker that can live longer than any single container. We define a `VOLUME` inside our `Dockerfile` and then when invoking the image, specify where on the host operating system that points to.
 
-Perhaps you want to run a database as a container. The database will not be able to store its rows outside the container. This hardly  We can define a `VOLUME` inside our `Dockerfile` and then when invoking the image, specify where on the host operating system that points to.
+Let's modify our dockerfile
 
-This enable for example, you 
-
-
-
-
-
-Hvis containeren har kørt færdig (exit code 0), kan du stadig se filerne:
-
-Metode 1: docker diff (se hvad der ændret sig)
-
-docker diff container-name
-Output viser alle filer der blev tilføjet/ændret.
-
-Metode 2: docker cp (kopier filer ud)
-
-docker cp container-name:/data/file.txt ./local-file.txt
-Kopierer /data/file.txt fra stoppet container til din computer.
-
-Metode 3: docker exec (hvis container stadig kører)
-
-docker exec container-name cat /data/file.txt
-Metode 4: Start containeren igen
-
-docker start container-name
-docker exec container-name cat /data/file.txt
-Eksempel:
-
-FROM ubuntu:latest
-RUN echo "test data" > /data/file.txt
-docker build -t my-image .
-docker run --name my-container my-image
-docker cp my-container:/data/file.txt ./my-file.txt
-cat ./my-file.txt
-Output: test data
-
-OBS: Når du køre docker rm my-container, slettes filerne permanent. Brug docker cp før du sletter!
-
-
-
-
-
+```
 FROM ubuntu:latest
 VOLUME /data
-RUN echo "test data" > /data/file.txt
-Uden -v:
-
-docker run my-image
-/data/file.txt gemmes i en anonym volume
-Når containeren stoppes, bevares data i volumenen (ikke slettet)
-Men du kan ikke finde volumenen let — den har et tilfældigt ID
-Se den:
-
-docker volume ls
-
-
-
-## Persist state outside the container
-
-
-
-## Persist data with a Docker volume
-
-Normally, files written inside a container disappear when the container is removed. A Docker volume is storage managed by Docker that can live longer than any single container.
-
-First, create a volume:
+WORKDIR /data
+CMD ["/bin/bash", "-c", "echo 'test data' >> /data/log.txt"]
 
 ```
-> docker volume create my-volume
 
-my-volume
-```
+* We must run the container using a `-v` flag or state is stored in an anonymous volume that may be hard to find
+* we can see all volumes using `docker ls volume`
 
-Now start a container, mount the volume at `/data`, and write a file into it:
-
-```
-> docker run --rm -v my-volume:/data ubuntu:latest sh -c "echo Hello from the first container > /data/message.txt"
-```
-
-The container has now stopped. Because we used `--rm`, the container itself has also been removed. The volume still exists.
-
-Start a new container, mount the same volume, and print the file:
+First try *omitting* the colume, and observe an anonymous volume is created. 
 
 ```
-> docker run --rm -v my-volume:/data ubuntu:latest cat /data/message.txt
+> docker build -t my_stuff:latest .
+>
+> docker volume ls
+> docker run my-stuff:latest
+> docker volume ls
 
-Hello from the first container
+DRIVER    VOLUME NAME
+local     7c7044f1f1513b0aab2e6a62a35...
+``` 
+
+### `docker volume create` 
+
+To create a volume we use `docker volume create myvol`
+
+Let's see the whole sequence of executions
+
+```
+> docker volume create myvol
+> docker run -v myvol:/data my-stuff:latest
+> docker volume ls
+DRIVER    VOLUME NAME
+local     7c7044f1f1513b0aab2e6a62a35...
+local     myvol
+```
+
+When we run the image again or start the container, both approaches will append to the volume. We use the `--rm` flag to remove the container after use
+
+```
+> docker run --rm -v myvol:/data my-stuff:latest
+> docker start 1513b..
+> docker run --rm -v myvol:/data my-stuff:latest  cat /data/log.txt
+test data
+test data
+test data
 ```
 
 The file survived because it was written to the volume, not only to the container's own filesystem.
@@ -443,9 +408,7 @@ The file survived because it was written to the volume, not only to the containe
 When you are done with the volume, remove it:
 
 ```
-> docker volume rm my-volume
-
-my-volume
+> docker volume rm myvol
 ```
 
 
@@ -453,42 +416,90 @@ my-volume
 
 Sometimes you do not want Docker to manage the storage. Instead, you want the container to read and write directly to a normal folder on your machine. This is called a bind mount.
 
-Create a folder on the host machine:
+Create a folder on the host machine and run the image. If you are on windows you must use the `\` for the path. We use `.\host-data` to denote the sub-folder from where we run
 
 ```
-> mkdir docker-host-data
+> mkdir host-data
+> docker run --rm -v .\host-data:/data my-stuff:latest
 ```
 
-On Windows PowerShell, run a container that mounts this folder as `/data` inside the container:
 
-```
-> docker run --rm -v ${PWD}\docker-host-data:/data ubuntu:latest sh -c "echo Hello from Docker > /data/message.txt"
-```
-
-The container writes the file to `/data/message.txt`, but `/data` points to the `docker-host-data` folder on your machine.
+The container writes the file to `/data/message.txt`, but `/data` points to the `host-data` folder on your machine.
 
 If we now look in the folder outside Docker, we can see the file:
 
-```
-> dir .\docker-host-data
 
+```
+> dir host-data
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
--a---          05-05-2026    09:15             18 message.txt
+-a---          05-05-2026    08:38             10 log.txt
+
+> cat host-data/log.txt
+test data
 ```
 
-And we can print the file from PowerShell:
+### Volume summary
+
+*Volume mounts* are useful when Docker should own the storage. It is said it is faster and more stable.
+
+*Bind mounts* are useful when the host machine and the container should share a specific folder. Also during software development it is very transparent to see and change files.
+
+
+
+## `RUN` - execute during build time
+
+`RUN` executes commands at build time. This is different to `CMD`/`ENTRYPOINT` that execute on startup time. 
+
+We use curl to fetch data and print to the screen. 
+we use `set -eux` :
+
+* -e: stop build hvis en kommando fejler
+* -u: fejl ved ikke-definerede variabler
+* -x: print kommandoer mens de køres
+
+The `Dockerfile` content. For security reasons ubuntu is not shipped with curl out of the box, so we need first to install it.
+```
+FROM ubuntu:latest
+WORKDIR /data
+
+RUN set -eux; \
+	 echo "install curl"; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends curl ca-certificates; \
+    rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
+	echo "fetching"; \
+	curl -fsSL https://example.com -o /data/example.content.txt; 
+
+RUN set -eux; \
+	echo "file created"; \
+	ls -l /data/example.content.txt; \
+	head -n 5 /data/example.content.txt;
+```
+to see the content fetched from curl, we need to use the `--progress=plain` flag
 
 ```
-> Get-Content .\docker-host-data\message.txt
+> docker build --no-cache --progress=plain -t my-stuff:latest .
 
-Hello from Docker
+...
+#7 [4/5] RUN set -eux;  echo "fetching";        curl -fsSL https://example.com -o /data/example.content.txt;
+#7 0.361 fetching
+#7 0.361 + echo fetching
+#7 0.361 + curl -fsSL https://example.com -o /data/example.content.txt
+#7 DONE 0.6s
+
+#8 [5/5] RUN set -eux;  echo "file created";    ls -l /data/example.content.txt;        head -n 5 /data/example.content.txt;
+#8 0.380 file created
+#8 0.380 + echo file created
+#8 0.380 + ls -l /data/example.content.txt
+#8 0.385 -rw-r--r-- 1 root root 528 May 11 07:26 /data/example.content.txt
+#8 0.386 + head -n 5 /data/example.content.txt
+#8 0.389 <!doctype html><html lang="en"><head><title>Example Domain</title><meta name="viewport" content="width=device-width, initial-scale=1"><style>body{background:#eee;width:60vw;margin:15vh auto;font-family:system-ui,sans-serif}h1{font-size:1.5em}div{opacity:0.8}a:link,a:visited{color:#348}</style></head><body><div><h1>Example Domain</h1><p>This domain is for use in documentation examples without needing permission. Avoid use in operations.</p><p><a href="https://iana.org/domains/example">Learn more</a></p></div></body></html>
+#8 DONE 0.4s
+...
 ```
-
-Volumes are useful when Docker should own the storage. Bind mounts are useful when the host machine and the container should share a specific folder.
-
-## RUN - execute during build time
-RUN echo "test data" > /data/file.txt
 
 we use this for downloading dependencies ...c# example
 
