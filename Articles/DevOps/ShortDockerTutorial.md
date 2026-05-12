@@ -21,6 +21,11 @@ Table of contents
    * [Persist data with a Docker volume](#persist-data-with-a-docker-volume)
    * [Mount a folder from the host machine](#mount-a-folder-from-the-host-machine)
    * [Next steps for the tutorial](#next-steps-for-the-tutorial)
+   * [Clean up local Docker resources](#clean-up-local-docker-resources)
+   * [Inspect containers and images](#inspect-containers-and-images)
+   * [Run containers in the background](#run-containers-in-the-background)
+   * [Expose ports](#expose-ports)
+   * [Use environment variables](#use-environment-variables)
 
 
 ## Images and containers
@@ -468,7 +473,55 @@ Mode                 LastWriteTime         Length Name
 test data
 ```
 
-### Volume summary
+### Running a console program as a container
+Instead of installing the formatting tool QUARTO on our host operating system, we can containerize it. This has the advantage
+that the tool, should it be infected with mallware, can only reach the files I tell it to operate on. The idea is to have a docker image where quarto will be installed. When running the tool it will use a volume that we bind to our file system.
+
+we make the image 
+
+```
+FROM ubuntu:latest
+
+# we use only one run-to reduce the number of layers
+
+ARG QUARTO_VERSION=1.9.37
+
+RUN set -eux; \
+    apt-get update; \
+  # --no-install-recommends :: to reduce the download
+  # ca-certificates ::  er god at have med, når du downloader via HTTPS.
+    apt-get install -y --no-install-recommends wget ca-certificates; \
+    wget -O /tmp/quarto.deb "https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.deb"; \
+    apt-get install -y /tmp/quarto.deb; \
+    rm /tmp/quarto.deb; \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /data
+
+ENTRYPOINT [ "quarto" ]
+
+VOLUME /data
+```
+
+build the image `docker build -t quarto:latest .`
+
+
+
+`docker run -it --rm   --mount type=bind,source=C:\src\Build-Your-Own-Git\,target=/data quarto:latest render book`
+
+
+* -it run interactively
+* --rm remove the container after use
+* --mount bind the /data folder to my local folder
+* quarto:latest the image to run
+* render book, pass `render` and the folder name `book` to quarto
+
+
+to debug the image also use `--entrypoint /bin/bash` 
+
+
+
+## Volume summary
 
 *Volume mounts* are useful when Docker should own the storage. They are usually a good default for database files and other container-owned state.
 
@@ -530,7 +583,468 @@ to see the content fetched from curl, we need to use the `--progress=plain` flag
 ...
 ```
 
-we use this for downloading dependencies ...c# example
+
+
+## `docker inspect`  - looking inside 
+
+
+Docker can show a lot of metadata about both images and containers. The command is `docker inspect`.
+
+To inspect an image
+
+```
+> docker image ls
+> docker inspect my-stuff:latest
+[
+  {
+    "Config": {
+            "ArgsEscaped": true,
+            "AttachStderr": false,
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "Cmd": [
+                "/bin/bash",
+                "-c",
+                "echo 'test data' >> /data/log.txt"
+            ],
+...
+```
+
+The full output is long. In practice, it is often better to ask for one value.
+First run an image that does not exit immediately. 
+
+```
+> docker run -it --rm my-stuff:latest sh
+```
+
+in a different terminal issue
+
+```
+> docker ps   
+ONTAINER ID   IMAGE             COMMAND   CREATED       
+3aa1295a1a3c   my-stuff:latest   "sh"      7 seconds ago   
+> docker inspect 3aa1295a1a3c --format "{{.State.Status}}"
+running
+Show the image used by the container:
+
+```
+> docker inspect inspect-demo --format "{{.Config.Image}}"
+
+my_stuff:latest
+```
+
+Show environment variables configured in the container:
+
+```
+> docker inspect inspect-demo --format "{{json .Config.Env}}"
+
+["PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin","APP_MODE=demo"]
+```
+
+
+## `docker logs` - show what is printed to stdout
+
+Logs are separate from inspect. `docker inspect` shows configuration and metadata. `docker logs` shows what the container printed to stdout and stderr.
+
+```
+> docker logs inspect-demo
+
+app mode is demo
+```
+
+Clean up the container when done:
+
+```
+> docker rm inspect-demo
+
+inspect-demo
+```
+
+
+## Run containers in the background
+
+So far, most examples have run in the foreground. This means the terminal waits until the container stops. Servers and long-running processes are usually started in the background.
+
+Change the `Dockerfile` to:
+
+```
+FROM ubuntu:latest
+CMD ["sh", "-c", "i=1; while true; do echo tick $i; i=$((i+1)); sleep 2; done"]
+```
+
+Build the image:
+
+```
+> docker build -t my_stuff:latest .
+```
+
+Run it in detached mode using `-d`:
+
+```
+> docker run -d --name background-demo my_stuff:latest
+
+7c0d90b30c8d8f26d1f5b64c0c0a6a2d8a6b8bb8d2f50ddf0d63e12b3f1d45d9
+```
+
+Docker prints the container ID and returns control to your terminal.
+
+See that it is running:
+
+```
+> docker ps
+
+CONTAINER ID   IMAGE             COMMAND                  STATUS         NAMES
+7c0d90b30c8d   my_stuff:latest   "sh -c 'i=1; while..."   Up 6 seconds   background-demo
+```
+
+Show the logs:
+
+```
+> docker logs background-demo
+
+tick 1
+tick 2
+tick 3
+```
+
+Follow the logs live:
+
+```
+> docker logs -f background-demo
+
+tick 1
+tick 2
+tick 3
+tick 4
+```
+
+Press `Ctrl+C` to stop following the logs. This stops the log view, not the container.
+
+Stop the container:
+
+```
+> docker stop background-demo
+
+background-demo
+```
+
+Remove it:
+
+```
+> docker rm background-demo
+
+background-demo
+```
+
+Detached mode is useful for web servers, databases, message queues, and anything else that should keep running while you use the terminal for other commands.
+
+
+## Expose ports
+
+A container has its own network namespace. If a process listens on a port inside the container, that port is not automatically available on your host machine.
+
+We need two things:
+
+* The application must listen on a port inside the container
+* `docker run -p` must map a host port to the container port
+
+Change the `Dockerfile` to a tiny web server:
+
+```
+FROM python:3.12-alpine
+WORKDIR /site
+RUN echo "<h1>Hello from Docker</h1>" > index.html
+EXPOSE 8000
+CMD ["python", "-m", "http.server", "8000", "--bind", "0.0.0.0"]
+```
+
+Build it:
+
+```
+> docker build -t my_stuff:latest .
+```
+
+Run it in the background and map host port `8080` to container port `8000`:
+
+```
+> docker run -d --name web-demo -p 8080:8000 my_stuff:latest
+
+9b4ab9f5d573f6a4a5c6d7c8a9b0c1d2e3f4567890abcdef1234567890abcdef
+```
+
+The syntax is:
+
+```
+-p HOST_PORT:CONTAINER_PORT
+```
+
+So this:
+
+```
+-p 8080:8000
+```
+
+means:
+
+* Use port `8080` on your machine
+* Forward traffic to port `8000` inside the container
+
+Try it from PowerShell:
+
+```
+> Invoke-WebRequest http://localhost:8080
+
+StatusCode        : 200
+StatusDescription : OK
+Content           : <h1>Hello from Docker</h1>
+```
+
+Or open this URL in a browser:
+
+```
+http://localhost:8080
+```
+
+See the port mapping:
+
+```
+> docker ps
+
+CONTAINER ID   IMAGE             PORTS                    NAMES
+9b4ab9f5d573   my_stuff:latest   0.0.0.0:8080->8000/tcp   web-demo
+```
+
+`EXPOSE 8000` documents that the container listens on port `8000`. It does not publish the port to the host machine by itself. The `-p` flag is what makes the port reachable from your machine.
+
+Stop and remove the container:
+
+```
+> docker stop web-demo
+> docker rm web-demo
+```
+
+You can run the same image on another host port:
+
+```
+> docker run --rm -p 5000:8000 my_stuff:latest
+```
+
+Now the same container port is available on:
+
+```
+http://localhost:5000
+```
+
+
+## Use environment variables
+
+Environment variables are a common way to configure containers. The image contains the application. The environment variables decide how it should behave in this specific run.
+
+Change the `Dockerfile` to:
+
+```
+FROM ubuntu:latest
+ENV MESSAGE="Hello from the Dockerfile"
+ENV REPEAT=1
+CMD ["sh", "-c", "i=1; while [ $i -le $REPEAT ]; do echo \"$MESSAGE\"; i=$((i+1)); done"]
+```
+
+Build and run:
+
+```
+> docker build -t my_stuff:latest .
+> docker run --rm my_stuff:latest
+
+Hello from the Dockerfile
+```
+
+Override `MESSAGE` at runtime:
+
+```
+> docker run --rm -e MESSAGE="Hello from docker run" my_stuff:latest
+
+Hello from docker run
+```
+
+Set more than one environment variable:
+
+```
+> docker run --rm -e MESSAGE="Configured at runtime" -e REPEAT=3 my_stuff:latest
+
+Configured at runtime
+Configured at runtime
+Configured at runtime
+```
+
+You can inspect the environment variables on a container. First run it without `--rm`, so the stopped container remains available:
+
+```
+> docker run --name env-demo -e MESSAGE="Inspect me" my_stuff:latest
+
+Inspect me
+```
+
+Then inspect it:
+
+```
+> docker inspect env-demo --format "{{json .Config.Env}}"
+
+["PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin","MESSAGE=Inspect me","REPEAT=1"]
+```
+
+Clean up:
+
+```
+> docker rm env-demo
+
+env-demo
+```
+
+Use environment variables for configuration such as:
+
+* application mode
+* connection strings
+* feature flags
+* log level
+* port numbers
+
+Do not put passwords or tokens directly in a `Dockerfile`. Values in a `Dockerfile` become part of the image history. For local experiments `-e` is fine, but real systems usually use Docker secrets, Kubernetes secrets, or the secret store from the platform running the container.
+
+
+
+
+
+
+
+
+
+
+## Clean up local Docker resources
+
+When experimenting with Docker, you quickly create containers, images, volumes, and networks. This is normal, but it is useful to know how to clean up after yourself.
+
+Let us start by creating a container we can remove.
+
+Change the `Dockerfile` to:
+
+```
+FROM ubuntu:latest
+CMD ["sh", "-c", "echo cleanup demo"]
+```
+
+Build and run it:
+
+```
+> docker build -t my_stuff:latest .
+> docker run --name cleanup-demo my_stuff:latest
+
+cleanup demo
+```
+
+The container has now stopped, but it still exists.
+
+```
+> docker ps
+
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+> docker ps -a
+
+CONTAINER ID   IMAGE             COMMAND                  CREATED          STATUS                      PORTS     NAMES
+2f4c0f7f3f41   my_stuff:latest   "sh -c 'echo clean..."   10 seconds ago   Exited (0) 8 seconds ago              cleanup-demo
+```
+
+`docker ps` shows running containers. `docker ps -a` shows all containers, including stopped containers.
+
+Remove the stopped container:
+
+```
+> docker rm cleanup-demo
+
+cleanup-demo
+```
+
+If the container is running, you must stop it before removing it:
+
+```
+> docker stop cleanup-demo
+cleanup-demo
+
+> docker rm cleanup-demo
+cleanup-demo
+```
+
+Images are different from containers. A container is created from an image. Removing a container does not remove the image.
+
+```
+> docker image ls my_stuff
+
+REPOSITORY   TAG       IMAGE ID       CREATED          SIZE
+my_stuff     latest    4e759ff0d3fd   2 minutes ago    78.1MB
+```
+
+During small experiments it is often useful to use `--rm`. This removes the container automatically when it stops:
+
+```
+> docker run --rm my_stuff:latest
+
+cleanup demo
+```
+
+There is no stopped container left behind:
+
+```
+> docker ps -a --filter name=cleanup-demo
+
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+```
+
+When you are done with the image, remove it:
+
+```
+> docker image rm my_stuff:latest
+
+Untagged: my_stuff:latest
+Deleted: sha256:4e759ff0d3fd...
+```
+
+If Docker says the image is used by a container, remove the container first.
+
+Docker also has prune commands. They are useful, but read the output before accepting.
+
+```
+> docker container prune
+
+WARNING! This will remove all stopped containers.
+Are you sure you want to continue? [y/N]
+```
+
+Other cleanup commands are:
+
+```
+> docker image prune
+> docker volume prune
+> docker system prune
+```
+
+Be extra careful with `docker volume prune`. Volumes often contain data, for example database files.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Next steps for the tutorial
 

@@ -1,0 +1,941 @@
+﻿<html>
+<head>
+<title>Docker tutorial - building and running</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<link href="http://firstclassthoughts.co.uk/atelier-forest-light.css" type ="text/css" rel="stylesheet" />
+
+<link href="https://kbilsted.github.io/CodeQualityAndReadability/github-markdown.css" type ="text/css" rel="stylesheet">
+<link rel='shortcut icon' type='image/x-icon' href='https://kbilsted.github.io/CodeQualityAndReadability/favicon.ico'/>
+<style>
+      .markdown-body {
+                min-width: 200px;
+                max-width: 790px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+</style>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66546851-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+<body onload="prettyPrint()">
+<article class="markdown-body">
+
+<h1 id="docker-tutorial---building-and-running">Docker tutorial - building and running</h1>
+<p><em>Author: Kasper B. Graversen</em>
+<br><a href="https://kbilsted.github.io/CodeQualityAndReadability/">[Introduction]</a> <a href="https://kbilsted.github.io/CodeQualityAndReadability/AllTags.html">[All categories]</a> <a href="https://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html">[All articles]</a> <a href="https://github.com/kbilsted/CodeQualityAndReadability/blob/master/Articles/DevOps/ShortDockerTutorial.md">[Edit article <img src="http://firstclassthoughts.co.uk/img/edit.png"> ]</a><br><a href="https://kbilsted.github.io/CodeQualityAndReadability/Tags/Docker.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #5e09c2; display: inline-block;">Docker</a>
+<a href="https://kbilsted.github.io/CodeQualityAndReadability/Tags/CI/CD.html" style="color: #ffffff; font-size: 12px; margin: 1px 1px 1px 1px; padding: 2px 8px; border-radius: 4px; background-color: #5d4605; display: inline-block;">CI/CD</a></p>
+<p>Here is a small tutorial for getting started with Docker. The key difference between this tutorial and many others is that all unnecessary complexity has been shaved away.
+We introduce the concepts in docker gradually as we need them. </p>
+<p>Table of contents</p>
+<ul>
+<li><a href="#images-and-containers">Images and containers</a></li>
+<li><a href="#creating-our-first-image">Creating our first image</a></li>
+<li><a href="#build-the-image">Build the image</a></li>
+<li><a href="#see-the-result">See the result</a></li>
+<li><a href="#save-the-image-to-a-file-on-the-filesystem">Save the image to a file on the filesystem</a></li>
+<li><a href="#run-the-image-as-a-container">Run the image as a container</a></li>
+<li><a href="#cmd---automatically-run-a-command">'CMD' - automatically run a command</a></li>
+<li><a href="#entrypoint---define-the-main-command">'ENTRYPOINT' - define the main command</a></li>
+<li><a href="#copy--add---add-artifacts-to-the-image">'COPY' / 'ADD' - add artifacts to the image</a></li>
+<li><a href="#persist-data-with-a-docker-volume">Persist data with a Docker volume</a></li>
+<li><a href="#mount-a-folder-from-the-host-machine">Mount a folder from the host machine</a></li>
+<li><a href="#next-steps-for-the-tutorial">Next steps for the tutorial</a></li>
+<li><a href="#clean-up-local-docker-resources">Clean up local Docker resources</a></li>
+<li><a href="#inspect-containers-and-images">Inspect containers and images</a></li>
+<li><a href="#run-containers-in-the-background">Run containers in the background</a></li>
+<li><a href="#expose-ports">Expose ports</a></li>
+<li><a href="#use-environment-variables">Use environment variables</a></li>
+</ul>
+<h2 id="images-and-containers">Images and containers</h2>
+<p>In programming, we have classes and objects that are instances of classes. In the Docker world, an image is comparable to a class, and a container is comparable to an object.</p>
+<h3 id="creating-our-first-image">Creating our first image</h3>
+<p>Create a file named <code>Dockerfile</code> in an empty folder with this content:</p>
+<pre class="prettyprint"><code>FROM ubuntu:latest
+</code></pre>
+<h3 id="build-the-image">Build the image</h3>
+<p>In the same folder, run:</p>
+<pre class="prettyprint"><code>docker build -t my_stuff:1.0 -t my_stuff:latest .
+</code></pre>
+<p>Flags explained:</p>
+<ul>
+<li><code>-t my_stuff:1.0</code> = a tag, meaning the name and version of your image</li>
+<li><code>-t my_stuff:latest</code> = another tag for the same image</li>
+<li><code>.</code> = build from the Dockerfile in the current folder</li>
+</ul>
+<p>We tag the image so we can find it again easily. We use <em>two</em> tags, so we have both a versioned tag and a <code>latest</code> tag. The <code>latest</code> tag makes it easy to refer to the most recent build, similar to how we use <code>FROM ubuntu:latest</code>.</p>
+<h3 id="see-the-result">See the result</h3>
+<p>Looking in the current folder will not show anything new:</p>
+<pre class="prettyprint"><code>&gt; dir
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---          05-05-2026    08:16             37 Dockerfile
+</code></pre>
+<p>The image is only visible inside Docker's internal image store:</p>
+<pre class="prettyprint"><code>&gt; docker image ls
+
+REPOSITORY                 TAG       IMAGE ID       CREATED        SIZE
+my_stuff                   1.0       4e759ff0d3fd   13 days ago    157MB
+my_stuff                   latest    4e759ff0d3fd   13 days ago    157MB
+...
+</code></pre>
+<h3 id="save-the-image-to-the-local-filesystem">Save the image to the local filesystem</h3>
+<p>We can save the image to the filesystem. Docker saves images as tar files. Other formats, such as zip files, are not supported by <code>docker save</code>.</p>
+<pre class="prettyprint"><code>&gt; docker save -o my.tar my_stuff:1.0
+&gt; dir
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---          05-05-2026    08:16             37 Dockerfile
+-a---          05-05-2026    08:25       41.574.400 my.tar
+</code></pre>
+<h2 id="docker-run---running-the-image-as-a-container">'docker run' - Running the image as a container</h2>
+<p>To create a container from an image and get an interactive shell in Ubuntu Linux, run:</p>
+<pre class="prettyprint"><code>&gt; docker run -it my_stuff:1.0
+
+root@2bd442a1e2d1:/#
+</code></pre>
+<p><code>-it</code> is important because Bash is interactive. Without it, Bash will stop immediately.</p>
+<ul>
+<li><code>-i</code> keeps input open</li>
+<li><code>-t</code> creates a terminal</li>
+</ul>
+<p>We can also run the container with the command <code>ls</code> to see the content of the startup folder:</p>
+<pre class="prettyprint"><code>&gt; docker run -t my_stuff:1.0 ls
+
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+</code></pre>
+<h2 id="docker-ps---process-status">'docker ps' - process status</h2>
+<p>After a container has terminated executing, it will still be around. We can see the process status using the  <code>ps</code> command.</p>
+<pre class="prettyprint"><code>&gt; docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+</code></pre>
+<p>The list is empty. This is because there are no currently running containers. We can see all containers in the system using the <code>-a</code> flag.</p>
+<pre class="prettyprint"><code>&gt; docker ps -a
+
+CONTAINER ID   IMAGE             COMMAND      CREATED         STATUS                     PORTS     NAMES
+3186acd26e02   my_stuff:1.0      &quot;...&quot;        6 seconds ago   Exited (0) 5 seconds ago             confident_diffie
+</code></pre>
+<h2 id="docker-start---restart-an-existing-container">'docker start' - restart an existing container</h2>
+<p>The command <code>docker run ..</code> creates a new container. If you create a new container every time you want to run an image, you may end up with a lot of stopped containers. Another approach is to restart an existing container.</p>
+<pre class="prettyprint"><code>docker start confident_diffie
+</code></pre>
+<p>We use <code>confident_diffie</code>, but we could also have used the ID <code>3186acd26e02</code> as the parameter.</p>
+<h2 id="entrypoint-and-cmd---command-and-argument-on-startup">'ENTRYPOINT' and 'CMD' - command and argument on startup</h2>
+<p><code>ENTRYPOINT</code> defines the main executable for the container when it is starting. <code>CMD</code> defines the argument that is passed along. </p>
+<p>Change the <code>Dockerfile</code> to:</p>
+<pre class="prettyprint"><code>FROM ubuntu:latest
+ENTRYPOINT [ &quot;echo&quot; ]
+CMD [ &quot;Hello World&quot;, &quot;again..&quot; ]
+
+&gt; docker build -t my_stuff:latest .
+&gt; docker run my_stuff:latest
+
+Hello World again..
+</code></pre>
+<p>If we pass a command parameter such as <code>ls</code>, as we did earlier, we do not get the folder content.</p>
+<pre class="prettyprint"><code>&gt; docker run my_stuff:latest ls
+
+ls
+</code></pre>
+<p>This happens because <code>ls</code> is passed as an argument to <code>echo</code>. The result is the same as running <code>echo ls</code>.</p>
+<p>When debugging a faulty image, it can be helpful to alternate what is started. The <code>ENTRYPOINT</code> can be changed using  <code>--entrypoint</code>:</p>
+<pre class="prettyprint"><code>&gt; docker run --entrypoint ls my_stuff:latest /
+
+bin
+boot
+dev
+...
+</code></pre>
+<p>Only one <code>CMD</code> instruction can be used. If the Dockerfile contains multiple <code>CMD</code> instructions, only the last one is used.</p>
+<h3 id="when--cmd-becomes-the-command">When  'CMD' becomes the command</h3>
+<p>You may omit <code>ENTRYPOINT</code> and only use <code>CMD</code>. In this situation,
+<code>CMD</code> defines the default command, that runs when the container starts. </p>
+<p>Let's modify our <code>Dockerfile</code> to:</p>
+<pre class="prettyprint"><code>FROM ubuntu:latest
+CMD [&quot;sh&quot;, &quot;-c&quot;, &quot;echo First &amp;&amp; echo Second &amp;&amp; echo Third&quot;]
+</code></pre>
+<p>Build and run the new image:</p>
+<pre class="prettyprint"><code>&gt; docker build -t my_stuff:3.0 -t my_stuff:latest .
+&gt; docker run my_stuff:latest
+
+First
+Second
+Third
+</code></pre>
+<p><code>CMD</code> can be overridden. We can replace the command at runtime:</p>
+<pre class="prettyprint"><code>&gt; docker run -t my_stuff:latest ls
+
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+</code></pre>
+<p>The <code>ls</code> argument replaces the whole <code>CMD</code> definition from the <code>Dockerfile</code>. So Docker runs <code>ls</code> instead of the default command.</p>
+<h3 id="warning-about-">Warning about '[]'</h3>
+<p>The <code>[]</code> parentheses enable us to supply more than one argument to <code>ENTRYPOINT</code> and <code>CMD</code>. It also changes how the arguments are handled.</p>
+<p>This is called the <em>exec form</em>. The syntax is a JSON array, so every value must use double quotes:</p>
+<pre class="prettyprint"><code>ENTRYPOINT [&quot;echo&quot;]
+CMD [&quot;Hello World&quot;]
+</code></pre>
+<p>Docker does not run this through a shell. It runs <code>echo</code> directly and passes <code>Hello World</code> as an argument. This makes argument handling more predictable, especially when arguments contain spaces.</p>
+<p>Because the syntax is JSON, escaping also follows JSON rules. If you need a quote inside an argument, escape it with <code>\&quot;</code>. If you need a Windows path with backslashes, the backslashes must be escaped as <code>\\</code>.</p>
+<p>For example:</p>
+<pre class="prettyprint"><code>CMD [&quot;sh&quot;, &quot;-c&quot;, &quot;echo \&quot;Hello World\&quot;&quot;]
+</code></pre>
+<p>Without <code>[]</code>, Docker uses the <em>shell form</em>. The command is treated as a single string and is run through a shell. That can be useful for shell features such as <code>&amp;&amp;</code>, pipes, and variable expansion, but it also means Docker is no longer passing the arguments in the same direct way.</p>
+<p>Try removing the <code>[]</code> and see how the Docker image no longer works as expected.</p>
+<pre class="prettyprint"><code>FROM ubuntu:latest
+ENTRYPOINT &quot;echo&quot;
+CMD &quot;Hello World&quot;
+</code></pre>
+<p>and run</p>
+<pre class="prettyprint"><code>&gt; docker build -t my_stuff:latest .
+ 2 warnings found (use docker --debug to expand):
+ - JSONArgsRecommended: JSON arguments recommended for ENTRYPOINT to prevent unintended behavior related to OS signals (line 2)
+ - JSONArgsRecommended: JSON arguments recommended for CMD to prevent unintended behavior related to OS signals (line 3)
+
+&gt; docker run my_stuff:latest
+
+(( missing output!))
+</code></pre>
+<p>In this example, <code>ENTRYPOINT &quot;echo&quot;</code> is shell form. The <code>CMD &quot;Hello World&quot;</code> value is not passed to <code>echo</code> the same way as in the JSON-array version, so <code>echo</code> runs without the text we expected.</p>
+<p>Feel free to dig more into this if you find it interesting. For now, perhaps just remember to use <code>[]</code> unless you specifically need shell behavior.</p>
+<h2 id="workdir---setting-the-current-directory">'WORKDIR' - setting the current directory</h2>
+<p>It is normal to operate on a number of folders in the Docker image. Often we separate the <code>/app/</code> folder from the <code>/data/</code> folder.</p>
+<p>To change the current folder, we use <code>WORKDIR path</code>. If the path does not exist, it is created.</p>
+<h2 id="copy--add---getting-artifacts-into-the-image">'COPY' / 'ADD' - getting artifacts into the image</h2>
+<p>Now that the basics are in place, we can focus on putting a program into the Docker image. Use <code>ADD</code> or <code>COPY</code> for this. <code>ADD</code> can fetch resources from the internet and unpack local tar files, which makes it less predictable than <code>COPY</code>. Prefer <code>COPY</code> when possible.</p>
+<p>Let's make a small program that prints the numbers 1 to 10. For now, we can imagine that this is a more complex application. By using Bash as the programming language we are free from having to install extra infrastructure (e.g. a Python, Java or C# run-time). Later we will use these languages.</p>
+<p>Create a new file named <code>print_numbers.sh</code> with this content:</p>
+<pre class="prettyprint"><code>for i in $(seq 1 10); do echo &quot;$i&quot;; done
+</code></pre>
+<p>If you are on Windows, make sure the file uses Unix-style line endings. Or simply make sure the file is only one line long.</p>
+<p>Change the <code>Dockerfile</code> to:</p>
+<pre class="prettyprint"><code>FROM ubuntu:latest
+WORKDIR /app
+COPY print_numbers.sh /app/print_numbers.sh
+RUN chmod +x /app/print_numbers.sh
+ENTRYPOINT [&quot;/bin/bash&quot;]
+CMD [&quot;/app/print_numbers.sh&quot;]
+</code></pre>
+<p>We copy our application to the <code>/app/</code> folder to separate it from the tools we may need to install later. We use <code>chmod</code> to make the script executable. Finally, we set it as the default command using <code>ENTRYPOINT</code> + <code>CMD</code>.</p>
+<pre class="prettyprint"><code>&gt; docker build -t my_stuff:latest .
+&gt; docker run my_stuff:latest
+
+1
+2
+...
+</code></pre>
+<h2 id="persist-data-inside">Persist data inside</h2>
+<p>A container is running on the host operating system, while being isolated from it. This means a program inside a container cannot write to the &quot;outside&quot; file system unless given permission. Let us play with storing state locally inside the container and then move on to storing the same state outside.</p>
+<p>Change the <code>Dockerfile</code> and notice we create the folder <code>/data/</code>.</p>
+<pre class="prettyprint"><code>FROM ubuntu:latest
+WORKDIR &quot;/data/&quot;
+CMD [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;echo 'test data' &gt;&gt; /data/log.txt&quot;]
+</code></pre>
+<p>and run</p>
+<pre class="prettyprint"><code>&gt; docker build -t my_stuff:latest .
+&gt; docker run my_stuff:latest
+</code></pre>
+<p>Our code appends &quot;test data&quot;  to the file &quot;log.txt&quot;. Let's run it a few times and inspect the content within the container.
+If we just issue another <code>docker run</code> a new container is spun up. We want to re-execute the existing container, in order to see the effect of many log lines in our log file. </p>
+<pre class="prettyprint"><code>&gt; docker ps -a
+
+CONTAINER ID   IMAGE             COMMAND
+3186acd26e02   my_stuff:latest   ...
+
+&gt; docker start 3186acd26e02
+&gt; docker start 3186acd26e02
+&gt; docker start 3186acd26e02
+</code></pre>
+<p>Let's inspect our file. We can do this a number of ways. </p>
+<p>To show the filesystem changes inside the container, we use <code>docker diff</code>.</p>
+<pre class="prettyprint"><code>&gt; docker diff 3186acd26e02
+
+C /data
+A /data/log.txt
+</code></pre>
+<p>To see the content we copy it out of the container</p>
+<pre class="prettyprint"><code>&gt; docker cp 3186acd26e02:/data/log.txt ./locallog.txt
+&gt; cat ./locallog.txt
+
+test data
+test data
+test data
+test data
+</code></pre>
+<p>As expected we see the log lines, one for each time we started the container.</p>
+<h2 id="storing-outside-the-container"><code>VOLUME</code> - Storing outside the container</h2>
+<p>Normally, files written inside a container disappear when the container is removed. </p>
+<p>Perhaps you want to run a database as a container. If we store the data rows inside the image, we cannot upgrade the DB using a new image without losing all our data.</p>
+<p>A Docker volume is storage managed by Docker that can live longer than any single container. We define a <code>VOLUME</code> inside our <code>Dockerfile</code> and then when invoking the image, specify where on the host operating system that points to.</p>
+<p>Let's modify our <code>Dockerfile</code>:</p>
+<pre class="prettyprint"><code>FROM ubuntu:latest
+VOLUME /data
+WORKDIR /data
+CMD [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;echo 'test data' &gt;&gt; /data/log.txt&quot;]
+
+</code></pre>
+<ul>
+<li>We must run the container using a <code>-v</code> flag or state is stored in an anonymous volume that may be hard to find</li>
+<li>We can see all volumes using <code>docker volume ls</code></li>
+</ul>
+<p>First try <em>omitting</em> the volume, and observe that an anonymous volume is created.</p>
+<pre class="prettyprint"><code>&gt; docker build -t my_stuff:latest .
+&gt;
+&gt; docker volume ls
+&gt; docker run my_stuff:latest
+&gt; docker volume ls
+
+DRIVER    VOLUME NAME
+local     7c7044f1f1513b0aab2e6a62a35...
+</code></pre>
+<h3 id="target-a-volume-file-on-the-host-machine"><code>docker volume create</code> - target a volume file on the host machine</h3>
+<p>To create a volume we use <code>docker volume create myvol</code></p>
+<p>Let's see the whole sequence of executions</p>
+<pre class="prettyprint"><code>&gt; docker volume create myvol
+&gt; docker run -v myvol:/data my_stuff:latest
+&gt; docker volume ls
+DRIVER    VOLUME NAME
+local     7c7044f1f1513b0aab2e6a62a35...
+local     myvol
+</code></pre>
+<p>When we run the image again or start the container, both approaches will append to the volume. We use the <code>--rm</code> flag to remove the container after use</p>
+<pre class="prettyprint"><code>&gt; docker run --rm -v myvol:/data my_stuff:latest
+&gt; docker start 1513b..
+&gt; docker run --rm -v myvol:/data my_stuff:latest cat /data/log.txt
+test data
+test data
+test data
+</code></pre>
+<p>The file survived because it was written to the volume, not only to the container's own filesystem.</p>
+<p>When you are done with the volume, remove it:</p>
+<pre class="prettyprint"><code>&gt; docker volume rm myvol
+</code></pre>
+<h2 id="binding-mount---target-a-folder-on-the-host-machine">Binding Mount - target a folder on the host machine</h2>
+<p>Sometimes you do not want Docker to manage the storage. Instead, you want the container to read and write directly to a normal folder on your machine. This is called a bind mount.</p>
+<p>Create a folder on the host machine and run the image. If you are on Windows, you must use <code>\</code> for the path. We use <code>.\host-data</code> to denote the sub-folder from where we run.</p>
+<pre class="prettyprint"><code>&gt; mkdir host-data
+&gt; docker run --rm -v .\host-data:/data my_stuff:latest
+</code></pre>
+<p>The container writes the file to <code>/data/log.txt</code>, but <code>/data</code> points to the <code>host-data</code> folder on your machine. Let us now look inside the folder:</p>
+<pre class="prettyprint"><code>&gt; dir host-data\
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---          05-05-2026    08:38             10 log.txt
+
+&gt; cat host-data/log.txt
+test data
+</code></pre>
+<h3 id="running-a-console-program-as-a-container">Running a console program as a container</h3>
+<p>Instead of installing the formatting tool QUARTO on our host operating system, we can containerize it. This has the advantage
+that the tool, should it be infected with mallware, can only reach the files I tell it to operate on. The idea is to have a docker image where quarto will be installed. When running the tool it will use a volume that we bind to our file system.</p>
+<p>we make the image </p>
+<pre class="prettyprint"><code>FROM ubuntu:latest
+
+# we use only one run-to reduce the number of layers
+
+ARG QUARTO_VERSION=1.9.37
+
+RUN set -eux; \
+    apt-get update; \
+  # --no-install-recommends :: to reduce the download
+  # ca-certificates ::  er god at have med, når du downloader via HTTPS.
+    apt-get install -y --no-install-recommends wget ca-certificates; \
+    wget -O /tmp/quarto.deb &quot;https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.deb&quot;; \
+    apt-get install -y /tmp/quarto.deb; \
+    rm /tmp/quarto.deb; \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /data
+
+ENTRYPOINT [ &quot;quarto&quot; ]
+
+VOLUME /data
+</code></pre>
+<p>build the image <code>docker build -t quarto:latest .</code></p>
+<p><code>docker run -it --rm   --mount type=bind,source=C:\src\Build-Your-Own-Git\,target=/data quarto:latest render book</code></p>
+<ul>
+<li>-it run interactively</li>
+<li>--rm remove the container after use</li>
+<li>--mount bind the /data folder to my local folder</li>
+<li>quarto:latest the image to run</li>
+<li>render book, pass <code>render</code> and the folder name <code>book</code> to quarto</li>
+</ul>
+<p>to debug the image also use <code>--entrypoint /bin/bash</code> </p>
+<h2 id="volume-summary">Volume summary</h2>
+<p><em>Volume mounts</em> are useful when Docker should own the storage. They are usually a good default for database files and other container-owned state.</p>
+<p><em>Bind mounts</em> are useful when the host machine and the container should share a specific folder. During software development, they make it transparent to see and change files.</p>
+<h2 id="execute-during-build-time"><code>RUN</code> - execute during build time</h2>
+<p><code>RUN</code> executes commands at build time. This is different from <code>CMD</code>/<code>ENTRYPOINT</code> that execute when the container starts.</p>
+<p>We use curl to fetch data and print to the screen.
+We use <code>set -eux</code>:</p>
+<ul>
+<li><code>-e</code>: stop the build if a command fails</li>
+<li><code>-u</code>: fail on undefined variables</li>
+<li><code>-x</code>: print commands as they run</li>
+</ul>
+<p>The <code>Dockerfile</code> content. For security reasons ubuntu is not shipped with curl out of the box, so we need first to install it.</p>
+<pre class="prettyprint"><code>FROM ubuntu:latest
+WORKDIR /data
+
+RUN set -eux; \
+     echo &quot;install curl&quot;; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends curl ca-certificates; \
+    rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
+    echo &quot;fetching&quot;; \
+    curl -fsSL https://example.com -o /data/example.content.txt; 
+
+RUN set -eux; \
+    echo &quot;file created&quot;; \
+    ls -l /data/example.content.txt; \
+    head -n 5 /data/example.content.txt;
+</code></pre>
+<p>to see the content fetched from curl, we need to use the <code>--progress=plain</code> flag</p>
+<pre class="prettyprint"><code>&gt; docker build --no-cache --progress=plain -t my_stuff:latest .
+
+...
+#7 [4/5] RUN set -eux;  echo &quot;fetching&quot;;        curl -fsSL https://example.com -o /data/example.content.txt;
+#7 0.361 fetching
+#7 0.361 + echo fetching
+#7 0.361 + curl -fsSL https://example.com -o /data/example.content.txt
+#7 DONE 0.6s
+
+#8 [5/5] RUN set -eux;  echo &quot;file created&quot;;    ls -l /data/example.content.txt;        head -n 5 /data/example.content.txt;
+#8 0.380 file created
+#8 0.380 + echo file created
+#8 0.380 + ls -l /data/example.content.txt
+#8 0.385 -rw-r--r-- 1 root root 528 May 11 07:26 /data/example.content.txt
+#8 0.386 + head -n 5 /data/example.content.txt
+#8 0.389 &lt;!doctype html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;title&gt;Example Domain&lt;/title&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;style&gt;body{background:#eee;width:60vw;margin:15vh auto;font-family:system-ui,sans-serif}h1{font-size:1.5em}div{opacity:0.8}a:link,a:visited{color:#348}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div&gt;&lt;h1&gt;Example Domain&lt;/h1&gt;&lt;p&gt;This domain is for use in documentation examples without needing permission. Avoid use in operations.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://iana.org/domains/example&quot;&gt;Learn more&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;
+#8 DONE 0.4s
+...
+</code></pre>
+<h2 id="looking-inside"><code>docker inspect</code>  - looking inside</h2>
+<p>Docker can show a lot of metadata about both images and containers. The command is <code>docker inspect</code>.</p>
+<p>To inspect an image</p>
+<pre class="prettyprint"><code>&gt; docker image ls
+&gt; docker inspect my-stuff:latest
+[
+  {
+    &quot;Config&quot;: {
+            &quot;ArgsEscaped&quot;: true,
+            &quot;AttachStderr&quot;: false,
+            &quot;AttachStdin&quot;: false,
+            &quot;AttachStdout&quot;: false,
+            &quot;Cmd&quot;: [
+                &quot;/bin/bash&quot;,
+                &quot;-c&quot;,
+                &quot;echo 'test data' &gt;&gt; /data/log.txt&quot;
+            ],
+...
+</code></pre>
+<p>The full output is long. In practice, it is often better to ask for one value.
+First run an image that does not exit immediately. </p>
+<pre class="prettyprint"><code>&gt; docker run -it --rm my-stuff:latest sh
+</code></pre>
+<p>in a different terminal issue</p>
+<pre class="prettyprint"><code>&gt; docker ps   
+ONTAINER ID   IMAGE             COMMAND   CREATED       
+3aa1295a1a3c   my-stuff:latest   &quot;sh&quot;      7 seconds ago   
+&gt; docker inspect 3aa1295a1a3c --format &quot;{{.State.Status}}&quot;
+running
+Show the image used by the container:
+
+</code></pre>
+<blockquote>
+<p>docker inspect inspect-demo --format &quot;{{.Config.Image}}&quot;</p>
+</blockquote>
+<p>my_stuff:latest</p>
+<pre class="prettyprint"><code>
+Show environment variables configured in the container:
+
+</code></pre>
+<blockquote>
+<p>docker inspect inspect-demo --format &quot;{{json .Config.Env}}&quot;</p>
+</blockquote>
+<p>[&quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;,&quot;APP_MODE=demo&quot;]</p>
+<pre class="prettyprint"><code>
+
+## `docker logs` - show what is printed to stdout
+
+Logs are separate from inspect. `docker inspect` shows configuration and metadata. `docker logs` shows what the container printed to stdout and stderr.
+
+</code></pre>
+<blockquote>
+<p>docker logs inspect-demo</p>
+</blockquote>
+<p>app mode is demo</p>
+<pre class="prettyprint"><code>
+Clean up the container when done:
+
+</code></pre>
+<blockquote>
+<p>docker rm inspect-demo</p>
+</blockquote>
+<p>inspect-demo</p>
+<pre class="prettyprint"><code>
+
+## Run containers in the background
+
+So far, most examples have run in the foreground. This means the terminal waits until the container stops. Servers and long-running processes are usually started in the background.
+
+Change the `Dockerfile` to:
+
+</code></pre>
+<p>FROM ubuntu:latest
+CMD [&quot;sh&quot;, &quot;-c&quot;, &quot;i=1; while true; do echo tick $i; i=$((i+1)); sleep 2; done&quot;]</p>
+<pre class="prettyprint"><code>
+Build the image:
+
+</code></pre>
+<blockquote>
+<p>docker build -t my_stuff:latest .</p>
+</blockquote>
+<pre class="prettyprint"><code>
+Run it in detached mode using `-d`:
+
+</code></pre>
+<blockquote>
+<p>docker run -d --name background-demo my_stuff:latest</p>
+</blockquote>
+<p>7c0d90b30c8d8f26d1f5b64c0c0a6a2d8a6b8bb8d2f50ddf0d63e12b3f1d45d9</p>
+<pre class="prettyprint"><code>
+Docker prints the container ID and returns control to your terminal.
+
+See that it is running:
+
+</code></pre>
+<blockquote>
+<p>docker ps</p>
+</blockquote>
+<p>CONTAINER ID   IMAGE             COMMAND                  STATUS         NAMES
+7c0d90b30c8d   my_stuff:latest   &quot;sh -c 'i=1; while...&quot;   Up 6 seconds   background-demo</p>
+<pre class="prettyprint"><code>
+Show the logs:
+
+</code></pre>
+<blockquote>
+<p>docker logs background-demo</p>
+</blockquote>
+<p>tick 1
+tick 2
+tick 3</p>
+<pre class="prettyprint"><code>
+Follow the logs live:
+
+</code></pre>
+<blockquote>
+<p>docker logs -f background-demo</p>
+</blockquote>
+<p>tick 1
+tick 2
+tick 3
+tick 4</p>
+<pre class="prettyprint"><code>
+Press `Ctrl+C` to stop following the logs. This stops the log view, not the container.
+
+Stop the container:
+
+</code></pre>
+<blockquote>
+<p>docker stop background-demo</p>
+</blockquote>
+<p>background-demo</p>
+<pre class="prettyprint"><code>
+Remove it:
+
+</code></pre>
+<blockquote>
+<p>docker rm background-demo</p>
+</blockquote>
+<p>background-demo</p>
+<pre class="prettyprint"><code>
+Detached mode is useful for web servers, databases, message queues, and anything else that should keep running while you use the terminal for other commands.
+
+
+## Expose ports
+
+A container has its own network namespace. If a process listens on a port inside the container, that port is not automatically available on your host machine.
+
+We need two things:
+
+* The application must listen on a port inside the container
+* `docker run -p` must map a host port to the container port
+
+Change the `Dockerfile` to a tiny web server:
+
+</code></pre>
+<p>FROM python:3.12-alpine
+WORKDIR /site
+RUN echo &quot;<h1>Hello from Docker</h1>&quot; &gt; index.html
+EXPOSE 8000
+CMD [&quot;python&quot;, &quot;-m&quot;, &quot;http.server&quot;, &quot;8000&quot;, &quot;--bind&quot;, &quot;0.0.0.0&quot;]</p>
+<pre class="prettyprint"><code>
+Build it:
+
+</code></pre>
+<blockquote>
+<p>docker build -t my_stuff:latest .</p>
+</blockquote>
+<pre class="prettyprint"><code>
+Run it in the background and map host port `8080` to container port `8000`:
+
+</code></pre>
+<blockquote>
+<p>docker run -d --name web-demo -p 8080:8000 my_stuff:latest</p>
+</blockquote>
+<p>9b4ab9f5d573f6a4a5c6d7c8a9b0c1d2e3f4567890abcdef1234567890abcdef</p>
+<pre class="prettyprint"><code>
+The syntax is:
+
+</code></pre>
+<p>-p HOST_PORT:CONTAINER_PORT</p>
+<pre class="prettyprint"><code>
+So this:
+
+</code></pre>
+<p>-p 8080:8000</p>
+<pre class="prettyprint"><code>
+means:
+
+* Use port `8080` on your machine
+* Forward traffic to port `8000` inside the container
+
+Try it from PowerShell:
+
+</code></pre>
+<blockquote>
+<p>Invoke-WebRequest http://localhost:8080</p>
+</blockquote>
+<p>StatusCode        : 200
+StatusDescription : OK
+Content           : <h1>Hello from Docker</h1></p>
+<pre class="prettyprint"><code>
+Or open this URL in a browser:
+
+</code></pre>
+<p>http://localhost:8080</p>
+<pre class="prettyprint"><code>
+See the port mapping:
+
+</code></pre>
+<blockquote>
+<p>docker ps</p>
+</blockquote>
+<p>CONTAINER ID   IMAGE             PORTS                    NAMES
+9b4ab9f5d573   my_stuff:latest   0.0.0.0:8080-&gt;8000/tcp   web-demo</p>
+<pre class="prettyprint"><code>
+`EXPOSE 8000` documents that the container listens on port `8000`. It does not publish the port to the host machine by itself. The `-p` flag is what makes the port reachable from your machine.
+
+Stop and remove the container:
+
+</code></pre>
+<blockquote>
+<p>docker stop web-demo
+docker rm web-demo</p>
+</blockquote>
+<pre class="prettyprint"><code>
+You can run the same image on another host port:
+
+</code></pre>
+<blockquote>
+<p>docker run --rm -p 5000:8000 my_stuff:latest</p>
+</blockquote>
+<pre class="prettyprint"><code>
+Now the same container port is available on:
+
+</code></pre>
+<p>http://localhost:5000</p>
+<pre class="prettyprint"><code>
+
+## Use environment variables
+
+Environment variables are a common way to configure containers. The image contains the application. The environment variables decide how it should behave in this specific run.
+
+Change the `Dockerfile` to:
+
+</code></pre>
+<p>FROM ubuntu:latest
+ENV MESSAGE=&quot;Hello from the Dockerfile&quot;
+ENV REPEAT=1
+CMD [&quot;sh&quot;, &quot;-c&quot;, &quot;i=1; while [ $i -le $REPEAT ]; do echo \&quot;$MESSAGE\&quot;; i=$((i+1)); done&quot;]</p>
+<pre class="prettyprint"><code>
+Build and run:
+
+</code></pre>
+<blockquote>
+<p>docker build -t my_stuff:latest .
+docker run --rm my_stuff:latest</p>
+</blockquote>
+<p>Hello from the Dockerfile</p>
+<pre class="prettyprint"><code>
+Override `MESSAGE` at runtime:
+
+</code></pre>
+<blockquote>
+<p>docker run --rm -e MESSAGE=&quot;Hello from docker run&quot; my_stuff:latest</p>
+</blockquote>
+<p>Hello from docker run</p>
+<pre class="prettyprint"><code>
+Set more than one environment variable:
+
+</code></pre>
+<blockquote>
+<p>docker run --rm -e MESSAGE=&quot;Configured at runtime&quot; -e REPEAT=3 my_stuff:latest</p>
+</blockquote>
+<p>Configured at runtime
+Configured at runtime
+Configured at runtime</p>
+<pre class="prettyprint"><code>
+You can inspect the environment variables on a container. First run it without `--rm`, so the stopped container remains available:
+
+</code></pre>
+<blockquote>
+<p>docker run --name env-demo -e MESSAGE=&quot;Inspect me&quot; my_stuff:latest</p>
+</blockquote>
+<p>Inspect me</p>
+<pre class="prettyprint"><code>
+Then inspect it:
+
+</code></pre>
+<blockquote>
+<p>docker inspect env-demo --format &quot;{{json .Config.Env}}&quot;</p>
+</blockquote>
+<p>[&quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;,&quot;MESSAGE=Inspect me&quot;,&quot;REPEAT=1&quot;]</p>
+<pre class="prettyprint"><code>
+Clean up:
+
+</code></pre>
+<blockquote>
+<p>docker rm env-demo</p>
+</blockquote>
+<p>env-demo</p>
+<pre class="prettyprint"><code>
+Use environment variables for configuration such as:
+
+* application mode
+* connection strings
+* feature flags
+* log level
+* port numbers
+
+Do not put passwords or tokens directly in a `Dockerfile`. Values in a `Dockerfile` become part of the image history. For local experiments `-e` is fine, but real systems usually use Docker secrets, Kubernetes secrets, or the secret store from the platform running the container.
+
+
+
+
+
+
+
+
+
+
+## Clean up local Docker resources
+
+When experimenting with Docker, you quickly create containers, images, volumes, and networks. This is normal, but it is useful to know how to clean up after yourself.
+
+Let us start by creating a container we can remove.
+
+Change the `Dockerfile` to:
+
+</code></pre>
+<p>FROM ubuntu:latest
+CMD [&quot;sh&quot;, &quot;-c&quot;, &quot;echo cleanup demo&quot;]</p>
+<pre class="prettyprint"><code>
+Build and run it:
+
+</code></pre>
+<blockquote>
+<p>docker build -t my_stuff:latest .
+docker run --name cleanup-demo my_stuff:latest</p>
+</blockquote>
+<p>cleanup demo</p>
+<pre class="prettyprint"><code>
+The container has now stopped, but it still exists.
+
+</code></pre>
+<blockquote>
+<p>docker ps</p>
+</blockquote>
+<p>CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES</p>
+<blockquote>
+<p>docker ps -a</p>
+</blockquote>
+<p>CONTAINER ID   IMAGE             COMMAND                  CREATED          STATUS                      PORTS     NAMES
+2f4c0f7f3f41   my_stuff:latest   &quot;sh -c 'echo clean...&quot;   10 seconds ago   Exited (0) 8 seconds ago              cleanup-demo</p>
+<pre class="prettyprint"><code>
+`docker ps` shows running containers. `docker ps -a` shows all containers, including stopped containers.
+
+Remove the stopped container:
+
+</code></pre>
+<blockquote>
+<p>docker rm cleanup-demo</p>
+</blockquote>
+<p>cleanup-demo</p>
+<pre class="prettyprint"><code>
+If the container is running, you must stop it before removing it:
+
+</code></pre>
+<blockquote>
+<p>docker stop cleanup-demo
+cleanup-demo</p>
+<p>docker rm cleanup-demo
+cleanup-demo</p>
+</blockquote>
+<pre class="prettyprint"><code>
+Images are different from containers. A container is created from an image. Removing a container does not remove the image.
+
+</code></pre>
+<blockquote>
+<p>docker image ls my_stuff</p>
+</blockquote>
+<p>REPOSITORY   TAG       IMAGE ID       CREATED          SIZE
+my_stuff     latest    4e759ff0d3fd   2 minutes ago    78.1MB</p>
+<pre class="prettyprint"><code>
+During small experiments it is often useful to use `--rm`. This removes the container automatically when it stops:
+
+</code></pre>
+<blockquote>
+<p>docker run --rm my_stuff:latest</p>
+</blockquote>
+<p>cleanup demo</p>
+<pre class="prettyprint"><code>
+There is no stopped container left behind:
+
+</code></pre>
+<blockquote>
+<p>docker ps -a --filter name=cleanup-demo</p>
+</blockquote>
+<p>CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES</p>
+<pre class="prettyprint"><code>
+When you are done with the image, remove it:
+
+</code></pre>
+<blockquote>
+<p>docker image rm my_stuff:latest</p>
+</blockquote>
+<p>Untagged: my_stuff:latest
+Deleted: sha256:4e759ff0d3fd...</p>
+<pre class="prettyprint"><code>
+If Docker says the image is used by a container, remove the container first.
+
+Docker also has prune commands. They are useful, but read the output before accepting.
+
+</code></pre>
+<blockquote>
+<p>docker container prune</p>
+</blockquote>
+<p>WARNING! This will remove all stopped containers.
+Are you sure you want to continue? [y/N]</p>
+<pre class="prettyprint"><code>
+Other cleanup commands are:
+
+</code></pre>
+<blockquote>
+<p>docker image prune
+docker volume prune
+docker system prune
+```</p>
+</blockquote>
+<p>Be extra careful with <code>docker volume prune</code>. Volumes often contain data, for example database files.</p>
+<h2 id="next-steps-for-the-tutorial">Next steps for the tutorial</h2>
+<p>The next natural steps are to expand the tutorial from a single-file demo into the workflow used for real applications:</p>
+<ol>
+<li>
+<p>Clean up local Docker resources</p>
+<ul>
+<li>Show <code>docker ps</code>, <code>docker ps -a</code>, <code>docker stop</code>, <code>docker rm</code>, and <code>docker image rm</code>.</li>
+<li>Explain the difference between removing containers and removing images.</li>
+</ul>
+</li>
+<li>
+<p>Inspect containers and images</p>
+<ul>
+<li>Use <code>docker inspect</code> to see metadata, configuration, environment variables, mounts, and network settings.</li>
+<li>Use <code>docker logs</code> to inspect output from a container after it has started.</li>
+</ul>
+</li>
+<li>
+<p>Run containers in the background</p>
+<ul>
+<li>Introduce detached mode with <code>docker run -d</code>.</li>
+<li>Show how to follow logs with <code>docker logs -f</code>.</li>
+</ul>
+</li>
+<li>
+<p>Expose ports</p>
+<ul>
+<li>Add a tiny web server example.</li>
+<li>Use <code>docker run -p 8080:80</code> to map a port from the host machine to the container.</li>
+</ul>
+</li>
+<li>
+<p>Use environment variables</p>
+<ul>
+<li>Show <code>docker run -e NAME=value</code>.</li>
+<li>Explain how applications can read configuration from environment variables.</li>
+</ul>
+</li>
+<li>
+<p>Add a <code>.dockerignore</code> file</p>
+<ul>
+<li>Explain why the build context matters.</li>
+<li>Exclude folders such as <code>.git</code>, <code>bin</code>, <code>obj</code>, <code>node_modules</code>, and temporary files.</li>
+</ul>
+</li>
+<li>
+<p>Build a real application image</p>
+<ul>
+<li>Replace the shell script with a small .NET, Node.js, Python, or Go application.</li>
+<li>Show how application files are copied, restored, built, and executed.</li>
+</ul>
+</li>
+<li>
+<p>Use multi-stage builds</p>
+<ul>
+<li>Use one image for building the application and another smaller image for running it.</li>
+<li>Explain how this reduces image size and avoids shipping build tools.</li>
+</ul>
+</li>
+<li>
+<p>Publish an image to a registry</p>
+<ul>
+<li>Tag an image for Docker Hub, GitHub Container Registry, or a private registry.</li>
+<li>Show <code>docker push</code> and <code>docker pull</code>.</li>
+</ul>
+</li>
+<li>
+<p>Run multiple containers with Docker Compose</p>
+<ul>
+<li>Create a <code>docker-compose.yml</code> file.</li>
+<li>Add an application container and a database container.</li>
+<li>Show <code>docker compose up</code>, <code>docker compose down</code>, and where logs can be found.
+<br>
+<br>
+Read the <a href="https://kbilsted.github.io/CodeQualityAndReadability/">Introduction</a> or browse the rest <a href="https://kbilsted.github.io/CodeQualityAndReadability/AllArticles.html">of the site</a>
+<br>
+<br></li>
+</ul>
+</li>
+</ol>
+
+
+
+</article>
+</body>
+</html>
